@@ -1,0 +1,155 @@
+A51 MACRO ASSEMBLER  TV                                                                   10/06/2007 12:04:18 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.00b
+OBJECT MODULE PLACED IN .\Output\tv.obj
+ASSEMBLER INVOKED BY: C:\Keil3\C51\BIN\A51.EXE tv.A51 SET(SMALL) DEBUG OBJECT(.\Output\tv.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+  00C0                 1     blanco          EQU 0xC0
+  0040                 2     negro           EQU 0x40
+  0080                 3     gris            EQU 0x80
+  0020                 4     sincro_val      EQU 0x20
+                       5     
+                       6     
+                       7     ; Prueba a 33 MHz. Uso muchas instrucciones...
+                       8     
+                       9     
+----                  10     cseg
+                      11     
+                      12     
+0000 11CE             13     main:                   call sincro
+0002 1160             14                                     call linea_alt
+0004 00               15                                     nop
+0005 00               16                                     nop
+0006 11CE             17                                     call sincro
+0008 1160             18                                     call linea_alt
+000A 00               19                                     nop
+000B 00               20                                     nop
+000C 11CE             21                                     call sincro
+000E 1160             22                                     call linea_alt
+0010 00               23                                     nop
+0011 00               24                                     nop
+0012 11CE             25                                     call sincro
+0014 1160             26                                     call linea_alt
+0016 00               27                                     nop
+0017 00               28                                     nop
+0018 11CE             29                                     call sincro
+001A 1160             30                                     call linea_alt
+001C 00               31                                     nop
+001D 00               32                                     nop
+001E 11CE             33                                     call sincro
+0020 1160             34                                     call linea_alt
+0022 00               35                                     nop
+0023 00               36                                     nop
+0024 11CE             37                                     call sincro
+0026 1160             38                                     call linea_alt
+0028 00               39                                     nop
+0029 00               40                                     nop
+002A 11CE             41                                     call sincro
+002C 1160             42                                     call linea_alt
+002E 00               43                                     nop
+002F 00               44                                     nop
+0030 11CE             45                                     call sincro
+0032 1197             46                                     call linea_alt2
+0034 00               47                                     nop
+0035 00               48                                     nop
+0036 11CE             49                                     call sincro
+0038 1197             50                                     call linea_alt2
+003A 00               51                                     nop
+003B 00               52                                     nop
+003C 11CE             53                                     call sincro
+003E 1197             54                                     call linea_alt2
+0040 00               55                                     nop
+0041 00               56                                     nop
+0042 11CE             57                                     call sincro
+0044 1197             58                                     call linea_alt2
+A51 MACRO ASSEMBLER  TV                                                                   10/06/2007 12:04:18 PAGE     2
+
+0046 00               59                                     nop
+0047 00               60                                     nop
+0048 11CE             61                                     call sincro
+004A 1197             62                                     call linea_alt2
+004C 00               63                                     nop
+004D 00               64                                     nop
+004E 11CE             65                                     call sincro
+0050 1197             66                                     call linea_alt2
+0052 00               67                                     nop
+0053 00               68                                     nop
+0054 11CE             69                                     call sincro
+0056 1197             70                                     call linea_alt2
+0058 00               71                                     nop
+0059 00               72                                     nop
+005A 11CE             73                                     call sincro
+005C 1197             74                                     call linea_alt2
+005E 80A0             75                                     sjmp main
+                      76     
+0060                  77     linea_alt:
+                      78     
+                      79                             REPT 6
+                      80     
+                      81                                     mov P2, #negro          ; 24 ciclos a 33 MHz: 0.72 us
+                      82                                     mov P2, #gris           ; 24 ciclos a 33 MHz: 0.72 us
+                      83                                     mov P2, #blanco ; 24 ciclos a 33 MHz: 0.72 us
+                      84     
+                      85                             ENDM    ; 35 x 1.44 us = 50.4 us + o - una línea
+                     116     
+0096 22              117                                     ret
+                     118     
+0097                 119     linea_alt2:
+                     120     
+                     121                             REPT 6
+                     122     
+                     123                                     mov P2, #blanco         ; 24 ciclos a 33 MHz: 0.72 us
+                     124                                     mov P2, #gris           ; 24 ciclos a 33 MHz: 0.72 us
+                     125                                     mov P2, #negro  ; 24 ciclos a 33 MHz: 0.72 us
+                     126     
+                     127                             ENDM    ; 35 x 1.44 us = 50.4 us + o - una línea
+                     158     
+00CD 22              159                                     ret
+                     160     
+00CE 75A040          161     sincro:                 mov P2, #negro  ; 24 ciclos a 33 MHz: 0.72 us -> front porch
+                     162             
+                     163     
+                     164                             REPT 2
+                     165     
+                     166                                     mov P2, #sincro_val     ; 24 ciclos a 33 MHz: 0.72 us
+                     167     
+                     168                             ENDM    ; 7 x 0.72 us = 5.04 us -> sync
+                     175     
+                     176     
+                     177     
+                     178                             REPT 3  
+                     179                                     mov P2, #negro  ; 24 ciclos a 33 MHz: 0.72 us
+                     180                             ENDM    ; 7 x 0.72 us = 5.04 us -> back porch
+                     184     
+                     185     
+                     186     
+00E0 22              187                                     ret
+                     188     
+                     189     end
+                                                       
+A51 MACRO ASSEMBLER  TV                                                                   10/06/2007 12:04:18 PAGE     3
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+BLANCO . . . . . .  N NUMB   00C0H   A   
+GRIS . . . . . . .  N NUMB   0080H   A   
+LINEA_ALT. . . . .  C ADDR   0060H   A   
+LINEA_ALT2 . . . .  C ADDR   0097H   A   
+MAIN . . . . . . .  C ADDR   0000H   A   
+NEGRO. . . . . . .  N NUMB   0040H   A   
+P2 . . . . . . . .  D ADDR   00A0H   A   
+SINCRO . . . . . .  C ADDR   00CEH   A   
+SINCRO_VAL . . . .  N NUMB   0020H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)
