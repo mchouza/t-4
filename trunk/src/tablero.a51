@@ -78,33 +78,83 @@ hid_lines_start: ; Comienzan las líneas ocultas
 		;; Cargamos la cantidad de líneas ocultas - 1 (pierdo una por alinear)
 		mov R7, #hidden_lines - 1 ; + 0.5px = (0.5, 0)
 
-		;; Alineo a pixel
+		;; Alineamos a pixel
 		SHORT_SLEEP 1 ; + 0.5 px = (1, 0)
 
-		;; Espero para alinear con el primer ciclo
+		;; Esperamos para alinear con el primer ciclo
 		INT_SLEEP visible_px + back_porch_px - 1, R0 ; + 80 px = (81, 0)
 
-		;; Llamo al hsync
+		;; Llamamos al hsync
 		call hsync ; + 7 px = (88, 0) = (1, 1)
+
+		;; Alineamos
+		SHORT_SLEEP 2 ; + 1 px = (2, 1)
 
 hid_lines_loop: ; Para todas las otras líneas ocultas (2, n)
 
-		;; Espero hasta que llegue al hsync
+		;; Esperamos hasta que llegue al hsync
 		INT_SLEEP 79, R0 ; + 79 px = (81, n)
 
-		;; Llamo al hsync
+		;; Llamamos al hsync
 		call hsync ; + 7 px = (88, n) = (1, n + 1)
 
-		;; Vuelvo al loop
+		;; Volvemos al loop
 		djnz R7, hid_lines_loop ; + 1 px = (2, n + 1)
 
 hid_lines_end: ; Terminan las líneas ocultas (2, 17)
 
-draw_start: ; Asociado con la parte superior izquierda de la pantalla
+draw_start: ; Asociado con la parte superior izquierda de la pantalla (2, 17)
 
-draw_end: ; Asociado con la parte inferior derecha de la pantalla
+		;; Cargamos la cantidad de líneas visibles - 1
+		;; (pierdo una por alinear) - 255 (no entran todas en un loop)
+		mov R7, #active_lines - 1 - 255 ; + 0.5 px = (2.5, 17)
 
-vsync_start: ; Comienza el sincronismo vertical
+		;; Cargamos 255 (para el otro loop)
+		mov R6, 255 ; + 0.5 px = (3, 17)
+
+		;; Esperamos para alinear con el primer ciclo
+		INT_SLEEP visible_px + back_porch_px - 3, R0 ; + 78 px = (81, 17)
+
+		;; Llamamos al hsync
+		call hsync ; + 7 px = (88, 17) = (1, 18)
+
+		;; Alineamos para entrar al ciclo
+		SHORT_SLEEP 2 ; + 1 px = (2, 18)
+
+draw_lines_loop1: ; Para todas las otras primeras 32 líneas (2, 18)
+
+		;; Esperamos hasta el hsync
+		INT_SLEEP 79, R0 ; + 79 px = (81, n)
+
+		;; Llamamos al hsync
+		call hsync ; + 7 px = (88, n) = (1, n + 1)
+
+		;; Volvemos al loop
+		djnz R7, draw_lines_loop1 ; + 1 px = (2, n + 1)
+
+draw_lines_loop2: ; Para las 255 finales (34, 2)
+
+		;; Esperamos hasta el hsync
+		INT_SLEEP 79, R0 ; + 79 px = (81, n)
+
+		;; Llamamos al hsync
+		call hsync ; + 7 px = (88, n) = (1, n + 1)
+
+		;; Volvemos al loop
+		djnz R7, draw_lines_loop1 ; + 1 px = (2, n + 1)
+
+draw_end: ; Termina de dibujar (289, 2)
+
+vsync_start: ; Comienza el sincronismo vertical (289, 2)
+
+		;; Hago los pulsos de ecualización iniciales
+		call eq_pulse_train ; + XX px = (XXX, XXX)
+
+		;; Hago los pulsos de vsync propiamente dichos
+		call vsync_pulse_train ; + XX px = (XXX, XXX)
+
+		;; Hago el otro tren de pulsos de ecualización
+		call eq_pulse_train2 ; + XX px = (XXX, XXX)
 
 vsync_end: ; Termina el sincronismo vertical
 
@@ -133,6 +183,16 @@ hsync: ; (82, n)
 		;; Vuelvo
 		ret ; + 1px = (1, n + 2)
 
+;;;
+;;; Procedimiento eq_pulse_train
+;;; Parámetros: Ninguno
+;;; Registros modificados: R0
+;;;
+
+eq_pulse_train: ; (289, 3)
+
+		;; Llevo a blanco
+		mov graphics_port, #sync_level ; + 0.5 px =  
 
 ;;; Fin del módulo
 END
