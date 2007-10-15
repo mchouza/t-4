@@ -1,0 +1,12 @@
+#summary Links útiles.
+
+= Links útiles =
+
+Esta página contiene los links con las referencias que más utilizamos, a fin de no tener que  buscarlas continuamente.
+
+Hoja de datos de un "sync separator", tiene info acerca de los tiempos.
+http://cache.national.com/ds/LM/LM1881.pdf
+
+Explicación acerca de "AC coupling" y "DC coupling".
+http://www.maxim-ic.com/appnotes.cfm/appnote_number/3303
+
