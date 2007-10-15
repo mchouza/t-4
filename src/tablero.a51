@@ -17,19 +17,15 @@ white_level equ 0xc0 ; Salida para obtener el nivel de blanco
 
 graphics_port	equ P1 ; Puerto donde se escribe para obtener los gráficos
 
-total_lines equ 305 ; Cantidad total de líneas
-active_lines equ 288 ; Cantidad de líneas activas
+total_lines equ 304 ; Cantidad total de líneas
+active_lines equ 287 ; Cantidad de líneas activas
 hidden_lines equ (total_lines - active_lines) ; Cantidad de líneas ocultas
-
-back_porch_px equ 10 ; Cantidad de pixels en el back porch
-front_porch_px equ 1 ; Cantidad de pixels en el front porch
-visible_px equ 71 ; Cantidad de pixels visibles
 
 ;;;
 ;;; Macros
 ;;;
 
-;;; Sirve para esperas cortas. Consume 1 byte por medio pixel de espera.
+;;; Sirve para esperas cortas. Consume 1 byte por cada medio pixel de espera.
 SHORT_SLEEP MACRO delay_in_half_pixels
 		REPT delay_in_half_pixels
 			nop ; + 0.5px
@@ -44,6 +40,26 @@ INT_SLEEP MACRO delay, tmp_reg
 		djnz tmp_reg, $ ; + (delay - 1) px = delay px
 		ENDM
 
+;;; Sirve para realizar un pulso de ecualización
+;;; Las posiciones corresponden a llamarla al inicio de la línea
+EQ_PULSE MACRO ; (n, -1)
+		mov graphics_port, #sync_level ; + 1 px = (n, 0)
+		SHORT_SLEEP 5 ; + 2.5 px = (n, 2.5)
+		mov graphics_port, #black_level ; + 1 px = (n, 3.5)
+		INT_SLEEP 39, R0 ; + 39 px = (n, 42.5)
+		SHORT_SLEEP 1 ; + 0.5 px = (n, 43)
+		ENDM
+
+;;; Sirve para realizar un pulso de vsync
+;;; Las posiciones corresponden a llamarla al inicio de la línea
+VSYNC_PULSE MACRO ; (n, -1)
+		mov graphics_port, #sync_level ; + 1 px = (n, 0)
+		INT_SLEEP 39, R0 ; + 39 px = (n, 39)
+		SHORT_SLEEP 1 ; + 0.5 px = (n, 39.5)
+		mov graphics_port, #black_level ; + 1 px = (n, 40.5)
+		SHORT_SLEEP 5 ; + 0.5 px = (n, 43)
+		ENDM
+
 ;;; Comienzo del código
 CSEG AT 0x0000 ; FIXME: Por ahora no hay código de inicialización
 
@@ -51,22 +67,47 @@ CSEG AT 0x0000 ; FIXME: Por ahora no hay código de inicialización
 ;;; Como casi todas las instrucciones toman dos ciclos de máquina o sea 24
 ;;; ciclos de reloj y estamos operando a 33 MHz, tomamos cada pixel como
 ;;; de 0.727 us = (1 / 33 MHz) * 24
+
+;;; Tomamos a la modificación en la salida como si se produjera justo al
+;;; terminar la instrucción.
+
 ;;; Consideramos a un frame como formado por 305 líneas, cada una de las
-;;; cuales está formada por 87 píxels (63.5 us / 0.727 us = 87.34).
+;;; cuales está formada por 88 píxels (64 us / 0.727 us = 88.03).
 ;;; De estos solo 71 pixels son visibles, siendo el resto reservado para la
 ;;; secuencia de sincronización horizontal (front porch / sync pulse /
 ;;; back porch)
 
 ;;; Por lo tanto el formato de una línea sería en pixels:
-;;; 0 a 10 -> back porch
-;;; 10 a 81 -> datos
-;;; 81 a 82 -> front porch
-;;; 82 a 87 (= 0) -> sync pulse
+;;; 0 a 6.5 -> sync pulse (6.5 * 0.727 us = 4.73 us)
+;;; 6.5 a 15 -> back porch (8.5 * 0.727 us = 6.180 us)
+;;; 15 a 86 -> imagen (71 * 0.727 us = 51.617 us)
+;;; 86 a 88 (= 0) -> front porch (2 * 0.727 us = 1.454 us)
 
 ;;; Los números de las líneas serían:
 ;;; 0 a 17 -> ocultas
-;;; 17 a 305 -> visibles
-;;; 305 a 313 (=0) -> vsync sequence
+;;; 17 a 304 -> visibles
+;;; 304 a 312 (=0) -> vsync sequence
+
+;;; Las líneas que forman los pulsos de ecualización y el vsync en sí tienen
+;;; un formato distinto.
+
+;;; Pulsos de ecualización, línea completa:
+;;; 0 a 3.5 -> short sync
+;;; 3.5 a 44 -> negro
+;;; 44 a 47.5 -> short sync
+;;; 47.5 a 88 -> negro
+
+;;; VSync, línea completa:
+;;; 0 a 40.5 -> long sync
+;;; 40.5 a 44 -> negro
+;;;	44 a 84.5 -> long sync
+;;; 84.5 a 88 -> negro
+
+;;; VSync / Pulsos ecualización mixed :-)
+;;; 0 a 40.5 -> long sync
+;;; 40.5 a 44 -> negro
+;;; 44 a 47.5 -> short sync
+;;; 47.5 a 88 -> negro
 
 ;;; Debido a la gran importancia de los tiempos en este programa, a la derecha
 ;;; de cada instrucción se indica cuantos pixels (0.727 us) demora y la
@@ -75,91 +116,110 @@ CSEG AT 0x0000 ; FIXME: Por ahora no hay código de inicialización
 
 hid_lines_start: ; Comienzan las líneas ocultas
 
+		;; Llamamos al hsync (86, -1)
+		call hsync ; + 9.5 px = (95.5, -1) = (7.5, 0)
+		
 		;; Cargamos la cantidad de líneas ocultas - 1 (pierdo una por alinear)
-		mov R7, #hidden_lines - 1 ; + 0.5px = (0.5, 0)
-
-		;; Alineamos a pixel
-		SHORT_SLEEP 1 ; + 0.5 px = (1, 0)
+		mov R7, #hidden_lines - 1 ; + 0.5px = (8, 0)
 
 		;; Esperamos para alinear con el primer ciclo
-		INT_SLEEP visible_px + back_porch_px - 1, R0 ; + 80 px = (81, 0)
+		INT_SLEEP 78, R0 ; + 78 px = (86, 0)
+
+hid_lines_loop: ; Para todas las otras líneas ocultas (86, n - 1)
 
 		;; Llamamos al hsync
-		call hsync ; + 7 px = (88, 0) = (1, 1)
+		call hsync ; + 9.5 px = (95.5, n - 1) = (7.5, n)
+		
+		;; Alineo a pixel
+		SHORT_SLEEP 1 ; + 0.5 px = (8, n)
 
-		;; Alineamos
-		SHORT_SLEEP 2 ; + 1 px = (2, 1)
-
-hid_lines_loop: ; Para todas las otras líneas ocultas (2, n)
-
-		;; Esperamos hasta que llegue al hsync
-		INT_SLEEP 79, R0 ; + 79 px = (81, n)
-
-		;; Llamamos al hsync
-		call hsync ; + 7 px = (88, n) = (1, n + 1)
+		;; Esperamos hasta terminar la línea
+		INT_SLEEP 77, R0 ; + 77 px = (85, n)
 
 		;; Volvemos al loop
-		djnz R7, hid_lines_loop ; + 1 px = (2, n + 1)
+		djnz R7, hid_lines_loop ; + 1 px = (86, n)
 
-hid_lines_end: ; Terminan las líneas ocultas (2, 17)
+hid_lines_end: ; Terminan las líneas ocultas (-2, 17)
 
-draw_start: ; Asociado con la parte superior izquierda de la pantalla (2, 17)
+draw_start: ; Asociado con la parte superior izquierda de la pantalla (-2, 17)
+
+		;; Llamamos al hsync
+		call hsync ; + 9.5 px = (7.5, 17)
 
 		;; Cargamos la cantidad de líneas visibles - 1
 		;; (pierdo una por alinear) - 255 (no entran todas en un loop)
-		mov R7, #active_lines - 1 - 255 ; + 0.5 px = (2.5, 17)
+		mov R7, #active_lines - 1 - 255 ; + 0.5 px = (8, 17)
 
 		;; Cargamos 255 (para el otro loop)
-		mov R6, 255 ; + 0.5 px = (3, 17)
+		mov R6, #255 ; + 0.5 px = (8.5, 17)
+
+		;; Alineo a pixel
+		SHORT_SLEEP 1 ; + 0.5 px = (9, 17)
 
 		;; Esperamos para alinear con el primer ciclo
-		INT_SLEEP visible_px + back_porch_px - 3, R0 ; + 78 px = (81, 17)
+		INT_SLEEP 77, R0 ; + 77 px = (86, 17) = (-2, 18)
+
+draw_lines_loop1: ; Para todas las otras primeras 32 líneas (-2, n)
 
 		;; Llamamos al hsync
-		call hsync ; + 7 px = (88, 17) = (1, 18)
-
-		;; Alineamos para entrar al ciclo
-		SHORT_SLEEP 2 ; + 1 px = (2, 18)
-
-draw_lines_loop1: ; Para todas las otras primeras 32 líneas (2, 18)
+		call hsync ; + 9.5 px = (7.5, n)
+		
+		;; Alineo a pixel
+		SHORT_SLEEP 1 ; + 0.5 px = (8, n)
 
 		;; Esperamos hasta el hsync
-		INT_SLEEP 79, R0 ; + 79 px = (81, n)
-
-		;; Llamamos al hsync
-		call hsync ; + 7 px = (88, n) = (1, n + 1)
+		INT_SLEEP 77, R0 ; + 77 px = (85, n)
 
 		;; Volvemos al loop
-		djnz R7, draw_lines_loop1 ; + 1 px = (2, n + 1)
+		djnz R7, draw_lines_loop1 ; + 1 px = (86, n) = (-2, n + 1)
 
-draw_lines_loop2: ; Para las 255 finales (34, 2)
+draw_lines_loop2: ; Para las 255 finales (-2, n)
 
+		;; Llamamos al hsync
+		call hsync ; + 9.5 px = (7.5, n)
+
+		;; Alineo a pixel
+		SHORT_SLEEP 1 ; + 0.5 px = (8, n)
+		
 		;; Esperamos hasta el hsync
-		INT_SLEEP 79, R0 ; + 79 px = (81, n)
-
-		;; Llamamos al hsync
-		call hsync ; + 7 px = (88, n) = (1, n + 1)
+		INT_SLEEP 77, R0 ; + 77 px = (85, n)
 
 		;; Volvemos al loop
-		djnz R7, draw_lines_loop1 ; + 1 px = (2, n + 1)
+		djnz R6, draw_lines_loop2 ; + 1 px = (86, n) = (-2, n + 1)
 
-draw_end: ; Termina de dibujar (289, 2)
+draw_end: ; Termina de dibujar (-2, 304)
 
-vsync_start: ; Comienza el sincronismo vertical (289, 2)
+vsync_start: ; Comienza el sincronismo vertical (-2, 304)
 
-		;; Hago los pulsos de ecualización iniciales
-		call eq_pulse_train ; + XX px = (XXX, XXX)
+		;; Espero 1 pixel
+		SHORT_SLEEP 2 ; + 1 px = (-1, 304)
 
-		;; Hago los pulsos de vsync propiamente dichos
-		call vsync_pulse_train ; + XX px = (XXX, XXX)
+		;; Hago 6 pulsos de ecualización (-1, 304)
+		REPT 6
+			EQ_PULSE
+		ENDM ; + 3 li = (-1, 307)
 
-		;; Hago el otro tren de pulsos de ecualización
-		call eq_pulse_train2 ; + XX px = (XXX, XXX)
+		;; Hago 5 pulsos de vsync
+		REPT 5
+			VSYNC_PULSE
+		ENDM ; + 2.5 li = (43, 309)
+
+		;; Hago 4 pulsos de ecualización
+		REPT 4
+			EQ_PULSE
+		ENDM ; + 2 li = (43, 311)
+
+		;; Hago el último en forma manual, para enganchar con las líneas de arriba
+		mov graphics_port, #sync_level ; + 1 px = (44, 311)
+		SHORT_SLEEP 5 ; + 2.5 px = (46.5, 311)
+		mov graphics_port, #black_level ; + 1 px = (47.5, 311)
+		INT_SLEEP 37, R0 ; + 37 px = (84.5, 311)
+		SHORT_SLEEP 1 ; + 0.5 px = (85, 311)
 
 vsync_end: ; Termina el sincronismo vertical
 
 		;; Volvemos al comienzo
-		jmp hid_lines_start ; + 1 px = (XXX, XXX)
+		jmp hid_lines_start ; + 1 px = (86, 311)
 
 ;;;
 ;;; Procedimiento hsync
@@ -169,30 +229,22 @@ vsync_end: ; Termina el sincronismo vertical
 ;;; Registros modificados: R0
 ;;;
 
-hsync: ; (82, n)
+hsync: ; (-1, n)
 
-		;; Comienzo el pulso sync
-		mov graphics_port, #sync_level ; + 0.5 px = (82.5, n)
+		;; Comenzamos el pulso sync
+		mov graphics_port, #sync_level ; + 1 px = (0, n)
 
-		;; Espero 4 pixels
-		INT_SLEEP 4, R0 ; + 4 px = (86.5, n)
+		;; Esperamos 5 pixels
+		INT_SLEEP 5, R0 ; + 5 px = (5, n)
 
-		;; Vuelvo a nivel de supresión
-		mov graphics_port, #black_level ; + 0.5 px = (87, n) = (0, n + 1)
+		;; Esperamos 1/2 pixel más
+		SHORT_SLEEP 1 ; + 0.5 px = (5.5, n)
 
-		;; Vuelvo
-		ret ; + 1px = (1, n + 2)
+		;; Volvemos a nivel de supresión
+		mov graphics_port, #black_level ; + 1 px = (6.5, n)
 
-;;;
-;;; Procedimiento eq_pulse_train
-;;; Parámetros: Ninguno
-;;; Registros modificados: R0
-;;;
-
-eq_pulse_train: ; (289, 3)
-
-		;; Llevo a blanco
-		mov graphics_port, #sync_level ; + 0.5 px =  
+		;; Volvemos
+		ret ; + 1px = (7.5, n)
 
 ;;; Fin del módulo
 END
