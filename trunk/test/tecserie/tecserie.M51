@@ -1,0 +1,104 @@
+BL51 BANKED LINKER/LOCATER V6.02                                                        10/19/2007  19:01:11  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.02, INVOKED BY:
+C:\KEIL3\C51\BIN\BL51.EXE tecserie.obj TO tecserie RAMSIZE (256)
+
+
+INPUT MODULES INCLUDED:
+  tecserie.obj (TECSERIE)
+
+
+LINK MAP OF MODULE:  tecserie (TECSERIE)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+                    0008H     0018H                  *** GAP ***
+            DATA    0020H     0001H     ABSOLUTE     
+                    0021H     0007H                  *** GAP ***
+            DATA    0028H     0001H     ABSOLUTE     
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0048H     ABSOLUTE     
+
+
+
+SYMBOL TABLE OF MODULE:  tecserie (TECSERIE)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        TECSERIE
+  C:0041H         SYMBOL        ENVIAR_TECLA
+  C:0012H         SYMBOL        INICIO
+  C:0014H         SYMBOL        MAS
+  D:0090H         SYMBOL        P1
+  B:0090H.0       SYMBOL        PUERTO_TECLADO_0
+  B:0090H.1       SYMBOL        PUERTO_TECLADO_1
+  B:0090H.2       SYMBOL        PUERTO_TECLADO_2
+  B:0090H.3       SYMBOL        PUERTO_TECLADO_3
+  B:0090H.4       SYMBOL        PUERTO_TECLADO_4
+  B:0090H.5       SYMBOL        PUERTO_TECLADO_5
+  B:0090H.6       SYMBOL        PUERTO_TECLADO_6
+  B:0090H.7       SYMBOL        PUERTO_TECLADO_7
+  B:0098H.4       SYMBOL        REN
+  C:001EH         SYMBOL        REVISAR_TECLADO
+  D:0099H         SYMBOL        SBUF
+  C:0030H         SYMBOL        SIG_0
+  C:0040H         SYMBOL        SIG_1
+  B:0098H.7       SYMBOL        SM0
+  B:0098H.6       SYMBOL        SM1
+  C:002EH         SYMBOL        SUELTA_0
+  C:003EH         SYMBOL        SUELTA_1
+  D:0020H         SYMBOL        TECLA_BYTE_1
+  D:0028H         SYMBOL        TECLA_BYTE_2
+  B:0098H.1       SYMBOL        TI
+  C:0000H         LINE#         20
+  C:0003H         LINE#         21
+BL51 BANKED LINKER/LOCATER V6.02                                                      10/19/2007  19:01:11  PAGE 2
+
+
+  C:0006H         LINE#         23
+  C:0008H         LINE#         24
+  C:000AH         LINE#         25
+  C:000CH         LINE#         26
+  C:000EH         LINE#         29
+  C:0010H         LINE#         30
+  C:0012H         LINE#         32
+  C:0014H         LINE#         33
+  C:0016H         LINE#         34
+  C:0018H         LINE#         35
+  C:001AH         LINE#         36
+  C:001CH         LINE#         37
+  C:001EH         LINE#         40
+  C:0020H         LINE#         42
+  C:0023H         LINE#         43
+  C:0026H         LINE#         44
+  C:0028H         LINE#         45
+  C:002AH         LINE#         46
+  C:002CH         LINE#         47
+  C:002EH         LINE#         49
+  C:0030H         LINE#         53
+  C:0033H         LINE#         54
+  C:0036H         LINE#         55
+  C:0038H         LINE#         56
+  C:003AH         LINE#         57
+  C:003CH         LINE#         58
+  C:003EH         LINE#         60
+  C:0040H         LINE#         64
+  C:0041H         LINE#         67
+  C:0043H         LINE#         68
+  C:0045H         LINE#         69
+  C:0047H         LINE#         70
+  -------         ENDMOD        TECSERIE
+
+******************************************************************************
+* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 0048H BYTE ( 3%) *
+******************************************************************************
+
+Program Size: data=10.0 xdata=0 code=72
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)
