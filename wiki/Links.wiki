@@ -16,3 +16,7 @@ Esta página contiene los links con las referencias que más utilizamos, a fin d
 *Tiempos de video y descripción del video no entrelazado.*
 
 [http://www.retroleum.co.uk/PALTVtimingandvoltages.html]
+
+*Estándar PAL (o al menos la parte relevante para nuestro TP)*
+
+[http://web.archive.org/web/19990210101551/http://icib.igd.fhg.de/icib/tv/ccir/rep_624/read.html]
