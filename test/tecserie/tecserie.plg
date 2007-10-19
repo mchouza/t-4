@@ -1,0 +1,363 @@
+<html>
+<body>
+<pre>
+<h1>µVision3 Build Log</h1>
+<h2>Project:</h2>
+C:\Documents and Settings\SACTBA\Escritorio\tecserie\tecserie.uv2
+Project File Date:  10/19/2007
+
+<h2>Output:</h2>
+Build target 'Target 1'
+assembling tecserie.a...
+tecserie.a(11): error A9: SYNTAX ERROR
+tecserie.a(12): error A9: SYNTAX ERROR
+tecserie.a(21): error A9: SYNTAX ERROR
+tecserie.a(22): error A9: SYNTAX ERROR
+tecserie.a(23): error A9: SYNTAX ERROR
+tecserie.a(24): error A9: SYNTAX ERROR
+tecserie.a(33): error A9: SYNTAX ERROR
+tecserie.a(34): error A38: NUMBER OF OPERANDS DOES NOT MATCH INSTRUCTION
+tecserie.a(35): error A38: NUMBER OF OPERANDS DOES NOT MATCH INSTRUCTION
+tecserie.a(39): error A38: NUMBER OF OPERANDS DOES NOT MATCH INSTRUCTION
+tecserie.a(40): error A38: NUMBER OF OPERANDS DOES NOT MATCH INSTRUCTION
+tecserie.a(40): error A45: UNDEFINED SYMBOL (PASS-2)
+tecserie.a(46): warning A41: MISSING 'END' STATEMENT
+Target not created
+Build target 'Target 1'
+assembling tecserie.a...
+tecserie.a(11): error A21: EXPRESSION WITH FORWARD REFERENCE NOT PERMITTED
+tecserie.a(12): error A21: EXPRESSION WITH FORWARD REFERENCE NOT PERMITTED
+tecserie.a(19): error A45: UNDEFINED SYMBOL (PASS-2)
+tecserie.a(20): error A45: UNDEFINED SYMBOL (PASS-2)
+tecserie.a(21): error A9: SYNTAX ERROR
+tecserie.a(22): error A9: SYNTAX ERROR
+tecserie.a(23): error A9: SYNTAX ERROR
+tecserie.a(24): error A9: SYNTAX ERROR
+tecserie.a(33): error A9: SYNTAX ERROR
+tecserie.a(34): error A38: NUMBER OF OPERANDS DOES NOT MATCH INSTRUCTION
+tecserie.a(35): error A38: NUMBER OF OPERANDS DOES NOT MATCH INSTRUCTION
+tecserie.a(39): error A38: NUMBER OF OPERANDS DOES NOT MATCH INSTRUCTION
+tecserie.a(40): error A38: NUMBER OF OPERANDS DOES NOT MATCH INSTRUCTION
+tecserie.a(40): error A45: UNDEFINED SYMBOL (PASS-2)
+tecserie.a(46): warning A41: MISSING 'END' STATEMENT
+Target not created
+Build target 'Target 1'
+assembling tecserie.a...
+tecserie.a(21): error A9: SYNTAX ERROR
+tecserie.a(22): error A9: SYNTAX ERROR
+tecserie.a(23): error A9: SYNTAX ERROR
+tecserie.a(24): error A9: SYNTAX ERROR
+tecserie.a(33): error A9: SYNTAX ERROR
+tecserie.a(34): error A38: NUMBER OF OPERANDS DOES NOT MATCH INSTRUCTION
+tecserie.a(35): error A38: NUMBER OF OPERANDS DOES NOT MATCH INSTRUCTION
+tecserie.a(39): error A38: NUMBER OF OPERANDS DOES NOT MATCH INSTRUCTION
+tecserie.a(40): error A38: NUMBER OF OPERANDS DOES NOT MATCH INSTRUCTION
+tecserie.a(40): error A45: UNDEFINED SYMBOL (PASS-2)
+tecserie.a(46): warning A41: MISSING 'END' STATEMENT
+Target not created
+Build target 'Target 1'
+assembling tecserie.a...
+tecserie.a(21): error A48: DATA-ADDRESS EXPECTED
+tecserie.a(22): error A48: DATA-ADDRESS EXPECTED
+tecserie.a(23): error A48: DATA-ADDRESS EXPECTED
+tecserie.a(24): error A48: DATA-ADDRESS EXPECTED
+tecserie.a(33): error A48: DATA-ADDRESS EXPECTED
+tecserie.a(34): error A38: NUMBER OF OPERANDS DOES NOT MATCH INSTRUCTION
+tecserie.a(35): error A38: NUMBER OF OPERANDS DOES NOT MATCH INSTRUCTION
+tecserie.a(39): error A38: NUMBER OF OPERANDS DOES NOT MATCH INSTRUCTION
+tecserie.a(40): error A38: NUMBER OF OPERANDS DOES NOT MATCH INSTRUCTION
+tecserie.a(40): error A45: UNDEFINED SYMBOL (PASS-2)
+tecserie.a(46): warning A41: MISSING 'END' STATEMENT
+Target not created
+Build target 'Target 1'
+assembling tecserie.a...
+tecserie.a(21): error A48: DATA-ADDRESS EXPECTED
+tecserie.a(22): error A48: DATA-ADDRESS EXPECTED
+tecserie.a(23): error A48: DATA-ADDRESS EXPECTED
+tecserie.a(24): error A48: DATA-ADDRESS EXPECTED
+tecserie.a(33): error A48: DATA-ADDRESS EXPECTED
+tecserie.a(34): error A38: NUMBER OF OPERANDS DOES NOT MATCH INSTRUCTION
+tecserie.a(35): error A38: NUMBER OF OPERANDS DOES NOT MATCH INSTRUCTION
+tecserie.a(39): error A38: NUMBER OF OPERANDS DOES NOT MATCH INSTRUCTION
+tecserie.a(40): error A38: NUMBER OF OPERANDS DOES NOT MATCH INSTRUCTION
+tecserie.a(40): error A45: UNDEFINED SYMBOL (PASS-2)
+tecserie.a(46): warning A41: MISSING 'END' STATEMENT
+Target not created
+Build target 'Target 1'
+assembling tecserie.a...
+tecserie.a(21): error A48: DATA-ADDRESS EXPECTED
+tecserie.a(22): error A48: DATA-ADDRESS EXPECTED
+tecserie.a(23): error A48: DATA-ADDRESS EXPECTED
+tecserie.a(24): error A48: DATA-ADDRESS EXPECTED
+tecserie.a(33): error A48: DATA-ADDRESS EXPECTED
+tecserie.a(34): error A38: NUMBER OF OPERANDS DOES NOT MATCH INSTRUCTION
+tecserie.a(35): error A38: NUMBER OF OPERANDS DOES NOT MATCH INSTRUCTION
+tecserie.a(39): error A38: NUMBER OF OPERANDS DOES NOT MATCH INSTRUCTION
+tecserie.a(40): error A38: NUMBER OF OPERANDS DOES NOT MATCH INSTRUCTION
+tecserie.a(40): error A45: UNDEFINED SYMBOL (PASS-2)
+tecserie.a(46): warning A41: MISSING 'END' STATEMENT
+Target not created
+Build target 'Target 1'
+assembling tecserie.a...
+tecserie.a(33): error A48: DATA-ADDRESS EXPECTED
+tecserie.a(34): error A38: NUMBER OF OPERANDS DOES NOT MATCH INSTRUCTION
+tecserie.a(35): error A38: NUMBER OF OPERANDS DOES NOT MATCH INSTRUCTION
+tecserie.a(39): error A38: NUMBER OF OPERANDS DOES NOT MATCH INSTRUCTION
+tecserie.a(40): error A38: NUMBER OF OPERANDS DOES NOT MATCH INSTRUCTION
+tecserie.a(40): error A45: UNDEFINED SYMBOL (PASS-2)
+tecserie.a(46): warning A41: MISSING 'END' STATEMENT
+Target not created
+Build target 'Target 1'
+assembling tecserie.a...
+tecserie.a(34): error A38: NUMBER OF OPERANDS DOES NOT MATCH INSTRUCTION
+tecserie.a(35): error A38: NUMBER OF OPERANDS DOES NOT MATCH INSTRUCTION
+tecserie.a(39): error A38: NUMBER OF OPERANDS DOES NOT MATCH INSTRUCTION
+tecserie.a(40): error A38: NUMBER OF OPERANDS DOES NOT MATCH INSTRUCTION
+tecserie.a(40): error A45: UNDEFINED SYMBOL (PASS-2)
+tecserie.a(46): warning A41: MISSING 'END' STATEMENT
+Target not created
+Build target 'Target 1'
+assembling tecserie.a...
+tecserie.a(35): error A38: NUMBER OF OPERANDS DOES NOT MATCH INSTRUCTION
+tecserie.a(40): error A38: NUMBER OF OPERANDS DOES NOT MATCH INSTRUCTION
+tecserie.a(40): error A45: UNDEFINED SYMBOL (PASS-2)
+tecserie.a(46): warning A41: MISSING 'END' STATEMENT
+Target not created
+Build target 'Target 1'
+assembling tecserie.a...
+tecserie.a(40): error A45: UNDEFINED SYMBOL (PASS-2)
+tecserie.a(46): warning A41: MISSING 'END' STATEMENT
+Target not created
+Build target 'Target 1'
+assembling tecserie.a...
+tecserie.a(40): error A45: UNDEFINED SYMBOL (PASS-2)
+tecserie.a(46): warning A41: MISSING 'END' STATEMENT
+Target not created
+Build target 'Target 1'
+assembling tecserie.a...
+tecserie.a(48): warning A41: MISSING 'END' STATEMENT
+linking...
+Program Size: data=10.0 xdata=0 code=48
+"tecserie" - 0 Error(s), 1 Warning(s).
+Build target 'Target 1'
+assembling tecserie.a...
+linking...
+Program Size: data=10.0 xdata=0 code=48
+"tecserie" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+linking...
+Program Size: data=10.0 xdata=0 code=48
+"tecserie" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+linking...
+Program Size: data=10.0 xdata=0 code=48
+"tecserie" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+linking...
+Program Size: data=10.0 xdata=0 code=48
+"tecserie" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+linking...
+Program Size: data=10.0 xdata=0 code=48
+"tecserie" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+linking...
+Program Size: data=10.0 xdata=0 code=48
+"tecserie" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+assembling tecserie.a...
+linking...
+Program Size: data=10.0 xdata=0 code=48
+"tecserie" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+linking...
+Program Size: data=10.0 xdata=0 code=48
+"tecserie" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+linking...
+Program Size: data=10.0 xdata=0 code=48
+"tecserie" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+assembling tecserie.a...
+tecserie.a(9): error A10: ATTEMPT TO DEFINE AN ALREADY DEFINED SYMBOL
+tecserie.a(28): error A38: NUMBER OF OPERANDS DOES NOT MATCH INSTRUCTION
+tecserie.a(29): error A38: NUMBER OF OPERANDS DOES NOT MATCH INSTRUCTION
+Target not created
+Build target 'Target 1'
+assembling tecserie.a...
+tecserie.a(28): error A38: NUMBER OF OPERANDS DOES NOT MATCH INSTRUCTION
+tecserie.a(29): error A38: NUMBER OF OPERANDS DOES NOT MATCH INSTRUCTION
+Target not created
+Build target 'Target 1'
+assembling tecserie.a...
+tecserie.a(28): error A38: NUMBER OF OPERANDS DOES NOT MATCH INSTRUCTION
+tecserie.a(29): error A38: NUMBER OF OPERANDS DOES NOT MATCH INSTRUCTION
+Target not created
+Build target 'Target 1'
+assembling tecserie.a...
+linking...
+Program Size: data=10.0 xdata=0 code=54
+"tecserie" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+assembling tecserie.a...
+linking...
+Program Size: data=10.0 xdata=0 code=58
+"tecserie" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+assembling tecserie.a...
+linking...
+Program Size: data=10.0 xdata=0 code=58
+"tecserie" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+linking...
+Program Size: data=10.0 xdata=0 code=58
+"tecserie" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+assembling tecserie.a...
+linking...
+Program Size: data=10.0 xdata=0 code=58
+"tecserie" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+linking...
+Program Size: data=10.0 xdata=0 code=58
+"tecserie" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+linking...
+Program Size: data=10.0 xdata=0 code=58
+"tecserie" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+assembling tecserie.a...
+linking...
+Program Size: data=10.0 xdata=0 code=58
+"tecserie" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+assembling tecserie.a...
+tecserie.a(42): error A17: INVALID BYTE BASE IN BIT ADDRESS EXPRESSION
+tecserie.a(44): error A17: INVALID BYTE BASE IN BIT ADDRESS EXPRESSION
+tecserie.a(47): error A17: INVALID BYTE BASE IN BIT ADDRESS EXPRESSION
+tecserie.a(48): error A17: INVALID BYTE BASE IN BIT ADDRESS EXPRESSION
+tecserie.a(55): error A17: INVALID BYTE BASE IN BIT ADDRESS EXPRESSION
+tecserie.a(57): error A17: INVALID BYTE BASE IN BIT ADDRESS EXPRESSION
+tecserie.a(60): error A17: INVALID BYTE BASE IN BIT ADDRESS EXPRESSION
+tecserie.a(61): error A17: INVALID BYTE BASE IN BIT ADDRESS EXPRESSION
+Target not created
+Build target 'Target 1'
+assembling tecserie.a...
+tecserie.a(42): error A17: INVALID BYTE BASE IN BIT ADDRESS EXPRESSION
+tecserie.a(44): error A17: INVALID BYTE BASE IN BIT ADDRESS EXPRESSION
+tecserie.a(47): error A17: INVALID BYTE BASE IN BIT ADDRESS EXPRESSION
+tecserie.a(48): error A17: INVALID BYTE BASE IN BIT ADDRESS EXPRESSION
+tecserie.a(55): error A17: INVALID BYTE BASE IN BIT ADDRESS EXPRESSION
+tecserie.a(57): error A17: INVALID BYTE BASE IN BIT ADDRESS EXPRESSION
+tecserie.a(60): error A17: INVALID BYTE BASE IN BIT ADDRESS EXPRESSION
+tecserie.a(61): error A17: INVALID BYTE BASE IN BIT ADDRESS EXPRESSION
+Target not created
+Build target 'Target 1'
+assembling tecserie.a...
+tecserie.a(42): error A17: INVALID BYTE BASE IN BIT ADDRESS EXPRESSION
+tecserie.a(44): error A17: INVALID BYTE BASE IN BIT ADDRESS EXPRESSION
+tecserie.a(47): error A17: INVALID BYTE BASE IN BIT ADDRESS EXPRESSION
+tecserie.a(48): error A17: INVALID BYTE BASE IN BIT ADDRESS EXPRESSION
+tecserie.a(55): error A17: INVALID BYTE BASE IN BIT ADDRESS EXPRESSION
+tecserie.a(57): error A17: INVALID BYTE BASE IN BIT ADDRESS EXPRESSION
+tecserie.a(60): error A17: INVALID BYTE BASE IN BIT ADDRESS EXPRESSION
+tecserie.a(61): error A17: INVALID BYTE BASE IN BIT ADDRESS EXPRESSION
+Target not created
+Build target 'Target 1'
+assembling tecserie.a...
+tecserie.a(42): error A17: INVALID BYTE BASE IN BIT ADDRESS EXPRESSION
+tecserie.a(44): error A17: INVALID BYTE BASE IN BIT ADDRESS EXPRESSION
+tecserie.a(47): error A17: INVALID BYTE BASE IN BIT ADDRESS EXPRESSION
+tecserie.a(48): error A17: INVALID BYTE BASE IN BIT ADDRESS EXPRESSION
+tecserie.a(55): error A17: INVALID BYTE BASE IN BIT ADDRESS EXPRESSION
+tecserie.a(57): error A17: INVALID BYTE BASE IN BIT ADDRESS EXPRESSION
+tecserie.a(60): error A17: INVALID BYTE BASE IN BIT ADDRESS EXPRESSION
+tecserie.a(61): error A17: INVALID BYTE BASE IN BIT ADDRESS EXPRESSION
+Target not created
+Build target 'Target 1'
+assembling tecserie.a...
+tecserie.a(42): error A17: INVALID BYTE BASE IN BIT ADDRESS EXPRESSION
+tecserie.a(44): error A17: INVALID BYTE BASE IN BIT ADDRESS EXPRESSION
+tecserie.a(47): error A17: INVALID BYTE BASE IN BIT ADDRESS EXPRESSION
+tecserie.a(48): error A17: INVALID BYTE BASE IN BIT ADDRESS EXPRESSION
+tecserie.a(55): error A17: INVALID BYTE BASE IN BIT ADDRESS EXPRESSION
+tecserie.a(57): error A17: INVALID BYTE BASE IN BIT ADDRESS EXPRESSION
+tecserie.a(60): error A17: INVALID BYTE BASE IN BIT ADDRESS EXPRESSION
+tecserie.a(61): error A17: INVALID BYTE BASE IN BIT ADDRESS EXPRESSION
+Target not created
+Build target 'Target 1'
+assembling tecserie.a...
+tecserie.a(44): error A17: INVALID BYTE BASE IN BIT ADDRESS EXPRESSION
+tecserie.a(47): error A17: INVALID BYTE BASE IN BIT ADDRESS EXPRESSION
+tecserie.a(48): error A17: INVALID BYTE BASE IN BIT ADDRESS EXPRESSION
+tecserie.a(55): error A17: INVALID BYTE BASE IN BIT ADDRESS EXPRESSION
+tecserie.a(57): error A17: INVALID BYTE BASE IN BIT ADDRESS EXPRESSION
+tecserie.a(60): error A17: INVALID BYTE BASE IN BIT ADDRESS EXPRESSION
+tecserie.a(61): error A17: INVALID BYTE BASE IN BIT ADDRESS EXPRESSION
+Target not created
+Build target 'Target 1'
+assembling tecserie.a...
+tecserie.a(42): error A17: INVALID BYTE BASE IN BIT ADDRESS EXPRESSION
+tecserie.a(44): error A17: INVALID BYTE BASE IN BIT ADDRESS EXPRESSION
+tecserie.a(47): error A17: INVALID BYTE BASE IN BIT ADDRESS EXPRESSION
+tecserie.a(48): error A17: INVALID BYTE BASE IN BIT ADDRESS EXPRESSION
+tecserie.a(55): error A17: INVALID BYTE BASE IN BIT ADDRESS EXPRESSION
+tecserie.a(57): error A17: INVALID BYTE BASE IN BIT ADDRESS EXPRESSION
+tecserie.a(60): error A17: INVALID BYTE BASE IN BIT ADDRESS EXPRESSION
+tecserie.a(61): error A17: INVALID BYTE BASE IN BIT ADDRESS EXPRESSION
+Target not created
+Build target 'Target 1'
+assembling tecserie.a...
+linking...
+Program Size: data=10.0 xdata=0 code=80
+"tecserie" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+linking...
+Program Size: data=10.0 xdata=0 code=80
+"tecserie" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+linking...
+Program Size: data=10.0 xdata=0 code=80
+"tecserie" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+linking...
+Program Size: data=10.0 xdata=0 code=80
+"tecserie" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+assembling tecserie.a...
+linking...
+Program Size: data=10.0 xdata=0 code=78
+"tecserie" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+assembling tecserie.a...
+linking...
+Program Size: data=10.0 xdata=0 code=74
+"tecserie" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+assembling tecserie.a...
+linking...
+Program Size: data=10.0 xdata=0 code=68
+"tecserie" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+assembling tecserie.a...
+linking...
+Program Size: data=10.0 xdata=0 code=70
+"tecserie" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+linking...
+Program Size: data=10.0 xdata=0 code=70
+"tecserie" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+assembling tecserie.a...
+linking...
+Program Size: data=10.0 xdata=0 code=72
+"tecserie" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+assembling tecserie.a...
+linking...
+Program Size: data=10.0 xdata=0 code=72
+"tecserie" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+linking...
+Program Size: data=10.0 xdata=0 code=72
+"tecserie" - 0 Error(s), 0 Warning(s).
