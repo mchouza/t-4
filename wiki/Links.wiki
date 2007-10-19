@@ -5,6 +5,10 @@
 
 Esta página contiene los links con las referencias que más utilizamos, a fin de no tener que  buscarlas continuamente.
 
+* Página de Rickard sobre generar señales de video con PICs*
+
+[http://www.rickard.gunee.com/projects/video/pic/howto.php]
+
 *Hoja de datos de un "sync separator", tiene info acerca de los tiempos.*
 
 [http://cache.national.com/ds/LM/LM1881.pdf]
