@@ -1,0 +1,139 @@
+BL51 BANKED LINKER/LOCATER V6.02                                                        10/24/2007  19:45:42  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.02, INVOKED BY:
+C:\KEIL3\C51\BIN\BL51.EXE tecsound.obj TO tecsound RAMSIZE (256)
+
+
+INPUT MODULES INCLUDED:
+  tecsound.obj (TECSOUND)
+
+
+LINK MAP OF MODULE:  tecsound (TECSOUND)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+                    0008H     0018H                  *** GAP ***
+            DATA    0020H     0001H     ABSOLUTE     
+                    0021H     0007H                  *** GAP ***
+            DATA    0028H     0001H     ABSOLUTE     
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0082H     ABSOLUTE     
+
+
+
+SYMBOL TABLE OF MODULE:  tecsound (TECSOUND)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        TECSOUND
+  C:0011H         SYMBOL        INICIO
+  C:0013H         SYMBOL        MAS
+  N:0004H         SYMBOL        NOTA_1
+  N:0008H         SYMBOL        NOTA_2
+  N:0010H         SYMBOL        NOTA_3
+  N:0020H         SYMBOL        NOTA_4
+  D:0080H         SYMBOL        P0
+  D:00A0H         SYMBOL        P2
+  B:00A0H.0       SYMBOL        PUERTO_TECLADO_0
+  B:00A0H.1       SYMBOL        PUERTO_TECLADO_1
+  B:00A0H.2       SYMBOL        PUERTO_TECLADO_2
+  B:00A0H.3       SYMBOL        PUERTO_TECLADO_3
+  B:00A0H.4       SYMBOL        PUERTO_TECLADO_4
+  B:00A0H.5       SYMBOL        PUERTO_TECLADO_5
+  B:00A0H.6       SYMBOL        PUERTO_TECLADO_6
+  B:00A0H.7       SYMBOL        PUERTO_TECLADO_7
+  C:001DH         SYMBOL        REVISAR_TECLADO
+  C:0032H         SYMBOL        SIG_0
+  C:0045H         SYMBOL        SIG_1
+  C:0058H         SYMBOL        SIG_2
+  C:006BH         SYMBOL        SIG_3
+  C:007EH         SYMBOL        SOLTAR_NOTA
+  C:002BH         SYMBOL        SUELTA_0
+  C:003EH         SYMBOL        SUELTA_1
+  C:0051H         SYMBOL        SUELTA_2
+  C:0064H         SYMBOL        SUELTA_3
+BL51 BANKED LINKER/LOCATER V6.02                                                      10/24/2007  19:45:42  PAGE 2
+
+
+  D:0020H         SYMBOL        TECLA_BYTE_1
+  D:0028H         SYMBOL        TECLA_BYTE_2
+  C:006EH         SYMBOL        TOCAR_NOTA_1
+  C:0072H         SYMBOL        TOCAR_NOTA_2
+  C:0076H         SYMBOL        TOCAR_NOTA_3
+  C:007AH         SYMBOL        TOCAR_NOTA_4
+  C:0000H         LINE#         24
+  C:0003H         LINE#         25
+  C:0006H         LINE#         27
+  C:0009H         LINE#         28
+  C:000BH         LINE#         29
+  C:000DH         LINE#         30
+  C:000FH         LINE#         31
+  C:0011H         LINE#         33
+  C:0013H         LINE#         34
+  C:0015H         LINE#         35
+  C:0017H         LINE#         36
+  C:0019H         LINE#         37
+  C:001BH         LINE#         38
+  C:001DH         LINE#         41
+  C:001FH         LINE#         43
+  C:0022H         LINE#         44
+  C:0025H         LINE#         45
+  C:0027H         LINE#         46
+  C:0029H         LINE#         47
+  C:002BH         LINE#         49
+  C:002EH         LINE#         50
+  C:0030H         LINE#         51
+  C:0032H         LINE#         54
+  C:0035H         LINE#         55
+  C:0038H         LINE#         56
+  C:003AH         LINE#         57
+  C:003CH         LINE#         58
+  C:003EH         LINE#         60
+  C:0041H         LINE#         61
+  C:0043H         LINE#         62
+  C:0045H         LINE#         65
+  C:0048H         LINE#         66
+  C:004BH         LINE#         67
+  C:004DH         LINE#         68
+  C:004FH         LINE#         69
+  C:0051H         LINE#         71
+  C:0054H         LINE#         72
+  C:0056H         LINE#         73
+  C:0058H         LINE#         76
+  C:005BH         LINE#         77
+  C:005EH         LINE#         78
+  C:0060H         LINE#         79
+  C:0062H         LINE#         80
+  C:0064H         LINE#         82
+  C:0067H         LINE#         83
+  C:0069H         LINE#         84
+  C:006BH         LINE#         87
+  C:006DH         LINE#         88
+  C:006EH         LINE#         91
+  C:0071H         LINE#         92
+  C:0072H         LINE#         94
+BL51 BANKED LINKER/LOCATER V6.02                                                      10/24/2007  19:45:42  PAGE 3
+
+
+  C:0075H         LINE#         95
+  C:0076H         LINE#         97
+  C:0079H         LINE#         98
+  C:007AH         LINE#         100
+  C:007DH         LINE#         101
+  C:007EH         LINE#         104
+  C:0081H         LINE#         105
+  -------         ENDMOD        TECSOUND
+
+******************************************************************************
+* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 0082H BYTE ( 6%) *
+******************************************************************************
+
+Program Size: data=10.0 xdata=0 code=130
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)
