@@ -38,3 +38,7 @@ Esta página contiene los links con las referencias que más utilizamos, a fin d
 *Serial I/O Routines Using the 8051's Built-In UART*
 
 [http://www.pjrc.com/tech/8051/serial_io.html]
+
+*PortTalk - A Windows NT/2000/XP I/O Port Device Driver*
+
+[http://www.beyondlogic.org/porttalk/porttalk.htm]
