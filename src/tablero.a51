@@ -3,62 +3,11 @@
 ;;;; Dibujo del tablero
 ;;;; Loop principal
 
-NAME DIBUJO_TABLERO
+NAME DIBUJO_TABLERO_PRINCIPAL
 
-;;;
-;;; Constantes
-;;;
-
-sync_level equ 0x00 ; Salida para obtener el nivel de sincronización
-black_level equ 0x40 ; Salida para obtener el nivel de negro o supresión (es
-                     ; indistinto en nuestro caso)
-gray_level equ 0x80 ; Salida para obtener el nivel de gris
-white_level equ 0xc0 ; Salida para obtener el nivel de blanco
-
-graphics_port	equ P1 ; Puerto donde se escribe para obtener los gráficos
-
-total_lines equ 304 ; Cantidad total de líneas
-active_lines equ 287 ; Cantidad de líneas activas
-hidden_lines equ (total_lines - active_lines) ; Cantidad de líneas ocultas
-
-;;;
-;;; Macros
-;;;
-
-;;; Sirve para esperas cortas. Consume 1 byte por cada medio pixel de espera.
-SHORT_SLEEP MACRO delay_in_half_pixels
-		REPT delay_in_half_pixels
-			nop ; + 0.5px
-		ENDM 
-		ENDM ; + (delay_in_half_pixels / 2) px
-
-;;; Sirve para esperas intermedias, de más de 2 pixels.
-;;; Destruye el registro indicado por tmp_reg
-INT_SLEEP MACRO delay, tmp_reg
-		mov tmp_reg, #delay - 1 ; + 0.5 px = 0.5 px
-		nop ; + 0.5px = 1 px
-		djnz tmp_reg, $ ; + (delay - 1) px = delay px
-		ENDM
-
-;;; Sirve para realizar un pulso de ecualización
-;;; Las posiciones corresponden a llamarla al inicio de la línea
-EQ_PULSE MACRO ; (n, -1)
-		mov graphics_port, #sync_level ; + 1 px = (n, 0)
-		SHORT_SLEEP 5 ; + 2.5 px = (n, 2.5)
-		mov graphics_port, #black_level ; + 1 px = (n, 3.5)
-		INT_SLEEP 39, R0 ; + 39 px = (n, 42.5)
-		SHORT_SLEEP 1 ; + 0.5 px = (n, 43)
-		ENDM
-
-;;; Sirve para realizar un pulso de vsync
-;;; Las posiciones corresponden a llamarla al inicio de la línea
-VSYNC_PULSE MACRO ; (n, -1)
-		mov graphics_port, #sync_level ; + 1 px = (n, 0)
-		INT_SLEEP 39, R0 ; + 39 px = (n, 39)
-		SHORT_SLEEP 1 ; + 0.5 px = (n, 39.5)
-		mov graphics_port, #black_level ; + 1 px = (n, 40.5)
-		SHORT_SLEEP 5 ; + 0.5 px = (n, 43)
-		ENDM
+;;; Inclusiones
+$INCLUDE(constantes.inc)
+$INCLUDE(macros.inc)
 
 ;;; Comienzo del código
 CSEG AT 0x0000 ; FIXME: Por ahora no hay código de inicialización
@@ -87,6 +36,25 @@ CSEG AT 0x0000 ; FIXME: Por ahora no hay código de inicialización
 ;;; 0 a 17 -> ocultas
 ;;; 17 a 304 -> visibles
 ;;; 304 a 312 (=0) -> vsync sequence
+
+;;; Comentarios sobre area de pantalla
+;;; La primera línea visible es la 49
+;;; La columna 23 y la 71 se ven bien, con amplio margen
+;;; 5 líneas se ven igual que un pixel horizontal
+;;; Las últimas 35 líneas apenas se ven las 1ras (o sea como
+;;; está ahora, apenas se ve el 3er bloque
+
+;;; En la práctica, no todas las líneas "visibles" lo son. Experimentalmente
+;;; determinamos que puede verse a partir de la línea 49 y hasta la 269
+;;; (exclusive). En cuanto  las columnas, la columna 23 y 71 se ven con
+;;; claridad, dejando un cierto margen. No nos importa exactamente en que
+;;; punto comienza a verse debido a que el tablero debe ser cuadrado.
+
+;;; Respecto a la relación de aspecto, tomamos 5 líneas como píxel horizontal.
+
+;;; Por lo tanto, tomamos como referencia para la imagen el "viewport" dado
+;;; por (23, 44) y (72, 274), lo que nos da una imagen de 49 X 46 que
+;;; corresponde al bitmap dibujado.
 
 ;;; Las líneas que forman los pulsos de ecualización y el vsync en sí tienen
 ;;; un formato distinto.
@@ -143,49 +111,58 @@ hid_lines_end: ; Terminan las líneas ocultas (-2, 17)
 
 draw_start: ; Asociado con la parte superior izquierda de la pantalla (-2, 17)
 
-		;; Llamamos al hsync
+		;; Si bien llegamos al "área visible", en la práctica la zona visible
+		;; de la pantalla no es tan amplia.
+		;; Por eso saltamos hasta la línea 44
+
+		;; La primera lìnea debo hacerla fuera del loop por razones
+		;; de alineación.
+
+	top_margin_start: ; Empiezan las líneas salteadas (-2, 17)
+
+		;; Es igual que en el caso de las ocultas
 		call hsync ; + 9.5 px = (7.5, 17)
+		mov R7, #44 - 17 - 1 ; + 0.5 px = (8, 17)
+		INT_SLEEP 78, R0 ; + 78 px = (86, 17) = (-2, 18)
 
-		;; Cargamos la cantidad de líneas visibles - 1
-		;; (pierdo una por alinear) - 255 (no entran todas en un loop)
-		mov R7, #active_lines - 1 - 255 ; + 0.5 px = (8, 17)
-
-		;; Cargamos 255 (para el otro loop)
-		mov R6, #255 ; + 0.5 px = (8.5, 17)
-
-		;; Alineo a pixel
-		SHORT_SLEEP 1 ; + 0.5 px = (9, 17)
-
-		;; Esperamos para alinear con el primer ciclo
-		INT_SLEEP 77, R0 ; + 77 px = (86, 17) = (-2, 18)
-
-draw_lines_loop1: ; Para todas las otras primeras 32 líneas (-2, n)
-
-		;; Llamamos al hsync
-		call hsync ; + 9.5 px = (7.5, n)
+	top_margin_loop: ; Hago el resto de las líneas (86, n - 1) = (-2, n)
 		
-		;; Alineo a pixel
-		SHORT_SLEEP 1 ; + 0.5 px = (8, n)
-
-		;; Esperamos hasta el hsync
-		INT_SLEEP 77, R0 ; + 77 px = (85, n)
-
-		;; Volvemos al loop
-		djnz R7, draw_lines_loop1 ; + 1 px = (86, n) = (-2, n + 1)
-
-draw_lines_loop2: ; Para las 255 finales (-2, n)
-
-		;; Llamamos al hsync
+		;; Igual que en el caso de las ocultas
 		call hsync ; + 9.5 px = (7.5, n)
-
-		;; Alineo a pixel
 		SHORT_SLEEP 1 ; + 0.5 px = (8, n)
-		
-		;; Esperamos hasta el hsync
 		INT_SLEEP 77, R0 ; + 77 px = (85, n)
+		djnz R7, top_margin_loop ; + 1 px = (86, n)
 
-		;; Volvemos al loop
-		djnz R6, draw_lines_loop2 ; + 1 px = (86, n) = (-2, n + 1)
+	real_draw_start: ; Empieza el dibujo real  (-2, 44)
+
+		;; Utilizo la primera línea para inicializar las variables globales
+
+		;; Empiezo la línea
+		call hsync ; + 9.5 px = (7.5, 44)
+		SHORT_SLEEP 1 ; + 0.5 px = (8, 44)
+
+		;; Voy a estar en offset 0 de la línea lógica 0 (dejo una línea negra
+		;; visible)
+		mov logic_line, #0 ; + 1 px = (9, 44)
+		mov phys_line_offset, #0 ; + 1 px = (10, 44)
+		INT_SLEEP 75, R0 ; + 75 px = (85, 44)
+		call do_real_draw: ; + 1 px = (86, 44) = (-2, 45)
+
+	real_draw_end: ; Termina el dibujo real (-2, 275)
+
+	bottom_margin_start:
+
+		;; Es igual que en el caso de las ocultas
+		call hsync ; + 9.5 px = (7.5, 275)
+		mov R7, #304 - 275 - 1 ; + 0.5 px = (8, 275)
+		INT_SLEEP 78, R0 ; + 78 px = (86, 275) = (-2, 276)
+
+	bottom_margin_loop: ; Hago el resto de las líneas (86, n - 1) = (-2, n)
+		
+		call hsync ; + 9.5 px = (7.5, n)
+		SHORT_SLEEP 1 ; + 0.5 px = (8, n)
+		INT_SLEEP 77, R0 ; + 77 px = (85, n)
+		djnz R7, bottom_margin_loop ; + 1 px = (86, n)
 
 draw_end: ; Termina de dibujar (-2, 304)
 
@@ -245,6 +222,71 @@ hsync: ; (-1, n)
 
 		;; Volvemos
 		ret ; + 1px = (7.5, n)
+
+;;;
+;;; Procedimiento do_real_draw
+;;; Este procedimiento es el que hace el dibujo en si, llamando a los
+;;; fragmentos de código que dibujan cada parte del tablero.
+;;; Parámetros: Ninguno
+;;; Registros modificados: ??
+;;;
+
+do_real_draw: ; (-2, n)
+
+		;; Primero, como siempre, el hsync
+		call hsync ; + 9.5 px = (7.5, n)
+
+		;; FIXME: Agregar PADDING adecuado
+
+		;; Tengo que decidir a que llamar, lo que depende del número de línea
+		;; Para tomar la decisión uso una serie de jumps por bit en base al 
+		;; número de línea lógica.
+
+		;; Como hay 44 líneas lógicas, necesito hacer un jump por los 6 bits
+		;; más bajos.
+
+		;; Cada jump por bit tiene un label, de la forma 'jb_101nxx' donde
+		;; '10' representaría los bits ya consultados al recorrer el árbol,
+		;; 'n' la posición del bit que se va a observar y 'xx' los que
+		;; quedarían por observar
+
+	jb_nxxxxx:
+		jb logical_line.5, jb_1nxxxx
+	jb_0nxxxx:
+		jb logical_line.4, jb_01nxxx
+	jb_00nxxx:
+		jb logical_line.3, jb_001nxx
+	jb_000nxx:
+		jb logical_line.2, jb_0001nx
+	jb_0000nx:
+		jb logical_line.1, jb_00001n
+	jb_00000n:
+		jb logical_line.0, ll_1
+		jmp ll_0
+	jb_1nxxxx:
+		jb logical_line.4, jb_11nxxx
+	jb_10nxxx:
+		jb logical_line.3, jb_101nxx
+	jb_100nxx:
+		jb logical_line.2, jb_1001nx
+	jb_1000nx:
+		jb logical_line.1, jb_10001n
+	jb_10000n:
+		jb logical_line.0, ll_33
+		jmp ll_32
+	jb_11nxxx:
+		jb logical_line.3, jb_111nxx
+	jb_110nxx:
+		jb logical_line.2, jb_1101nx
+	jb_1100nx:
+		jb logical_line.1, jb_11001n
+	jb_11000n:
+		
+
+
+
+		;; Terminé con todo, vuelvo
+		ret
 
 ;;; Fin del módulo
 END
