@@ -5,6 +5,12 @@
 
 Esta página contiene los links con las referencias que más utilizamos, a fin de no tener que  buscarlas continuamente.
 
+== General ==
+
+*Resumen de las instrucciones del 8051 en una página.*
+
+[http://grantronics.com.au/docs/8051inst.pdf]
+
 == Video ==
 
 * Página de Rickard sobre como generar señales de video con PICs*
@@ -29,6 +35,6 @@ Esta página contiene los links con las referencias que más utilizamos, a fin d
 
 == Comunicación serie ==
 
-*Serial I/O Routines Using the 8051's Built-In UART
+*Serial I/O Routines Using the 8051's Built-In UART*
 
 [http://www.pjrc.com/tech/8051/serial_io.html]
