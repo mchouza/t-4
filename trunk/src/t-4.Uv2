@@ -3,9 +3,14 @@
 
 Target (Target 1), 0x0000 // Tools: 'MCS-51'
 
-Group (Source Group 1)
+Group (Fuentes)
+Group (Headers)
 
 File 1,2,<.\tablero.a51><tablero.a51> 0x0 
+File 1,2,<.\bitmap_lines.a51><bitmap_lines.a51> 0x0 
+File 2,5,<.\macros.inc><macros.inc> 0x0 
+File 2,5,<.\constantes.inc><constantes.inc> 0x0 
+File 2,5,<.\variables.inc><variables.inc> 0x0 
 
 
 Options 1,0,0  // Target 'Target 1'
