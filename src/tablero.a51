@@ -6,6 +6,7 @@
 NAME DIBUJO_TABLERO_PRINCIPAL
 
 ;;; Inclusiones
+$INCLUDE(bitmap_lines.inc)
 $INCLUDE(constantes.inc)
 $INCLUDE(macros.inc)
 
@@ -53,8 +54,11 @@ CSEG AT 0x0000 ; FIXME: Por ahora no hay código de inicialización
 ;;; Respecto a la relación de aspecto, tomamos 5 líneas como píxel horizontal.
 
 ;;; Por lo tanto, tomamos como referencia para la imagen el "viewport" dado
-;;; por (23, 44) y (72, 274), lo que nos da una imagen de 49 X 46 que
-;;; corresponde al bitmap dibujado.
+;;; por (23, 44) y (72, 274), lo que nos da una imagen en principio de
+;;; 49 X 46.
+
+;;; Como el tablero tiene 44 X 44 en píxeles, o sea 44 X 220 utilizando líneas
+;;; físicas, quedaría utilizando, en coordenadas físicas (26, 49) - (70, 269).
 
 ;;; Las líneas que forman los pulsos de ecualización y el vsync en sí tienen
 ;;; un formato distinto.
@@ -84,45 +88,45 @@ CSEG AT 0x0000 ; FIXME: Por ahora no hay código de inicialización
 
 hid_lines_start: ; Comienzan las líneas ocultas
 
-		;; Llamamos al hsync (86, -1)
-		call hsync ; + 9.5 px = (95.5, -1) = (7.5, 0)
+	;; Llamamos al hsync (86, -1)
+	call hsync ; + 9.5 px = (95.5, -1) = (7.5, 0)
 		
-		;; Cargamos la cantidad de líneas ocultas - 1 (pierdo una por alinear)
-		mov R7, #hidden_lines - 1 ; + 0.5px = (8, 0)
+	;; Cargamos la cantidad de líneas ocultas - 1 (pierdo una por alinear)
+	mov R7, #hidden_lines - 1 ; + 0.5px = (8, 0)
 
-		;; Esperamos para alinear con el primer ciclo
-		INT_SLEEP 78, R0 ; + 78 px = (86, 0)
+	;; Esperamos para alinear con el primer ciclo
+	INT_SLEEP 78, R0 ; + 78 px = (86, 0)
 
 hid_lines_loop: ; Para todas las otras líneas ocultas (86, n - 1)
 
-		;; Llamamos al hsync
-		call hsync ; + 9.5 px = (95.5, n - 1) = (7.5, n)
+	;; Llamamos al hsync
+	call hsync ; + 9.5 px = (95.5, n - 1) = (7.5, n)
 		
-		;; Alineo a pixel
-		SHORT_SLEEP 1 ; + 0.5 px = (8, n)
+	;; Alineo a pixel
+	SHORT_SLEEP 1 ; + 0.5 px = (8, n)
 
-		;; Esperamos hasta terminar la línea
-		INT_SLEEP 77, R0 ; + 77 px = (85, n)
+	;; Esperamos hasta terminar la línea
+	INT_SLEEP 77, R0 ; + 77 px = (85, n)
 
-		;; Volvemos al loop
-		djnz R7, hid_lines_loop ; + 1 px = (86, n)
+	;; Volvemos al loop
+	djnz R7, hid_lines_loop ; + 1 px = (86, n)
 
 hid_lines_end: ; Terminan las líneas ocultas (-2, 17)
 
 draw_start: ; Asociado con la parte superior izquierda de la pantalla (-2, 17)
 
-		;; Si bien llegamos al "área visible", en la práctica la zona visible
-		;; de la pantalla no es tan amplia.
-		;; Por eso saltamos hasta la línea 44
+	;; Si bien llegamos al "área visible", en la práctica la zona visible
+	;; de la pantalla no es tan amplia.
+	;; Por eso saltamos hasta la línea 44
 
-		;; La primera lìnea debo hacerla fuera del loop por razones
-		;; de alineación.
+	;; La primera lìnea debo hacerla fuera del loop por razones
+	;; de alineación.
 
 	top_margin_start: ; Empiezan las líneas salteadas (-2, 17)
 
 		;; Es igual que en el caso de las ocultas
 		call hsync ; + 9.5 px = (7.5, 17)
-		mov R7, #44 - 17 - 1 ; + 0.5 px = (8, 17)
+		mov R7, #48 - 17 - 1 ; + 0.5 px = (8, 17)
 		INT_SLEEP 78, R0 ; + 78 px = (86, 17) = (-2, 18)
 
 	top_margin_loop: ; Hago el resto de las líneas (86, n - 1) = (-2, n)
@@ -133,28 +137,27 @@ draw_start: ; Asociado con la parte superior izquierda de la pantalla (-2, 17)
 		INT_SLEEP 77, R0 ; + 77 px = (85, n)
 		djnz R7, top_margin_loop ; + 1 px = (86, n)
 
-	real_draw_start: ; Empieza el dibujo real  (-2, 44)
+	real_draw_start: ; Empieza el dibujo real  (-2, 48)
 
-		;; Utilizo la primera línea para inicializar las variables globales
+		;; Utilizo esta línea para inicializar lo que deba
 
 		;; Empiezo la línea
-		call hsync ; + 9.5 px = (7.5, 44)
-		SHORT_SLEEP 1 ; + 0.5 px = (8, 44)
+		call hsync ; + 9.5 px = (7.5, 48)
+		SHORT_SLEEP 1 ; + 0.5 px = (8, 48)
 
-		;; Voy a estar en offset 0 de la línea lógica 0 (dejo una línea negra
-		;; visible)
-		mov logic_line, #0 ; + 1 px = (9, 44)
-		mov phys_line_offset, #0 ; + 1 px = (10, 44)
-		INT_SLEEP 75, R0 ; + 75 px = (85, 44)
-		call do_real_draw: ; + 1 px = (86, 44) = (-2, 45)
+		;; FIXME: HAGO LO QUE TENGA QUE HACER!!!
 
-	real_draw_end: ; Termina el dibujo real (-2, 275)
+		INT_SLEEP 75, R0 ; + 75 px = (83, 48)
+		call do_real_draw ; + ?? = (-2.5, 274)
+		SHORT_SLEEP 1 ; + 0.5 px = (-2, 274)
+
+	real_draw_end: ; Termina el dibujo real (-2, 274)
 
 	bottom_margin_start:
 
 		;; Es igual que en el caso de las ocultas
-		call hsync ; + 9.5 px = (7.5, 275)
-		mov R7, #304 - 275 - 1 ; + 0.5 px = (8, 275)
+		call hsync ; + 9.5 px = (7.5, 274)
+		mov R7, #304 - 274 - 1 ; + 0.5 px = (8, 274)
 		INT_SLEEP 78, R0 ; + 78 px = (86, 275) = (-2, 276)
 
 	bottom_margin_loop: ; Hago el resto de las líneas (86, n - 1) = (-2, n)
@@ -168,35 +171,35 @@ draw_end: ; Termina de dibujar (-2, 304)
 
 vsync_start: ; Comienza el sincronismo vertical (-2, 304)
 
-		;; Espero 1 pixel
-		SHORT_SLEEP 2 ; + 1 px = (-1, 304)
+	;; Espero 1 pixel
+	SHORT_SLEEP 2 ; + 1 px = (-1, 304)
 
-		;; Hago 6 pulsos de ecualización (-1, 304)
-		REPT 6
-			EQ_PULSE
-		ENDM ; + 3 li = (-1, 307)
+	;; Hago 6 pulsos de ecualización (-1, 304)
+	REPT 6
+		EQ_PULSE
+	ENDM ; + 3 li = (-1, 307)
 
-		;; Hago 5 pulsos de vsync
-		REPT 5
-			VSYNC_PULSE
-		ENDM ; + 2.5 li = (43, 309)
+	;; Hago 5 pulsos de vsync
+	REPT 5
+		VSYNC_PULSE
+	ENDM ; + 2.5 li = (43, 309)
 
-		;; Hago 4 pulsos de ecualización
-		REPT 4
-			EQ_PULSE
-		ENDM ; + 2 li = (43, 311)
+	;; Hago 4 pulsos de ecualización
+	REPT 4
+		EQ_PULSE
+	ENDM ; + 2 li = (43, 311)
 
-		;; Hago el último en forma manual, para enganchar con las líneas de arriba
-		mov graphics_port, #sync_level ; + 1 px = (44, 311)
-		SHORT_SLEEP 5 ; + 2.5 px = (46.5, 311)
-		mov graphics_port, #black_level ; + 1 px = (47.5, 311)
-		INT_SLEEP 37, R0 ; + 37 px = (84.5, 311)
-		SHORT_SLEEP 1 ; + 0.5 px = (85, 311)
+	;; Hago el último en forma manual, para enganchar con las líneas de arriba
+	mov graphics_port, #sync_level ; + 1 px = (44, 311)
+	SHORT_SLEEP 5 ; + 2.5 px = (46.5, 311)
+	mov graphics_port, #black_level ; + 1 px = (47.5, 311)
+	INT_SLEEP 37, R0 ; + 37 px = (84.5, 311)
+	SHORT_SLEEP 1 ; + 0.5 px = (85, 311)
 
 vsync_end: ; Termina el sincronismo vertical
 
-		;; Volvemos al comienzo
-		jmp hid_lines_start ; + 1 px = (86, 311)
+	;; Volvemos al comienzo
+	jmp hid_lines_start ; + 1 px = (86, 311)
 
 ;;;
 ;;; Procedimiento hsync
@@ -208,85 +211,156 @@ vsync_end: ; Termina el sincronismo vertical
 
 hsync: ; (-1, n)
 
-		;; Comenzamos el pulso sync
-		mov graphics_port, #sync_level ; + 1 px = (0, n)
+	;; Comenzamos el pulso sync
+	mov graphics_port, #sync_level ; + 1 px = (0, n)
 
-		;; Esperamos 5 pixels
-		INT_SLEEP 5, R0 ; + 5 px = (5, n)
+	;; Esperamos 5 pixels
+	INT_SLEEP 5, R0 ; + 5 px = (5, n)
 
-		;; Esperamos 1/2 pixel más
-		SHORT_SLEEP 1 ; + 0.5 px = (5.5, n)
+	;; Esperamos 1/2 pixel más
+	SHORT_SLEEP 1 ; + 0.5 px = (5.5, n)
 
-		;; Volvemos a nivel de supresión
-		mov graphics_port, #black_level ; + 1 px = (6.5, n)
+	;; Volvemos a nivel de supresión
+	mov graphics_port, #black_level ; + 1 px = (6.5, n)
 
-		;; Volvemos
-		ret ; + 1px = (7.5, n)
+	;; Volvemos
+	ret ; + 1px = (7.5, n)
 
 ;;;
 ;;; Procedimiento do_real_draw
 ;;; Este procedimiento es el que hace el dibujo en si, llamando a los
 ;;; fragmentos de código que dibujan cada parte del tablero.
-;;; Parámetros: Ninguno
+;;; Parámetros: ??
 ;;; Registros modificados: ??
 ;;;
 
-do_real_draw: ; (-2, n)
+do_real_draw: ; (-4, 49)
 
-		;; Primero, como siempre, el hsync
-		call hsync ; + 9.5 px = (7.5, n)
+	;; Tengo 3 líneas en el tablero
+	mov R1, #3 ; + 0.5 px = (-3.5, 49)
 
-		;; FIXME: Agregar PADDING adecuado
+	board_line_loop: ; Linea del tablero
 
-		;; Tengo que decidir a que llamar, lo que depende del número de línea
-		;; Para tomar la decisión uso una serie de jumps por bit en base al 
-		;; número de línea lógica.
+	call bl_0 ; Hago la línea 0
+	call bl_1 ; Hago la línea 1
+	call bl_2 ; Y asi...
+	call bl_3 
+	call bl_4
+	call bl_5 
+	call bl_6 
+	call bl_7
+	call bl_8
+	call bl_9
+	call bl_10
+	call bl_11
+	call bl_12
+	call bl_13
+	call bl_14
+	
+	;; Si no terminó con el tablero, sigue con la otra línea
+	djnz R1, board_line_loop ; + 1 px = (-3.5, n)
 
-		;; Como hay 44 líneas lógicas, necesito hacer un jump por los 6 bits
-		;; más bajos.
-
-		;; Cada jump por bit tiene un label, de la forma 'jb_101nxx' donde
-		;; '10' representaría los bits ya consultados al recorrer el árbol,
-		;; 'n' la posición del bit que se va a observar y 'xx' los que
-		;; quedarían por observar
-
-	jb_nxxxxx:
-		jb logical_line.5, jb_1nxxxx
-	jb_0nxxxx:
-		jb logical_line.4, jb_01nxxx
-	jb_00nxxx:
-		jb logical_line.3, jb_001nxx
-	jb_000nxx:
-		jb logical_line.2, jb_0001nx
-	jb_0000nx:
-		jb logical_line.1, jb_00001n
-	jb_00000n:
-		jb logical_line.0, ll_1
-		jmp ll_0
-	jb_1nxxxx:
-		jb logical_line.4, jb_11nxxx
-	jb_10nxxx:
-		jb logical_line.3, jb_101nxx
-	jb_100nxx:
-		jb logical_line.2, jb_1001nx
-	jb_1000nx:
-		jb logical_line.1, jb_10001n
-	jb_10000n:
-		jb logical_line.0, ll_33
-		jmp ll_32
-	jb_11nxxx:
-		jb logical_line.3, jb_111nxx
-	jb_110nxx:
-		jb logical_line.2, jb_1101nx
-	jb_1100nx:
-		jb logical_line.1, jb_11001n
-	jb_11000n:
-		
+	;; Terminé con todo, vuelvo
+	ret	; + 1 px = (-2.5, 274)
 
 
+;;;
+;;; Procedimientos bl_0, b_1, bl_12 y bl_13
+;;; Estos procedimientos, que comparten el cuerpo, dibujan las
+;;; correspondientes líneas del tablero.
+;;; Parámetros: ??
+;;; Registros modificados: R2
+;;;
 
-		;; Terminé con todo, vuelvo
-		ret
+bl_0: ; (-2.5, n)
+bl_1:
+bl_12:
+bl_13:
+
+	; Todas corresponden a un espacio vertical
+	LOGICAL_LINE LEV, 0
+
+;;;
+;;; Procedimientos bl_2 y bl_11
+;;; Estos procedimientos, que comparten el cuerpo, dibujan las
+;;; correspondientes líneas del tablero.
+;;; Parámetros: ??
+;;; Registros modificados: ??
+;;;
+
+bl_2: ; (-3, n)
+bl_11:
+	
+	; Todas corresponden a un espacio vertical
+	LOGICAL_LINE LEV, 0
+
+;;;
+;;; Procedimientos bl_3 y bl_10
+;;; Estos procedimientos, que comparten el cuerpo, dibujan las
+;;; correspondientes líneas del tablero.
+;;; Parámetros: ??
+;;; Registros modificados: ??
+;;;
+
+bl_3: ; (-3, n)
+bl_10:
+	
+	; Todas corresponden a un espacio vertical
+	LOGICAL_LINE LEV, 0
+
+;;;
+;;; Procedimientos bl_4 y bl_9
+;;; Estos procedimientos, que comparten el cuerpo, dibujan las
+;;; correspondientes líneas del tablero.
+;;; Parámetros: ??
+;;; Registros modificados: ??
+;;;
+
+bl_4: ; (-3, n)
+bl_9:
+	
+	; Todas corresponden a un espacio vertical
+	LOGICAL_LINE LEV, 0
+
+;;;
+;;; Procedimientos bl_5 y bl_8
+;;; Estos procedimientos, que comparten el cuerpo, dibujan las
+;;; correspondientes líneas del tablero.
+;;; Parámetros: ??
+;;; Registros modificados: ??
+;;;
+
+bl_5: ; (-3, n)
+bl_8:
+	
+	; Todas corresponden a un espacio vertical
+	LOGICAL_LINE LEV, 0
+
+;;;
+;;; Procedimientos bl_6 y bl_7
+;;; Estos procedimientos, que comparten el cuerpo, dibujan las
+;;; correspondientes líneas del tablero.
+;;; Parámetros: ??
+;;; Registros modificados: ??
+;;;
+
+bl_6: ; (-3, n)
+bl_7:
+	
+	; Todas corresponden a un espacio vertical
+	LOGICAL_LINE LEV, 0
+
+;;;
+;;; Procedimientos bl_14
+;;; Este procedimiento dibuja la correspondiente línea del tablero
+;;; Parámetros: ??
+;;; Registros modificados: ??
+;;;
+
+bl_14: ; (-3, n)
+
+	; Todas corresponden a un espacio vertical
+	LOGICAL_LINE LSH, 1
 
 ;;; Fin del módulo
 END
