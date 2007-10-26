@@ -11,6 +11,7 @@ File 1,2,<.\bitmap_lines.a51><bitmap_lines.a51> 0x0
 File 2,5,<.\macros.inc><macros.inc> 0x0 
 File 2,5,<.\constantes.inc><constantes.inc> 0x0 
 File 2,5,<.\variables.inc><variables.inc> 0x0 
+File 2,5,<.\bitmap_lines.inc><bitmap_lines.inc> 0x0 
 
 
 Options 1,0,0  // Target 'Target 1'

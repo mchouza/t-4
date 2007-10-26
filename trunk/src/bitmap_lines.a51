@@ -45,7 +45,7 @@ $INCLUDE(macros.inc)
 ;;; primeras 5.
 
 ;;; En este módulo se implementa el dibujo de cada tipo de línea física, que
-;;; se corresponden con lso tipos de línea lógica.
+;;; se corresponden con los tipos de línea lógica.
 
 ;;; Hay 3 tipos de línea:
 ;;; - Línea de un separador horizontal.
@@ -96,12 +96,15 @@ $INCLUDE(macros.inc)
 ;;;   42 a 44 -> negro
 
 ;;;	Comienzo del código
-CSEG AT 0x200
+CSEG AT 0x252
 
 ;;; Todas las posiciones se miden con respecto a xBase, a diferencia
 ;;; de en el caso del loop principal.
 ;;; Se omiten las coordenadas Y ya que dependen de donde se invoque el
 ;;; procedimiento.
+
+;;; Este módulo exporta las siguientes funciones:
+PUBLIC LEV, LSH 
 
 ;;; Línea de espacio vertical
 LEV: ; (-1)
