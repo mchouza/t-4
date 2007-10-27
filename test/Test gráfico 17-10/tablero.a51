@@ -9,11 +9,11 @@ NAME DIBUJO_TABLERO
 ;;; Constantes
 ;;;
 
-sync_level equ 0xF0 ; Salida para obtener el nivel de sincronización
-black_level equ 0xF1 ; Salida para obtener el nivel de negro o supresión (es
+sync_level equ 0xE0 ; Salida para obtener el nivel de sincronización
+black_level equ 0xF0 ; Salida para obtener el nivel de negro o supresión (es
                      ; indistinto en nuestro caso)
-gray_level equ 0xF2 ; Salida para obtener el nivel de gris
-white_level equ 0xF3 ; Salida para obtener el nivel de blanco
+gray_level equ 0xE8 ; Salida para obtener el nivel de gris
+white_level equ 0xF8 ; Salida para obtener el nivel de blanco
 
 graphics_port	equ P1 ; Puerto donde se escribe para obtener los gráficos
 
