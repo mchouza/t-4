@@ -5,7 +5,7 @@ Target (Target 1), 0x0000 // Tools: 'MCS-51'
 
 Group (Source Group 1)
 
-File 1,2,<.\tecsoun2.a><tecsoun2.a>
+File 1,2,<.\teclado.a><teclado.a>
 
 
 Options 1,0,0  // Target 'Target 1'
@@ -34,10 +34,10 @@ Options 1,0,0  // Target 'Target 1'
  OrgReg (ÿAtmel\)
  TgStat=16
  OutDir (.\)
- OutName (tecsoun2)
+ OutName (teclado)
  GenApp=1
  GenLib=0
- GenHex=1
+ GenHex=0
  Debug=1
  Browse=1
  LstDir (.\)
@@ -60,7 +60,7 @@ Options 1,0,0  // Target 'Target 1'
  XT51FL=0
  CBANKS5=0
  XBANKS5=0
- RCB51 { 0,0,0,0,0,0,0,1,0 }
+ RCB51 { 0,0,0,0,0,0,0,0,0 }
  RXB51 { 0,0,0,0,0,0,0,0,0 }
  OCM51 { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }
  OCR51 { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }
