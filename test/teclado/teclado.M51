@@ -1,0 +1,207 @@
+BL51 BANKED LINKER/LOCATER V6.05                                                        10/28/2007  23:43:43  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.05, INVOKED BY:
+C:\KEIL\C51\BIN\BL51.EXE teclado.obj TO teclado RAMSIZE (256)
+
+
+INPUT MODULES INCLUDED:
+  teclado.obj (TECLADO)
+
+
+LINK MAP OF MODULE:  teclado (TECLADO)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+                    0008H     0020H                  *** GAP ***
+            DATA    0028H     0004H     ABSOLUTE     
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0103H     ABSOLUTE     
+
+
+
+SYMBOL TABLE OF MODULE:  teclado (TECLADO)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        TECLADO
+  D:00F0H         SYMBOL        B
+  C:0102H         SYMBOL        FIN
+  D:002BH         SYMBOL        JUGAR
+  D:0028H         SYMBOL        LINEA_1
+  D:0029H         SYMBOL        LINEA_2
+  D:002AH         SYMBOL        LINEA_3
+  C:0008H         SYMBOL        MAIN
+  N:0004H         SYMBOL        NOTA_1
+  N:0008H         SYMBOL        NOTA_2
+  N:0010H         SYMBOL        NOTA_3
+  N:0020H         SYMBOL        NOTA_4
+  C:0015H         SYMBOL        NO_SALTAR
+  D:00A0H         SYMBOL        P2
+  B:00A0H.0       SYMBOL        PUERTO_TECLADO_0
+  B:00A0H.1       SYMBOL        PUERTO_TECLADO_1
+  B:00A0H.2       SYMBOL        PUERTO_TECLADO_2
+  B:00A0H.3       SYMBOL        PUERTO_TECLADO_3
+  B:00A0H.4       SYMBOL        PUERTO_TECLADO_4
+  B:00A0H.5       SYMBOL        PUERTO_TECLADO_5
+  B:00A0H.6       SYMBOL        PUERTO_TECLADO_6
+  B:00A0H.7       SYMBOL        PUERTO_TECLADO_7
+  C:000CH         SYMBOL        REVISAR_TECLADO
+  C:0013H         SYMBOL        SALTAR_A_FIN
+  C:002EH         SYMBOL        SIG_11
+  C:0079H         SYMBOL        SIG_12
+  C:00CAH         SYMBOL        SIG_13
+  C:0045H         SYMBOL        SIG_21
+  C:0092H         SYMBOL        SIG_22
+BL51 BANKED LINKER/LOCATER V6.05                                                      10/28/2007  23:43:43  PAGE 2
+
+
+  C:00E5H         SYMBOL        SIG_23
+  C:0060H         SYMBOL        SIG_31
+  C:00AFH         SYMBOL        SIG_32
+  C:0100H         SYMBOL        SIG_33
+  C:0000H         LINE#         25
+  C:0002H         LINE#         26
+  C:0004H         LINE#         27
+  C:0006H         LINE#         28
+  C:0008H         LINE#         29
+  C:000AH         LINE#         30
+  C:000CH         LINE#         33
+  C:000EH         LINE#         34
+  C:0011H         LINE#         35
+  C:0013H         LINE#         37
+  C:0015H         LINE#         39
+  C:0017H         LINE#         41
+  C:001AH         LINE#         43
+  C:001CH         LINE#         44
+  C:001FH         LINE#         45
+  C:0020H         LINE#         46
+  C:0022H         LINE#         47
+  C:0025H         LINE#         48
+  C:0027H         LINE#         49
+  C:0029H         LINE#         50
+  C:002BH         LINE#         51
+  C:002EH         LINE#         54
+  C:0031H         LINE#         56
+  C:0033H         LINE#         57
+  C:0036H         LINE#         58
+  C:0037H         LINE#         59
+  C:0039H         LINE#         60
+  C:003CH         LINE#         61
+  C:003EH         LINE#         62
+  C:0040H         LINE#         63
+  C:0042H         LINE#         64
+  C:0045H         LINE#         67
+  C:0048H         LINE#         69
+  C:004AH         LINE#         70
+  C:004DH         LINE#         71
+  C:004EH         LINE#         72
+  C:0050H         LINE#         73
+  C:0053H         LINE#         74
+  C:0055H         LINE#         75
+  C:0057H         LINE#         76
+  C:0059H         LINE#         77
+  C:005CH         LINE#         79
+  C:005EH         LINE#         80
+  C:0060H         LINE#         83
+  C:0063H         LINE#         85
+  C:0065H         LINE#         86
+  C:0066H         LINE#         87
+  C:0067H         LINE#         88
+  C:006AH         LINE#         89
+  C:006BH         LINE#         90
+  C:006DH         LINE#         91
+  C:0070H         LINE#         92
+  C:0072H         LINE#         93
+BL51 BANKED LINKER/LOCATER V6.05                                                      10/28/2007  23:43:43  PAGE 3
+
+
+  C:0074H         LINE#         94
+  C:0076H         LINE#         95
+  C:0079H         LINE#         98
+  C:007CH         LINE#         100
+  C:007EH         LINE#         101
+  C:007FH         LINE#         102
+  C:0080H         LINE#         103
+  C:0083H         LINE#         104
+  C:0084H         LINE#         105
+  C:0086H         LINE#         106
+  C:0089H         LINE#         107
+  C:008BH         LINE#         108
+  C:008DH         LINE#         109
+  C:008FH         LINE#         110
+  C:0092H         LINE#         113
+  C:0095H         LINE#         115
+  C:0097H         LINE#         116
+  C:0098H         LINE#         117
+  C:0099H         LINE#         118
+  C:009CH         LINE#         119
+  C:009DH         LINE#         120
+  C:009FH         LINE#         121
+  C:00A2H         LINE#         122
+  C:00A4H         LINE#         123
+  C:00A6H         LINE#         124
+  C:00A8H         LINE#         125
+  C:00ABH         LINE#         127
+  C:00ADH         LINE#         128
+  C:00AFH         LINE#         131
+  C:00B2H         LINE#         133
+  C:00B4H         LINE#         134
+  C:00B5H         LINE#         135
+  C:00B6H         LINE#         136
+  C:00B7H         LINE#         137
+  C:00B8H         LINE#         138
+  C:00BBH         LINE#         139
+  C:00BCH         LINE#         140
+  C:00BEH         LINE#         141
+  C:00C1H         LINE#         142
+  C:00C3H         LINE#         143
+  C:00C5H         LINE#         144
+  C:00C7H         LINE#         145
+  C:00CAH         LINE#         148
+  C:00CDH         LINE#         150
+  C:00CFH         LINE#         151
+  C:00D0H         LINE#         152
+  C:00D1H         LINE#         153
+  C:00D2H         LINE#         154
+  C:00D3H         LINE#         155
+  C:00D6H         LINE#         156
+  C:00D7H         LINE#         157
+  C:00D9H         LINE#         158
+  C:00DCH         LINE#         159
+  C:00DEH         LINE#         160
+  C:00E0H         LINE#         161
+  C:00E2H         LINE#         162
+  C:00E5H         LINE#         165
+BL51 BANKED LINKER/LOCATER V6.05                                                      10/28/2007  23:43:43  PAGE 4
+
+
+  C:00E8H         LINE#         167
+  C:00EAH         LINE#         168
+  C:00EBH         LINE#         169
+  C:00ECH         LINE#         170
+  C:00EDH         LINE#         171
+  C:00EEH         LINE#         172
+  C:00F1H         LINE#         173
+  C:00F2H         LINE#         174
+  C:00F4H         LINE#         175
+  C:00F7H         LINE#         176
+  C:00F9H         LINE#         177
+  C:00FBH         LINE#         178
+  C:00FDH         LINE#         179
+  C:0100H         LINE#         182
+  C:0102H         LINE#         184
+  -------         ENDMOD        TECLADO
+
+******************************************************************************
+* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 0103H BYTE (12%) *
+******************************************************************************
+
+Program Size: data=12.0 xdata=0 code=259
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)
