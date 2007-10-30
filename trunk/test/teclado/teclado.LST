@@ -1,4 +1,4 @@
-A51 MACRO ASSEMBLER  TECLADO                                                              10/28/2007 23:43:43 PAGE     1
+A51 MACRO ASSEMBLER  TECLADO                                                              10/29/2007 22:11:24 PAGE     1
 
 
 MACRO ASSEMBLER A51 V8.00d
@@ -57,35 +57,35 @@ LOC  OBJ            LINE     SOURCE
 0025 E528             48                     MOV A, linea_1 ;Obtengo la primera fila
 0027 2401             49                     ADD A, #0x01 ;Está vacía. Pongo 01 en los dos bits de la columna 1
 0029 F528             50                     MOV linea_1, A
-002B 85002B           51                     MOV jugar, 0
+002B 752B00           51                     MOV jugar, #0
                       52        
 002E                  53     sig_11:         
 002E 20A114           54                     jb puerto_teclado_1, sig_21 ;Veo si está suelta la tecla (2,1)
                       55                     ;Analizo si ese lugar del tablero ya está ocupado
 0031 E529             56                     MOV A, linea_2 ;Obtengo la segunda fila
 0033 75F004           57                     MOV B, #4
-0036 84               58                     DIV AB ;Tengo en B los últimos dos bits de fila_1
-A51 MACRO ASSEMBLER  TECLADO                                                              10/28/2007 23:43:43 PAGE     2
+0036 84               58                     DIV AB ;Tengo en B los últimos dos bits de fila_2
+A51 MACRO ASSEMBLER  TECLADO                                                              10/29/2007 22:11:24 PAGE     2
 
 0037 E5F0             59                     MOV A,B
 0039 B40009           60                     CJNE A, #0, sig_21 ;Si no está vacía salgo
 003C E529             61                     MOV A, linea_2 ;Obtengo la segunda fila
 003E 2401             62                     ADD A, #0x01 ;Está vacía. Pongo 01 en los dos bits de la columna 1
 0040 F529             63                     MOV linea_2, A
-0042 85002B           64                     MOV jugar, 0
+0042 752B00           64                     MOV jugar, #0
                       65     
 0045                  66     sig_21:
 0045 20A218           67                     jb puerto_teclado_2, sig_31 ;veo si está suelta la tecla (3,1)
                       68                     ;Analizo si ese lugar del tablero ya está ocupado
-0048 E52A             69                     MOV A, linea_3 ;Obtengo la primera fila
+0048 E52A             69                     MOV A, linea_3 ;Obtengo la tercera fila
 004A 75F004           70                     MOV B, #4
-004D 84               71                     DIV AB ;Tengo en B los últimos dos bits de fila_1
+004D 84               71                     DIV AB ;Tengo en B los últimos dos bits de fila_3
 004E E5F0             72                     MOV A,B
 0050 B4000D           73                     CJNE A, #0, sig_31 ;Si no está vacía salgo
 0053 E52A             74                     MOV A, linea_3 ;Obtengo la tercera fila
 0055 2401             75                     ADD A, #0x01 ;Está vacía. Pongo 01 en los dos bits de la columna 1
 0057 F52A             76                     MOV linea_3, A
-0059 85002B           77                     MOV jugar, 0
+0059 752B00           77                     MOV jugar, #0
                       78     
 005C D2A4             79                     setb puerto_teclado_4 ;Dejo primera columna
 005E C2A5             80                     clr puerto_teclado_5 ;Exploro segunda columna
@@ -97,13 +97,13 @@ LOC  OBJ            LINE     SOURCE
 0065 03               86                     RR A
 0066 03               87                     RR A
 0067 75F004           88                     MOV B, #4
-006A 84               89                     DIV AB ;Tengo en B los últimos dos bits de fila_1
+006A 84               89                     DIV AB ;Tengo en B los dos bits del medio de fila_1
 006B E5F0             90                     MOV A,B
 006D B40009           91                     CJNE A, #0, sig_12 ;Si no está vacía salgo
 0070 E528             92                     MOV A, linea_1 ;Obtengo la primera fila
 0072 2404             93                     ADD A, #0x04 ;Está vacía. Pongo 01 en los dos bits de la columna 2
 0074 F528             94                     MOV linea_1, A
-0076 85002B           95                     MOV jugar, 0
+0076 752B00           95                     MOV jugar, #0
                       96     
 0079                  97     sig_12:         
 0079 20A116           98                     jb puerto_teclado_1, sig_22 ;Veo si está suelta la tecla (2,2)
@@ -112,13 +112,13 @@ LOC  OBJ            LINE     SOURCE
 007E 03              101                     RR A
 007F 03              102                     RR A
 0080 75F004          103                     MOV B, #4
-0083 84              104                     DIV AB ;Tengo en B los últimos dos bits de fila_1
+0083 84              104                     DIV AB ;Tengo en B los dos bits del medio de fila_2
 0084 E5F0            105                     MOV A,B
 0086 B40009          106                     CJNE A, #0, sig_22 ;Si no está vacía salgo
 0089 E529            107                     MOV A, linea_2 ;Obtengo la segunda fila
 008B 2404            108                     ADD A, #0x04 ;Está vacía. Pongo 01 en los dos bits de la columna 2
 008D F529            109                     MOV linea_2, A
-008F 85002B          110                     MOV jugar, 0
+008F 752B00          110                     MOV jugar, #0
                      111     
 0092                 112     sig_22:         
 0092 20A21A          113                     jb puerto_teclado_2, sig_32 ;Veo si está suelta la tecla (3,2)
@@ -127,15 +127,15 @@ LOC  OBJ            LINE     SOURCE
 0097 03              116                     RR A
 0098 03              117                     RR A
 0099 75F004          118                     MOV B, #4
-009C 84              119                     DIV AB ;Tengo en B los últimos dos bits de fila_1
+009C 84              119                     DIV AB ;Tengo en B los dos bits del medio de fila_3
 009D E5F0            120                     MOV A,B
 009F B4000D          121                     CJNE A, #0, sig_32 ;Si no está vacía salgo
 00A2 E52A            122                     MOV A, linea_3 ;Obtengo la tercera fila
 00A4 2404            123                     ADD A, #0x04 ;Está vacía. Pongo 01 en los dos bits de la columna 2
 00A6 F52A            124                     MOV linea_3, A
-A51 MACRO ASSEMBLER  TECLADO                                                              10/28/2007 23:43:43 PAGE     3
+A51 MACRO ASSEMBLER  TECLADO                                                              10/29/2007 22:11:24 PAGE     3
 
-00A8 85002B          125                     MOV jugar, 0
+00A8 752B00          125                     MOV jugar, #0
                      126     
 00AB D2A5            127                     setb puerto_teclado_5 ;Dejo segunda columna
 00AD C2A6            128                     clr puerto_teclado_6 ;Exploro tercera columna
@@ -149,13 +149,13 @@ LOC  OBJ            LINE     SOURCE
 00B6 03              136                     RR A
 00B7 03              137                     RR A
 00B8 75F004          138                     MOV B, #4
-00BB 84              139                     DIV AB ;Tengo en B los últimos dos bits de fila_1
+00BB 84              139                     DIV AB ;Tengo en B los primeros dos bits de fila_1
 00BC E5F0            140                     MOV A,B
 00BE B40009          141                     CJNE A, #0, sig_13 ;Si no está vacía salgo
 00C1 E528            142                     MOV A, linea_1 ;Obtengo la primera fila
 00C3 2410            143                     ADD A, #0x10 ;Está vacía. Pongo 01 en los dos bits de la columna 3
 00C5 F528            144                     MOV linea_1, A
-00C7 85002B          145                     MOV jugar, 0
+00C7 752B00          145                     MOV jugar, #0
                      146     
 00CA                 147     sig_13:         
 00CA 20A118          148                     jb puerto_teclado_1, sig_23 ;Veo si está suelta la tecla (2,3)
@@ -166,13 +166,13 @@ LOC  OBJ            LINE     SOURCE
 00D1 03              153                     RR A
 00D2 03              154                     RR A
 00D3 75F004          155                     MOV B, #4
-00D6 84              156                     DIV AB ;Tengo en B los últimos dos bits de fila_1
+00D6 84              156                     DIV AB ;Tengo en B los primeros dos bits de fila_2
 00D7 E5F0            157                     MOV A,B
 00D9 B40009          158                     CJNE A, #0, sig_23 ;Si no está vacía salgo
 00DC E529            159                     MOV A, linea_2 ;Obtengo la segunda fila
 00DE 2410            160                     ADD A, #0x10 ;Está vacía. Pongo 01 en los dos bits de la columna 3
 00E0 F529            161                     MOV linea_2, A
-00E2 85002B          162                     MOV jugar, 0
+00E2 752B00          162                     MOV jugar, #0
                      163     
 00E5                 164     sig_23:         
 00E5 20A218          165                     jb puerto_teclado_2, sig_33 ;Veo si está suelta la tecla (3,3)
@@ -183,13 +183,13 @@ LOC  OBJ            LINE     SOURCE
 00EC 03              170                     RR A
 00ED 03              171                     RR A
 00EE 75F004          172                     MOV B, #4
-00F1 84              173                     DIV AB ;Tengo en B los últimos dos bits de fila_1
+00F1 84              173                     DIV AB ;Tengo en B los primeros dos bits de fila_3
 00F2 E5F0            174                     MOV A,B
 00F4 B40009          175                     CJNE A, #0, sig_33 ;Si no está vacía salgo
 00F7 E52A            176                     MOV A, linea_3 ;Obtengo la tercera fila
 00F9 2410            177                     ADD A, #0x10 ;Está vacía. Pongo 01 en los dos bits de la columna 3
 00FB F52A            178                     MOV linea_3, A
-00FD 85002B          179                     MOV jugar, 0
+00FD 752B00          179                     MOV jugar, #0
                      180     
 0100                 181     sig_33:
 0100 D2A6            182                     setb puerto_teclado_6 ;Dejo tercera columna
@@ -197,7 +197,7 @@ LOC  OBJ            LINE     SOURCE
 0102 22              184                     ret
                      185     
                      186     end
-A51 MACRO ASSEMBLER  TECLADO                                                              10/28/2007 23:43:43 PAGE     4
+A51 MACRO ASSEMBLER  TECLADO                                                              10/29/2007 22:11:24 PAGE     4
 
 SYMBOL TABLE LISTING
 ------ ----- -------

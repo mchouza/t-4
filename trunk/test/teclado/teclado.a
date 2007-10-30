@@ -48,33 +48,33 @@ no_saltar:
 		MOV A, linea_1 ;Obtengo la primera fila
 		ADD A, #0x01 ;Está vacía. Pongo 01 en los dos bits de la columna 1
 		MOV linea_1, A
-		MOV jugar, 0
+		MOV jugar, #0
    
 sig_11: 	
 		jb puerto_teclado_1, sig_21 ;Veo si está suelta la tecla (2,1)
 		;Analizo si ese lugar del tablero ya está ocupado
 		MOV A, linea_2 ;Obtengo la segunda fila
 		MOV B, #4
-		DIV AB ;Tengo en B los últimos dos bits de fila_1
+		DIV AB ;Tengo en B los últimos dos bits de fila_2
 		MOV A,B
 		CJNE A, #0, sig_21 ;Si no está vacía salgo
 		MOV A, linea_2 ;Obtengo la segunda fila
 		ADD A, #0x01 ;Está vacía. Pongo 01 en los dos bits de la columna 1
 		MOV linea_2, A
-		MOV jugar, 0
+		MOV jugar, #0
 
 sig_21:
 		jb puerto_teclado_2, sig_31 ;veo si está suelta la tecla (3,1)
 		;Analizo si ese lugar del tablero ya está ocupado
-		MOV A, linea_3 ;Obtengo la primera fila
+		MOV A, linea_3 ;Obtengo la tercera fila
 		MOV B, #4
-		DIV AB ;Tengo en B los últimos dos bits de fila_1
+		DIV AB ;Tengo en B los últimos dos bits de fila_3
 		MOV A,B
 		CJNE A, #0, sig_31 ;Si no está vacía salgo
 		MOV A, linea_3 ;Obtengo la tercera fila
 		ADD A, #0x01 ;Está vacía. Pongo 01 en los dos bits de la columna 1
 		MOV linea_3, A
-		MOV jugar, 0
+		MOV jugar, #0
 
 		setb puerto_teclado_4 ;Dejo primera columna
 		clr puerto_teclado_5 ;Exploro segunda columna
@@ -86,13 +86,13 @@ sig_31:
 		RR A
 		RR A
 		MOV B, #4
-		DIV AB ;Tengo en B los últimos dos bits de fila_1
+		DIV AB ;Tengo en B los dos bits del medio de fila_1
 		MOV A,B
 		CJNE A, #0, sig_12 ;Si no está vacía salgo
 		MOV A, linea_1 ;Obtengo la primera fila
 		ADD A, #0x04 ;Está vacía. Pongo 01 en los dos bits de la columna 2
 		MOV linea_1, A
-		MOV jugar, 0
+		MOV jugar, #0
 
 sig_12: 	
 		jb puerto_teclado_1, sig_22 ;Veo si está suelta la tecla (2,2)
@@ -101,13 +101,13 @@ sig_12:
 		RR A
 		RR A
 		MOV B, #4
-		DIV AB ;Tengo en B los últimos dos bits de fila_1
+		DIV AB ;Tengo en B los dos bits del medio de fila_2
 		MOV A,B
 		CJNE A, #0, sig_22 ;Si no está vacía salgo
 		MOV A, linea_2 ;Obtengo la segunda fila
 		ADD A, #0x04 ;Está vacía. Pongo 01 en los dos bits de la columna 2
 		MOV linea_2, A
-		MOV jugar, 0
+		MOV jugar, #0
 
 sig_22: 	
 		jb puerto_teclado_2, sig_32 ;Veo si está suelta la tecla (3,2)
@@ -116,13 +116,13 @@ sig_22:
 		RR A
 		RR A
 		MOV B, #4
-		DIV AB ;Tengo en B los últimos dos bits de fila_1
+		DIV AB ;Tengo en B los dos bits del medio de fila_3
 		MOV A,B
 		CJNE A, #0, sig_32 ;Si no está vacía salgo
 		MOV A, linea_3 ;Obtengo la tercera fila
 		ADD A, #0x04 ;Está vacía. Pongo 01 en los dos bits de la columna 2
 		MOV linea_3, A
-		MOV jugar, 0
+		MOV jugar, #0
 
 		setb puerto_teclado_5 ;Dejo segunda columna
 		clr puerto_teclado_6 ;Exploro tercera columna
@@ -136,13 +136,13 @@ sig_32:
 		RR A
 		RR A
 		MOV B, #4
-		DIV AB ;Tengo en B los últimos dos bits de fila_1
+		DIV AB ;Tengo en B los primeros dos bits de fila_1
 		MOV A,B
 		CJNE A, #0, sig_13 ;Si no está vacía salgo
 		MOV A, linea_1 ;Obtengo la primera fila
 		ADD A, #0x10 ;Está vacía. Pongo 01 en los dos bits de la columna 3
 		MOV linea_1, A
-		MOV jugar, 0
+		MOV jugar, #0
 
 sig_13: 	
 		jb puerto_teclado_1, sig_23 ;Veo si está suelta la tecla (2,3)
@@ -153,13 +153,13 @@ sig_13:
 		RR A
 		RR A
 		MOV B, #4
-		DIV AB ;Tengo en B los últimos dos bits de fila_1
+		DIV AB ;Tengo en B los primeros dos bits de fila_2
 		MOV A,B
 		CJNE A, #0, sig_23 ;Si no está vacía salgo
 		MOV A, linea_2 ;Obtengo la segunda fila
 		ADD A, #0x10 ;Está vacía. Pongo 01 en los dos bits de la columna 3
 		MOV linea_2, A
-		MOV jugar, 0
+		MOV jugar, #0
 
 sig_23: 	
 		jb puerto_teclado_2, sig_33 ;Veo si está suelta la tecla (3,3)
@@ -170,13 +170,13 @@ sig_23:
 		RR A
 		RR A
 		MOV B, #4
-		DIV AB ;Tengo en B los últimos dos bits de fila_1
+		DIV AB ;Tengo en B los primeros dos bits de fila_3
 		MOV A,B
 		CJNE A, #0, sig_33 ;Si no está vacía salgo
 		MOV A, linea_3 ;Obtengo la tercera fila
 		ADD A, #0x10 ;Está vacía. Pongo 01 en los dos bits de la columna 3
 		MOV linea_3, A
-		MOV jugar, 0
+		MOV jugar, #0
 
 sig_33:
 		setb puerto_teclado_6 ;Dejo tercera columna
