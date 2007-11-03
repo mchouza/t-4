@@ -108,7 +108,8 @@ CSEG AT 0x252
 PUBLIC LEV, LSH 
 
 ;;; Línea de espacio vertical
-LEV: ; (-1)
+LEV: ; (-11)
+		INT_SLEEP 10, R0 ; + 10 px = (-1)
 		mov graphics_port, #black_level ; + 1 px = (0)
 		INT_SLEEP 13, R0 ; + 13 px = (13)
 	 	mov graphics_port, #gray_level ; + 1 px = (14)
@@ -120,148 +121,31 @@ LEV: ; (-1)
 		ret ; + 1 px = (45)
 
 ;;; Línea de separador horizontal
-LSH: ; (-1)
+LSH: ; (-11)
+		INT_SLEEP 10, R0 ; + 10 px = (-1)
 		mov graphics_port, #gray_level ; + 1 px = (0)
 		INT_SLEEP 43, R0 ; + 43 px = (43)
 		mov graphics_port, #black_level ; + 1 px = (44)
 		ret ; +	1 px = (45)
 
 ;;; Línea 0 y 9 de símbolo
-LS_0: ; (-1)
-LS_9: ; (-1)
-
-		;; Decido si se trata de un espacio vacío o de un símbolo visible
-		jnb board_line.5, LS_0_0_E ; + 1 px = (0)
-
-		;; Decido si se trata de una X o una O
-		jb board_line.4, LS_0_0_X ; + 1 px = (1)
-
-;; Linea 0 y 9 de símbolo O en la columna 0
-LS_0_0_O: ; (1)
-LS_9_0_O: ; (1)
-
-		;; Dibujo la línea 0 de la O en columna 0
-		mov graphics_port, #black_level ; + 1 px = (2)
-		INT_SLEEP 3, R0 ; + 3 px = (5)
-		mov graphics_port, #white_level ; + 1 px = (6)
-		SHORT_SLEEP 2 ; + 1 px = (7)
-		mov graphics_port, #black_level ; + 1 px = (8)
-		INT_SLEEP 4, R0 ; + 4 px = (12)
-
-		;; Si es vacío, salta al espaciador de vacío
-		jnb board_line.3, LS_0_1_E ; + 1 px = (13)
-
-		;; Línea gris
-		mov graphics_port, #gray_level ; + 1 px = (14)
-		mov graphics_port, #black_level ; + 1 px = (15)
-
-		;; Si es X el que sigue, salta a X
-		jb board_line.2, LS_0_1_X ; + 1 px = (16)
-
-;; Linea 0 y 9 de símbolo O en la columna 1
-LS_0_1_O: ; (16)
-LS_9_1_O: ; (16)
-
-		;; Dibujo la línea 0 de la O en columna 1
-		mov graphics_port, #black_level ; + 1 px = (17)
-		INT_SLEEP 3, R0 ; + 3 px = (20)
-		mov graphics_port, #white_level ; + 1 px = (21)
-		SHORT_SLEEP 2 ; + 1 px = (22)
-		mov graphics_port, #black_level ; + 1 px = (23)
-		INT_SLEEP 4, R0 ; + 4 px = (27)
-
-		;; Si es vacío, salta al espaciador de vacío
-		jnb board_line.1, LS_0_2_E ; + 1 px = (28)
-
-		;; Línea gris
-		mov graphics_port, #gray_level ; + 1 px = (29)
-		mov graphics_port, #black_level ; + 1 px = (30)
-
-		;; Si es X el que sigue, salta a X
-		jb board_line.0, LS_0_2_X ; + 1 px = (31)
-
-;; Linea 0 y 9 de símbolo O en la columna 2
-LS_0_2_O: ; (31)
-LS_9_2_O: ; (31)
-
-		;; Dibujo la línea 0 de la O en columna 2
-		mov graphics_port, #black_level ; + 1 px = (32)
-		INT_SLEEP 3, R0 ; + 3 px = (35)
-		mov graphics_port, #white_level ; + 1 px = (36)
-		SHORT_SLEEP 2 ; + 1 px = (37)
-		mov graphics_port, #black_level ; + 1 px = (38)
-		INT_SLEEP 4, R0 ; + 4 px = (42)
-
-		;; Terminé
-		ret ; + 1 px = (43)
+LS_0: ; (-11)
+LS_9: ; (-11)
 		
-;; Linea 0 y 9 de símbolo X en la columna 0
-LS_0_0_X: ; (1)
-LS_9_0_X: ; (1)
+		;; Salto según esté o no vacía al primera columna
+		jnb board_line.5, LS_0_0_E ; + 1 px = (-10)
 
-		;; Dibujo la línea 0 de la X en columna 0
-		mov graphics_port, #white_level ; + 1 px = (2)
-		SHORT_SLEEP 2 ; + 1 px = (3)
-		mov graphics_port, #black_level ; + 1 px = (4)
-		INT_SLEEP 5, R0 ; + 5 px = (9)
-		mov graphics_port, #white_level ; + 1 px = (10)
-		SHORT_SLEEP 2 ; + 1 px = (11)
-		mov graphics_port, #black_level ; + 1 px = (12)
+		;; Salto según sea o no X el sìmbolo de la primera columna
+		jb board_line.4, LS_0_0_X ; + 1 px = (-9)
 
-		;; Si es vacío, salta al espaciador de vacío
-		jnb board_line.3, LS_0_1_E ; + 1 px = (13)
+	LS_0_0_O: ; + 1 px = (-8)
 
-		;; Línea gris
-		mov graphics_port, #gray_level ; + 1 px = (14)
-		mov graphics_port, #black_level ; + 1 px = (15)
+		;; Guardo para que el primero sea O
+		PUSH_DPTR SLS_O
 
-		;; Si es O el que sigue, salta a O
-		jnb board_line.2, LS_0_1_O ; + 1 px = (16)
+		;; Me fijo si el próximo es vacío
 
-;; Linea 0 y 9 de símbolo X en la columna 1
-LS_0_1_X: ; (16)
-LS_9_1_X: ; (16)
 
-		;; Dibujo la línea 0 de la X en columna 1
-		mov graphics_port, #white_level ; + 1 px = (17)
-		SHORT_SLEEP 2 ; + 1 px = (18)
-		mov graphics_port, #black_level ; + 1 px = (19)
-		INT_SLEEP 5, R0 ; + 5 px = (24)
-		mov graphics_port, #white_level ; + 1 px = (25)
-		SHORT_SLEEP 2 ; + 1 px = (26)
-		mov graphics_port, #black_level ; + 1 px = (27)
 
-		;; Si es vacío, salta al espaciador de vacío
-		jnb board_line.3, LS_0_2_E ; + 1 px = (28)
-
-		;; Línea gris
-		mov graphics_port, #gray_level ; + 1 px = (29)
-		mov graphics_port, #black_level ; + 1 px = (30)
-
-		;; Si es O el que sigue, salta a O
-		jnb board_line.2, LS_0_2_O ; + 1 px = (31)
-		
-;; Linea 0 y 9 de símbolo X en la columna 2
-LS_0_2_X: ; (31)
-LS_9_2_X: ; (31)
-
-		;; Dibujo la línea 0 de la X en columna 2
-		mov graphics_port, #white_level ; + 1 px = (32)
-		SHORT_SLEEP 2 ; + 1 px = (33)
-		mov graphics_port, #black_level ; + 1 px = (34)
-		INT_SLEEP 5, R0 ; + 5 px = (39)
-		mov graphics_port, #white_level ; + 1 px = (40)
-		SHORT_SLEEP 2 ; + 1 px = (41)
-		mov graphics_port, #black_level ; + 1 px = (42)
-
-		;; Terminé
-		ret ; + 1 px = (43)	
-
-LS_0_0_E:
-LS_9_0_E:
-LS_0_1_E:
-LS_9_1_E:
-LS_0_2_E:
-LS_9_2_E:
 
 END
