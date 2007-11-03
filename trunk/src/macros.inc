@@ -53,10 +53,10 @@ LOCAL phys_line_loop, short_wait
 
 		;; Espero hasta que esté en posición
 		SHORT_SLEEP 1 ; + 0.5 px = (8, n)
-		INT_SLEEP 17, R0 ; + 17 px = (25, n) 
+		INT_SLEEP 7, R0 ; +  px = (15, n) 
 
 		;; Llamo a la función que dibuja
-		call draw_line_func ; + 47 px = (72, n)
+		call draw_line_func ; + 57 px = (72, n)
 
 		;; Espero
 		INT_SLEEP 10 - trim_last_line, R0 ; + 10 px = (82, n)
