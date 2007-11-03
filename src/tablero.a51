@@ -9,6 +9,7 @@ NAME DIBUJO_TABLERO_PRINCIPAL
 $INCLUDE(bitmap_lines.inc)
 $INCLUDE(constantes.inc)
 $INCLUDE(macros.inc)
+$INCLUdE(variables.inc)
 
 ;;; Comienzo del código
 CSEG AT 0x0000 ; FIXME: Por ahora no hay código de inicialización
@@ -85,6 +86,9 @@ CSEG AT 0x0000 ; FIXME: Por ahora no hay código de inicialización
 ;;; de cada instrucción se indica cuantos pixels (0.727 us) demora y la
 ;;; posición en la que estaría después de su ejecución en forma de un par
 ;;; (pixel, linea)
+
+;;; FIXME: Para prueba
+		mov board_line, #0x19
 
 hid_lines_start: ; Comienzan las líneas ocultas
 
@@ -291,8 +295,7 @@ bl_13:
 bl_2: ; (-3, n)
 bl_11:
 	
-	; Todas corresponden a un espacio vertical
-	LOGICAL_LINE LEV, 0
+	LOGICAL_LINE LS_0, 0
 
 ;;;
 ;;; Procedimientos bl_3 y bl_10
@@ -305,8 +308,7 @@ bl_11:
 bl_3: ; (-3, n)
 bl_10:
 	
-	; Todas corresponden a un espacio vertical
-	LOGICAL_LINE LEV, 0
+	LOGICAL_LINE LS_0, 0
 
 ;;;
 ;;; Procedimientos bl_4 y bl_9
@@ -319,8 +321,7 @@ bl_10:
 bl_4: ; (-3, n)
 bl_9:
 	
-	; Todas corresponden a un espacio vertical
-	LOGICAL_LINE LEV, 0
+	LOGICAL_LINE LS_0, 0
 
 ;;;
 ;;; Procedimientos bl_5 y bl_8
@@ -333,8 +334,7 @@ bl_9:
 bl_5: ; (-3, n)
 bl_8:
 	
-	; Todas corresponden a un espacio vertical
-	LOGICAL_LINE LEV, 0
+	LOGICAL_LINE LS_0, 0
 
 ;;;
 ;;; Procedimientos bl_6 y bl_7
@@ -347,8 +347,7 @@ bl_8:
 bl_6: ; (-3, n)
 bl_7:
 	
-	; Todas corresponden a un espacio vertical
-	LOGICAL_LINE LEV, 0
+	LOGICAL_LINE LS_0, 0
 
 ;;;
 ;;; Procedimientos bl_14
@@ -359,7 +358,7 @@ bl_7:
 
 bl_14: ; (-3, n)
 
-	; Todas corresponden a un espacio vertical
+	; Última línea de la línea del tablero
 	LOGICAL_LINE LSH, 1
 
 ;;; Fin del módulo
