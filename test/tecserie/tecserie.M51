@@ -1,4 +1,4 @@
-BL51 BANKED LINKER/LOCATER V6.02                                                        10/19/2007  19:01:11  PAGE 1
+BL51 BANKED LINKER/LOCATER V6.02                                                        11/03/2007  15:59:04  PAGE 1
 
 
 BL51 BANKED LINKER/LOCATER V6.02, INVOKED BY:
@@ -23,7 +23,7 @@ LINK MAP OF MODULE:  tecserie (TECSERIE)
             DATA    0028H     0001H     ABSOLUTE     
 
             * * * * * * *   C O D E   M E M O R Y   * * * * * * *
-            CODE    0000H     0048H     ABSOLUTE     
+            CODE    0000H     0046H     ABSOLUTE     
 
 
 
@@ -36,16 +36,15 @@ SYMBOL TABLE OF MODULE:  tecserie (TECSERIE)
   C:0041H         SYMBOL        ENVIAR_TECLA
   C:0012H         SYMBOL        INICIO
   C:0014H         SYMBOL        MAS
-  D:0090H         SYMBOL        P1
-  B:0090H.0       SYMBOL        PUERTO_TECLADO_0
-  B:0090H.1       SYMBOL        PUERTO_TECLADO_1
-  B:0090H.2       SYMBOL        PUERTO_TECLADO_2
-  B:0090H.3       SYMBOL        PUERTO_TECLADO_3
-  B:0090H.4       SYMBOL        PUERTO_TECLADO_4
-  B:0090H.5       SYMBOL        PUERTO_TECLADO_5
-  B:0090H.6       SYMBOL        PUERTO_TECLADO_6
-  B:0090H.7       SYMBOL        PUERTO_TECLADO_7
-  B:0098H.4       SYMBOL        REN
+  D:00A0H         SYMBOL        P2
+  B:00A0H.0       SYMBOL        PUERTO_TECLADO_0
+  B:00A0H.1       SYMBOL        PUERTO_TECLADO_1
+  B:00A0H.2       SYMBOL        PUERTO_TECLADO_2
+  B:00A0H.3       SYMBOL        PUERTO_TECLADO_3
+  B:00A0H.4       SYMBOL        PUERTO_TECLADO_4
+  B:00A0H.5       SYMBOL        PUERTO_TECLADO_5
+  B:00A0H.6       SYMBOL        PUERTO_TECLADO_6
+  B:00A0H.7       SYMBOL        PUERTO_TECLADO_7
   C:001EH         SYMBOL        REVISAR_TECLADO
   D:0099H         SYMBOL        SBUF
   C:0030H         SYMBOL        SIG_0
@@ -59,10 +58,10 @@ SYMBOL TABLE OF MODULE:  tecserie (TECSERIE)
   B:0098H.1       SYMBOL        TI
   C:0000H         LINE#         20
   C:0003H         LINE#         21
-BL51 BANKED LINKER/LOCATER V6.02                                                      10/19/2007  19:01:11  PAGE 2
-
-
   C:0006H         LINE#         23
+BL51 BANKED LINKER/LOCATER V6.02                                                      11/03/2007  15:59:04  PAGE 2
+
+
   C:0008H         LINE#         24
   C:000AH         LINE#         25
   C:000CH         LINE#         26
@@ -93,12 +92,11 @@ SYMBOL TABLE OF MODULE:  tecserie (TECSERIE)
   C:0041H         LINE#         67
   C:0043H         LINE#         68
   C:0045H         LINE#         69
-  C:0047H         LINE#         70
   -------         ENDMOD        TECSERIE
 
 ******************************************************************************
-* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 0048H BYTE ( 3%) *
+* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 0046H BYTE ( 3%) *
 ******************************************************************************
 
-Program Size: data=10.0 xdata=0 code=72
+Program Size: data=10.0 xdata=0 code=70
 LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)
