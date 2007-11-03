@@ -11,6 +11,8 @@ SHORT_SLEEP MACRO delay_in_half_pixels
 
 ;;; Sirve para esperas intermedias, de más de 2 pixels.
 ;;; Destruye el registro indicado por tmp_reg
+;;; Ocupa 2 + 1 + 2 = 5 bytes, por lo que conviene usarla para esperas de más
+;;; de 2.5 pixels
 INT_SLEEP MACRO delay, tmp_reg
 		mov tmp_reg, #delay - 1 ; + 0.5 px = 0.5 px
 		nop ; + 0.5px = 1 px

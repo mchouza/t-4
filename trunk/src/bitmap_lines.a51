@@ -125,4 +125,62 @@ LSH: ; (-1)
 		mov graphics_port, #black_level ; + 1 px = (44)
 		ret ; +	1 px = (45)
 
+;;; Línea 0 y 9 de símbolo
+LS_0: ; (-1)
+LS_9: ; (-1)
+
+		;; Decido si se trata de un espacio vacío o de un símbolo visible
+		jnb board_line.5, LS_0_0_EMPTY ; + 1 px = (0)
+
+		;; Decido si se trata de una X o una O
+		jb board_line.4, LS_0_0_X ; + 1 px = (1)
+
+;; Linea 0 y 9 de símbolo O en la columna 0
+LS_0_0_O: ; (1)
+LS_9_0_O: ; (1)
+
+		;; Dibujo la línea 0 de la O en columna 0
+		mov graphics_port, #black_level ; + 1 px = (2)
+		INT_SLEEP 3, R0 ; + 3 px = (5)
+		mov graphics_port, #white_level ; + 1 px = (7)
+		SHORT_SLEEP 2 ; + 1 px = (8)
+		mov graphics_port, #black_level ; + 1 px = (9)
+		INT_SLEEP 3, R0 ; + 3 px = (12)
+
+		;; Decido si se trata de un espacio vacío
+LS_0_0_O_checkNext: ; (12)
+		jnb board_line.3, LS_0_0_O_nextIsEmpty ; + 1 px = (13)
+
+		;; Pongo la línea gris
+		mov graphics_port, #gray_level ; + 1 px = (14)
+		mov graphics_port, #black_level ; + 1 px = (15)
+
+		;; Decido si lo que sigue es una X u O
+		jb board_line.2, LS_0_0_O_nextIsX ; + 1 px = (16)
+		jmp LS_0_1_O ; + 1 px = (17)
+
+LS_0_0_O_nextIsX:
+		jmp LS_0_1_X ; + 1 px = (17)
+
+LS_0_0_O_nextIsEmpty:
+		jmp LS_0_1_EMPTY ; + 1 px = (14)
+
+LS_0_0_EMPTY: ; (0)
+LS_9_0_EMPTY: ; (0)
+
+		;; Dibuja la línea 0 como vacía en la columna 0
+		INT_SLEEP 11, R0 ; + 11 px = (11)
+
+		;; Aprovecho el código de la O
+		jmp LS_0_0_O_checkNext ; + 1 px = (12)
+		
+ 
+
+
+
+
+
+
+
+
 END
