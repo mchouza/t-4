@@ -1,4 +1,4 @@
-A51 MACRO ASSEMBLER  TECSERIE                                                             10/19/2007 19:01:10 PAGE     1
+A51 MACRO ASSEMBLER  TECSERIE                                                             11/03/2007 15:59:04 PAGE     1
 
 
 MACRO ASSEMBLER A51 V8.00b
@@ -7,14 +7,14 @@ ASSEMBLER INVOKED BY: C:\Keil3\C51\BIN\A51.EXE tecserie.a SET(SMALL) DEBUG EP
 
 LOC  OBJ            LINE     SOURCE
 
-  0090                 1     puerto_teclado_0 EQU P1.0
-  0091                 2     puerto_teclado_1 EQU P1.1
-  0092                 3     puerto_teclado_2 EQU P1.2
-  0093                 4     puerto_teclado_3 EQU P1.3
-  0094                 5     puerto_teclado_4 EQU P1.4
-  0095                 6     puerto_teclado_5 EQU P1.5
-  0096                 7     puerto_teclado_6 EQU P1.6
-  0097                 8     puerto_teclado_7 EQU P1.7
+  00A0                 1     puerto_teclado_0 EQU P2.0
+  00A1                 2     puerto_teclado_1 EQU P2.1
+  00A2                 3     puerto_teclado_2 EQU P2.2
+  00A3                 4     puerto_teclado_3 EQU P2.3
+  00A4                 5     puerto_teclado_4 EQU P2.4
+  00A5                 6     puerto_teclado_5 EQU P2.5
+  00A6                 7     puerto_teclado_6 EQU P2.6
+  00A7                 8     puerto_teclado_7 EQU P2.7
                        9     
 ----                  10     dseg at 0x20
 0020                  11                     tecla_byte_1: ds 1
@@ -29,10 +29,10 @@ LOC  OBJ            LINE     SOURCE
 0000 7520FF           20                     mov tecla_byte_1, #0xff ;Ninguna apretada inicialmente
 0003 7528FF           21                     mov tecla_byte_2, #0xff ;Ninguna apretada inicialmente
                       22     
-0006 D290             23                     setb puerto_teclado_0 ;Pin para lectura
-0008 D291             24                     setb puerto_teclado_1 ;Pin para lectura
-000A D292             25                     setb puerto_teclado_2 ;Pin para lectura
-000C D293             26                     setb puerto_teclado_3 ;Pin para lectura
+0006 D2A0             23                     setb puerto_teclado_0 ;Pin para lectura
+0008 D2A1             24                     setb puerto_teclado_1 ;Pin para lectura
+000A D2A2             25                     setb puerto_teclado_2 ;Pin para lectura
+000C D2A3             26                     setb puerto_teclado_3 ;Pin para lectura
                       27     
                       28                     ;Habilito el puerto serie con SCON. Modo 2 (Asincrónico 10 bits)
 000E D29F             29                     setb SM0 ;SM0=1
@@ -46,9 +46,9 @@ LOC  OBJ            LINE     SOURCE
 001C 80F4             37                 jmp inicio
                       38     
 001E                  39     revisar_teclado:
-001E C294             40                     clr puerto_teclado_4 ;Exploro primera columna
+001E C2A4             40                     clr puerto_teclado_4 ;Exploro primera columna
                       41                     
-0020 20900B           42                     jb puerto_teclado_0, suelta_0
+0020 20A00B           42                     jb puerto_teclado_0, suelta_0
 0023 30070A           43                     jnb tecla_byte_1.7, sig_0 ;Se presiono tecla(1,1). Si antes estaba suelta
 0026 AA41             44                     mov R2, 'A'
 0028 C207             45                     clr tecla_byte_1.7 ;Marco que ahora esta presionada
@@ -59,13 +59,13 @@ LOC  OBJ            LINE     SOURCE
 0030                  50     sig_0:
                       51     
                       52     
-0030 20910B           53                     jb puerto_teclado_1, suelta_1
+0030 20A10B           53                     jb puerto_teclado_1, suelta_1
 0033 30060A           54                     jnb tecla_byte_1.6, sig_1 ;Se presiono tecla(1,1). Si antes estaba suelta
 0036 AA42             55                     mov R2, 'B'
 0038 C206             56                     clr tecla_byte_1.6 ;Marco que ahora esta presionada
 003A 1141             57                     call enviar_tecla
 003C 8002             58                     jmp sig_1
-A51 MACRO ASSEMBLER  TECSERIE                                                             10/19/2007 19:01:10 PAGE     2
+A51 MACRO ASSEMBLER  TECSERIE                                                             11/03/2007 15:59:04 PAGE     2
 
 003E                  59     suelta_1:
 003E D206             60                     setb tecla_byte_1.6 ;Marco que ahora esta suelta                        
@@ -75,13 +75,12 @@ LOC  OBJ            LINE     SOURCE
 0040 22               64                     ret
                       65     
 0041                  66     enviar_tecla:
-0041 D29C             67                     setb REN
-0043 C299             68                     clr TI ;Cuando el micro termina la transmisión, avisará seteando TI
-0045 8A99             69                     mov SBUF, R2
-0047 22               70                     ret
-                      71     
-                      72     end
-A51 MACRO ASSEMBLER  TECSERIE                                                             10/19/2007 19:01:10 PAGE     3
+0041 C299             67                     clr TI ;Cuando el micro termina la transmisión, avisará seteando TI
+0043 8A99             68                     mov SBUF, R2
+0045 22               69                     ret
+                      70     
+                      71     end
+A51 MACRO ASSEMBLER  TECSERIE                                                             11/03/2007 15:59:04 PAGE     3
 
 SYMBOL TABLE LISTING
 ------ ----- -------
@@ -92,16 +91,15 @@ N A M E             T Y P E  V A L U E   ATTRIBUTES
 ENVIAR_TECLA . . .  C ADDR   0041H   A   
 INICIO . . . . . .  C ADDR   0012H   A   
 MAS. . . . . . . .  C ADDR   0014H   A   
-P1 . . . . . . . .  D ADDR   0090H   A   
-PUERTO_TECLADO_0 .  B ADDR   0090H.0 A   
-PUERTO_TECLADO_1 .  B ADDR   0090H.1 A   
-PUERTO_TECLADO_2 .  B ADDR   0090H.2 A   
-PUERTO_TECLADO_3 .  B ADDR   0090H.3 A   
-PUERTO_TECLADO_4 .  B ADDR   0090H.4 A   
-PUERTO_TECLADO_5 .  B ADDR   0090H.5 A   
-PUERTO_TECLADO_6 .  B ADDR   0090H.6 A   
-PUERTO_TECLADO_7 .  B ADDR   0090H.7 A   
-REN. . . . . . . .  B ADDR   0098H.4 A   
+P2 . . . . . . . .  D ADDR   00A0H   A   
+PUERTO_TECLADO_0 .  B ADDR   00A0H.0 A   
+PUERTO_TECLADO_1 .  B ADDR   00A0H.1 A   
+PUERTO_TECLADO_2 .  B ADDR   00A0H.2 A   
+PUERTO_TECLADO_3 .  B ADDR   00A0H.3 A   
+PUERTO_TECLADO_4 .  B ADDR   00A0H.4 A   
+PUERTO_TECLADO_5 .  B ADDR   00A0H.5 A   
+PUERTO_TECLADO_6 .  B ADDR   00A0H.6 A   
+PUERTO_TECLADO_7 .  B ADDR   00A0H.7 A   
 REVISAR_TECLADO. .  C ADDR   001EH   A   
 SBUF . . . . . . .  D ADDR   0099H   A   
 SIG_0. . . . . . .  C ADDR   0030H   A   

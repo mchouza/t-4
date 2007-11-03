@@ -1,11 +1,11 @@
-puerto_teclado_0 EQU P1.0
-puerto_teclado_1 EQU P1.1
-puerto_teclado_2 EQU P1.2
-puerto_teclado_3 EQU P1.3
-puerto_teclado_4 EQU P1.4
-puerto_teclado_5 EQU P1.5
-puerto_teclado_6 EQU P1.6
-puerto_teclado_7 EQU P1.7
+puerto_teclado_0 EQU P2.0
+puerto_teclado_1 EQU P2.1
+puerto_teclado_2 EQU P2.2
+puerto_teclado_3 EQU P2.3
+puerto_teclado_4 EQU P2.4
+puerto_teclado_5 EQU P2.5
+puerto_teclado_6 EQU P2.6
+puerto_teclado_7 EQU P2.7
 
 dseg at 0x20
 		tecla_byte_1: ds 1
@@ -64,7 +64,6 @@ sig_1:
 		ret
 
 enviar_tecla:
-		setb REN
 		clr TI ;Cuando el micro termina la transmisión, avisará seteando TI
 		mov SBUF, R2
 		ret
