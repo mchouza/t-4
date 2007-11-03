@@ -3,7 +3,7 @@
 ;;;; Variables
 
 ;;; Segmento direccionable bit a bit
-BSEG AT 0x20
+DSEG AT 0x20
 
 ;;; Representa la línea actual de los símbolos del tablero
 board_line: ds 1
