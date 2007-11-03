@@ -105,11 +105,11 @@ CSEG AT 0x252
 ;;; procedimiento.
 
 ;;; Este módulo exporta las siguientes funciones:
-PUBLIC LEV, LSH 
+PUBLIC LEV, LSH, LS_0 
 
 ;;; Línea de espacio vertical
-LEV: ; (-11)
-		INT_SLEEP 10, R0 ; + 10 px = (-1)
+LEV: ; (-14)
+		INT_SLEEP 13, R0 ; + 13 px = (-1)
 		mov graphics_port, #black_level ; + 1 px = (0)
 		INT_SLEEP 13, R0 ; + 13 px = (13)
 	 	mov graphics_port, #gray_level ; + 1 px = (14)
@@ -118,34 +118,116 @@ LEV: ; (-11)
 		mov graphics_port, #gray_level ; + 1 px = (29)
 		mov graphics_port, #black_level ; + 1 px = (30)
 		INT_SLEEP 14, R0 ; + 14 px = (44)
-		ret ; + 1 px = (45)
+		SHORT_SLEEP 2 ; + 1 px = (45)
+		ret ; + 1 px = (46)
 
 ;;; Línea de separador horizontal
-LSH: ; (-11)
-		INT_SLEEP 10, R0 ; + 10 px = (-1)
+LSH: ; (-14)
+		INT_SLEEP 13, R0 ; + 13 px = (-1)
 		mov graphics_port, #gray_level ; + 1 px = (0)
 		INT_SLEEP 43, R0 ; + 43 px = (43)
 		mov graphics_port, #black_level ; + 1 px = (44)
-		ret ; +	1 px = (45)
+		SHORT_SLEEP 2 ; + 1 px = (45)
+		ret ; +	1 px = (46)
 
 ;;; Línea 0 y 9 de símbolo
-LS_0: ; (-11)
-LS_9: ; (-11)
-		
-		;; Salto según esté o no vacía al primera columna
-		jnb board_line.5, LS_0_0_E ; + 1 px = (-10)
+LS_0: ; (-14)
+LS_9: ; (-14)
+	
+	LS_0_2: ; (-14)		
+		jb board_line.4, LS_0_2_X ; + 1 px = (-13)
+		jb board_line.5, LS_0_2_O ; + 1 px = (-12)
 
-		;; Salto según sea o no X el sìmbolo de la primera columna
-		jb board_line.4, LS_0_0_X ; + 1 px = (-9)
+	LS_0_2_E: ; (-12)
+		PUSH_ADDRESS SLS_N_E ; + 3 px = (-9)
+		jmp LS_0_1 ; + 1 px = (-8)
 
-	LS_0_0_O: ; + 1 px = (-8)
+	LS_0_2_X: ; (-13)
+		SHORT_SLEEP 2 ; + 1 px = (-12)
+		PUSH_ADDRESS SLS_0_X ; + 3 px = (-9)
+		jmp LS_0_1 ; + 1 px = (-8)
 
-		;; Guardo para que el primero sea O
-		PUSH_DPTR SLS_O
+	LS_0_2_O: ; (-12)
+		PUSH_ADDRESS SLS_0_O ; + 3 px = (-9)
+		jmp LS_0_1 ; + 1 px = (-8)
 
-		;; Me fijo si el próximo es vacío
+	LS_0_1: ; (-8)
+		jb board_line.2, LS_0_1_X ; + 1 px = (-7)
+		jb board_line.3, LS_0_1_O ; + 1 px = (-6)
 
+	LS_0_1_E: ; (-6)
+		PUSH_ADDRESS SLS_N_E ; + 3 px = (-3)
+		jmp LS_0_0 ; + 1 px = (-2)
 
+	LS_0_1_X: ; (-7)
+		SHORT_SLEEP 2 ; + 1 px = (-6)
+		PUSH_ADDRESS SLS_0_X ; + 3 px = (-3)
+		jmp LS_0_0 ; + 1 px = (-2)
 
+	LS_0_1_O: ; (-6)
+		PUSH_ADDRESS SLS_0_O ; + 3 px = (-3)
+		jmp LS_0_0 ; + 1 px = (-2)
+
+	LS_0_0: ; (-2)
+		jb board_line.0, LS_0_0_X ; + 1 px = (-1)
+		jb board_line.1, LS_0_0_O ; + 1 px = (0)
+
+	LS_0_0_E: ; (0)
+		jmp SLS_N_E ; + 1 px = (1)
+
+	LS_0_0_X: ; (-1)
+		SHORT_SLEEP 2 ; + 1 px = (0)
+		jmp SLS_0_X ; + 1 px = (1)
+
+	LS_0_0_O: ; (0)
+		jmp SLS_0_O ; + 1 px = (1)
+	
+		;; No hay 'ret', el último símbolo ya se encarga de eso
+
+;; Fragmento de símbolo de la X	correspondiente a la línea 0 o 9
+SLS_0_X: ; (1) (tomando la primera columna, sino es equivalente a 16 o 31)
+		mov graphics_port, #white_level ; + 1 px = (2)
+		SHORT_SLEEP 2 ; + 1 px = (3)
+		mov graphics_port, #black_level ; + 1 px = (4)
+		INT_SLEEP 5, R0 ; + 5 px = (9)
+		mov graphics_port, #white_level ; + 1 px = (10)
+		SHORT_SLEEP 2 ; + 1 px = (11)
+		mov graphics_port, #black_level ; + 1 px = (12)
+		SHORT_SLEEP 2 ; + 1 px = (13)
+		mov graphics_port, #gray_level ; + 1 px = (14)
+		mov graphics_port, #black_level ; + 1 px = (15)
+		ret ; + 1 px = (16)
+
+;; Fragmento de símbolo de la X, correspondiente a la línea 1 u 8
+SLS_1_X: ; (1)
+		mov graphics_port, #white_level ; + 1 px = (2)
+		SHORT_SLEEP 4 ; + 2 px = (4)
+		mov graphics_port, #black_level ; + 1 px = (5)
+		INT_SLEEP 3, R0 ; + 3 px = (8)
+		mov graphics_port, #white_level ; + 1 px = (9)
+		SHORT_SLEEP 4 ; + 2 px = (11)
+		mov graphics_port, #black_level ; + 1 px = (12)
+		SHORT_SLEEP 2 ; + 1 px = (13)
+		mov graphics_port, #gray_level ; + 1 px = (14)
+		mov graphics_port, #black_level ; + 1 px = (15)
+		ret ; + 1 px = (16)
+
+;; Fragmento de símbolo de la O	correspondiente a la línea 0 o 9
+SLS_0_O: ; (1) (tomando la primera columna, sino es equivalente a 16 o 31)
+		INT_SLEEP 4, R0 ; + 4 px = (5)
+		mov graphics_port, #white_level ; + 1 px = (6)
+		SHORT_SLEEP 2 ; + 1 px = (7)
+		mov graphics_port, #black_level ; + 1 px = (8)
+		INT_SLEEP 5, R0 ; + 5 px = (13)
+		mov graphics_port, #gray_level ; + 1 px = (14)
+		mov graphics_port, #black_level ; + 1 px = (15)
+		ret ; + 1 px = (16)
+
+;; Fragmento de símbolo vacío correspondiente a cualquier línea
+SLS_N_E: ; (1) (tomando la primera columna, sino es equivalente a 16 o 31)
+		INT_SLEEP 12, R0 ; + 12 px = (13)
+		mov graphics_port, #gray_level ; + 1 px = (14)
+		mov graphics_port, #black_level ; + 1 px = (15)
+		ret ; + 1 px = (16)
 
 END

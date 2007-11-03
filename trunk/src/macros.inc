@@ -19,6 +19,15 @@ INT_SLEEP MACRO delay, tmp_reg
 		djnz tmp_reg, $ ; + (delay - 1) px = delay px
 		ENDM
 
+;;; Sirve para poner una dirección de retorno en el stack de forma manual
+;;; Destruye el contenido del acumulador
+PUSH_ADDRESS MACRO address
+		mov a, #address & 0xff	; + 0.5 px = 0.5 px
+		push acc	; + 1 px = 1.5 px
+		mov a, #address >> 8 ; + 0.5 px = 2 px
+		push acc ; + 1 px = 3 px
+		ENDM
+
 ;;; Sirve para realizar un pulso de ecualización
 ;;; Las posiciones corresponden a llamarla al inicio de la línea
 EQ_PULSE MACRO ; (n, -1)
@@ -53,10 +62,10 @@ LOCAL phys_line_loop, short_wait
 
 		;; Espero hasta que esté en posición
 		SHORT_SLEEP 1 ; + 0.5 px = (8, n)
-		INT_SLEEP 7, R0 ; +  px = (15, n) 
+		INT_SLEEP 3, R0 ; + 3 px = (11, n) 
 
 		;; Llamo a la función que dibuja
-		call draw_line_func ; + 57 px = (72, n)
+		call draw_line_func ; + 58 px = (72, n)
 
 		;; Espero
 		INT_SLEEP 10 - trim_last_line, R0 ; + 10 px = (82, n)
