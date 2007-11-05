@@ -308,7 +308,7 @@ bl_11:
 bl_3: ; (-3, n)
 bl_10:
 	
-	LOGICAL_LINE LS_0, 0
+	LOGICAL_LINE LS_1, 0
 
 ;;;
 ;;; Procedimientos bl_4 y bl_9
@@ -321,7 +321,7 @@ bl_10:
 bl_4: ; (-3, n)
 bl_9:
 	
-	LOGICAL_LINE LS_0, 0
+	LOGICAL_LINE LS_2, 0
 
 ;;;
 ;;; Procedimientos bl_5 y bl_8
@@ -334,7 +334,7 @@ bl_9:
 bl_5: ; (-3, n)
 bl_8:
 	
-	LOGICAL_LINE LS_0, 0
+	LOGICAL_LINE LS_3, 0
 
 ;;;
 ;;; Procedimientos bl_6 y bl_7
@@ -347,7 +347,7 @@ bl_8:
 bl_6: ; (-3, n)
 bl_7:
 	
-	LOGICAL_LINE LS_0, 0
+	LOGICAL_LINE LS_4, 0
 
 ;;;
 ;;; Procedimientos bl_14

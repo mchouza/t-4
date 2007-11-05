@@ -43,7 +43,11 @@ $INCLUDE(variables.inc)
 ;;;	....##....
 
 ;;; Observar que las últimas 5 líneas de cada símbolo son un reflejo de las
-;;; primeras 5.
+;;; primeras 5. También puede apreciarse que las sigueintes líneas son
+;;; idénticas entre símbolos:
+;;; - 0 de X con 4 de O
+;;; - 2 de X con 2 de O
+;;; - 3 de X con 1 de O
 
 ;;; En este módulo se implementa el dibujo de cada tipo de línea física, que
 ;;; se corresponden con los tipos de línea lógica.
@@ -105,7 +109,7 @@ CSEG AT 0x252
 ;;; procedimiento.
 
 ;;; Este módulo exporta las siguientes funciones:
-PUBLIC LEV, LSH, LS_0 
+PUBLIC LEV, LSH, LS_0, LS_1, LS_2, LS_3, LS_4
 
 ;;; Línea de espacio vertical
 LEV: ; (-14)
@@ -133,59 +137,31 @@ LSH: ; (-14)
 ;;; Línea 0 y 9 de símbolo
 LS_0: ; (-14)
 LS_9: ; (-14)
-	
-	LS_0_2: ; (-14)		
-		jb board_line.4, LS_0_2_X ; + 1 px = (-13)
-		jb board_line.5, LS_0_2_O ; + 1 px = (-12)
+		LS_n SLS_0_X, SLS_0_O, SLS_N_E
 
-	LS_0_2_E: ; (-12)
-		PUSH_ADDRESS SLS_N_E ; + 3 px = (-9)
-		jmp LS_0_1 ; + 1 px = (-8)
+LS_1: ; (-14)
+LS_8: ; (-14)
+		LS_n SLS_1_X, SLS_1_O, SLS_N_E
 
-	LS_0_2_X: ; (-13)
-		SHORT_SLEEP 2 ; + 1 px = (-12)
-		PUSH_ADDRESS SLS_0_X ; + 3 px = (-9)
-		jmp LS_0_1 ; + 1 px = (-8)
+LS_2: ; (-14)
+LS_7: ; (-14)
+		LS_n SLS_2_X, SLS_2_O, SLS_N_E
 
-	LS_0_2_O: ; (-12)
-		PUSH_ADDRESS SLS_0_O ; + 3 px = (-9)
-		jmp LS_0_1 ; + 1 px = (-8)
+LS_3: ; (-14)
+LS_6: ; (-14)
+		LS_n SLS_3_X, SLS_3_O, SLS_N_E
 
-	LS_0_1: ; (-8)
-		jb board_line.2, LS_0_1_X ; + 1 px = (-7)
-		jb board_line.3, LS_0_1_O ; + 1 px = (-6)
-
-	LS_0_1_E: ; (-6)
-		PUSH_ADDRESS SLS_N_E ; + 3 px = (-3)
-		jmp LS_0_0 ; + 1 px = (-2)
-
-	LS_0_1_X: ; (-7)
-		SHORT_SLEEP 2 ; + 1 px = (-6)
-		PUSH_ADDRESS SLS_0_X ; + 3 px = (-3)
-		jmp LS_0_0 ; + 1 px = (-2)
-
-	LS_0_1_O: ; (-6)
-		PUSH_ADDRESS SLS_0_O ; + 3 px = (-3)
-		jmp LS_0_0 ; + 1 px = (-2)
-
-	LS_0_0: ; (-2)
-		jb board_line.0, LS_0_0_X ; + 1 px = (-1)
-		jb board_line.1, LS_0_0_O ; + 1 px = (0)
-
-	LS_0_0_E: ; (0)
-		jmp SLS_N_E ; + 1 px = (1)
-
-	LS_0_0_X: ; (-1)
-		SHORT_SLEEP 2 ; + 1 px = (0)
-		jmp SLS_0_X ; + 1 px = (1)
-
-	LS_0_0_O: ; (0)
-		jmp SLS_0_O ; + 1 px = (1)
-	
-		;; No hay 'ret', el último símbolo ya se encarga de eso
+LS_4: ; (-14)
+LS_5: ; (-14)
+		LS_n SLS_4_X, SLS_4_O, SLS_N_E
+		
 
 ;; Fragmento de símbolo de la X	correspondiente a la línea 0 o 9
 SLS_0_X: ; (1) (tomando la primera columna, sino es equivalente a 16 o 31)
+
+;; Fragmento de símbolo de la O correspondiente a la línea 4 o 5
+SLS_4_O: ; (1)
+
 		mov graphics_port, #white_level ; + 1 px = (2)
 		SHORT_SLEEP 2 ; + 1 px = (3)
 		mov graphics_port, #black_level ; + 1 px = (4)
@@ -212,6 +188,53 @@ SLS_1_X: ; (1)
 		mov graphics_port, #black_level ; + 1 px = (15)
 		ret ; + 1 px = (16)
 
+;; Fragmento de símbolo de la X, correspondiente a la línea 2 o 7
+SLS_2_X: ; (1)
+
+;; Fragmento de símbolo de la O, correspondiente a la línea 2 o 7
+SLS_2_O: ; (1)
+
+		mov graphics_port, #black_level ; + 1 px = (2)
+		mov graphics_port, #white_level ; + 1 px = (3)
+		SHORT_SLEEP 4 ; + 2 px = (5)
+		mov graphics_port, #black_level ; + 1 px = (6)
+		SHORT_SLEEP 2 ; + 1 px = (7)
+		mov graphics_port, #white_level ; + 1 px = (8)
+		SHORT_SLEEP 4 ; + 2 px = (10)
+		mov graphics_port, #black_level ; + 1 px = (11)
+		SHORT_SLEEP 4 ; + 2 px = (13)
+		mov graphics_port, #gray_level ; + 1 px = (14)
+		mov graphics_port, #black_level ; + 1 px = (15)
+		ret ; + 1 px = (16)
+
+;; Fragmento de símbolo de la X, correspondiente a la línea 3 o 6
+SLS_3_X: ; (1)
+
+;; Fragmento de símbolo de la O, correspondiente a la línea 1 u 8
+SLS_1_O: ; (1)
+
+		mov graphics_port, #black_level ; + 1 px = (2)
+		SHORT_SLEEP 2 ; + 1 px = (3)
+		mov graphics_port, #white_level	; + 1 px = (4)
+		INT_SLEEP 5, R0 ; + 5 px = (9)
+		mov graphics_port, #black_level ; + 1 px = (10)
+		INT_SLEEP 3, R0 ; + 3 px = (13)
+		mov graphics_port, #gray_level ; + 1 px = (14)
+		mov graphics_port, #black_level ; + 1 px = (15)
+		ret ; + 1 px = (16)
+
+;; Fragmento de símbolo de la X, correspondiente a la línea 4 o 5
+SLS_4_X: ; (1)
+		mov graphics_port, #black_level ; + 1 px = (2)
+		SHORT_SLEEP 4 ; + 2 px = (4)
+		mov graphics_port, #white_level ; + 1 px = (5)
+		INT_SLEEP 3, R0 ; + 3 px = (8)
+		mov graphics_port, #black_level ; + 1 px = (9)
+		INT_SLEEP 4, R0 ; + 4 px = (13)
+		mov graphics_port, #gray_level ; + 1 px = (14)
+		mov graphics_port, #black_level ; + 1 px = (15)
+		ret ; + 1 px = (16)
+
 ;; Fragmento de símbolo de la O	correspondiente a la línea 0 o 9
 SLS_0_O: ; (1) (tomando la primera columna, sino es equivalente a 16 o 31)
 		INT_SLEEP 4, R0 ; + 4 px = (5)
@@ -222,6 +245,21 @@ SLS_0_O: ; (1) (tomando la primera columna, sino es equivalente a 16 o 31)
 		mov graphics_port, #gray_level ; + 1 px = (14)
 		mov graphics_port, #black_level ; + 1 px = (15)
 		ret ; + 1 px = (16)
+
+;; Fragmento de símbolo de la O	correspondiente a la línea 3 o 7
+SLS_3_O: ; (1)
+		SHORT_SLEEP 2 ; + 1 px = (2)
+		mov graphics_port, #white_level ; + 1 px = (3)
+		SHORT_SLEEP 2 ; + 1 px = (4)
+		mov graphics_port, #black_level ; + 1 px = (5)
+		INT_SLEEP 3, R0 ; + 3 px = (8)
+		mov graphics_port, #white_level ; + 1 px = (9)
+		SHORT_SLEEP 2 ; + 1 px = (10)
+		mov graphics_port, #black_level ; + 1 px = (11)
+		SHORT_SLEEP 4 ; + 2 px = (13)
+		mov graphics_port, #gray_level ; + 1 px = (14)
+		mov graphics_port, #black_level ; + 1 px = (15)
+		ret ; + 1 px = (16)	
 
 ;; Fragmento de símbolo vacío correspondiente a cualquier línea
 SLS_N_E: ; (1) (tomando la primera columna, sino es equivalente a 16 o 31)
