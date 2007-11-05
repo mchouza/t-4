@@ -28,11 +28,14 @@ cseg
 		;Habilito el puerto serie con SCON. Modo 2 (Asincrónico 10 bits)
 		setb SM0 ;SM0=1
 		clr SM1 ;SM0=0
+		setb TI
+ 		mov R2, #'A'
 
-inicio:	mov R0, #200
+inicio:	mov R0, #10
 mas:	mov R1, #255
 		djnz R1,$
 		djnz R0, mas
+
 		call revisar_teclado
 	    jmp inicio
 
@@ -40,31 +43,28 @@ revisar_teclado:
 		clr puerto_teclado_4 ;Exploro primera columna
 		
 		jb puerto_teclado_0, suelta_0
-		jnb tecla_byte_1.7, sig_0 ;Se presiono tecla(1,1). Si antes estaba suelta
-		mov R2, 'A'
-		clr tecla_byte_1.7 ;Marco que ahora esta presionada
+		mov R2, #'A'
 		call enviar_tecla
 		jmp sig_0
 suelta_0:
-		setb tecla_byte_1.7 ;Marco que ahora esta suelta			
+			
 sig_0:
 
 
 		jb puerto_teclado_1, suelta_1
-		jnb tecla_byte_1.6, sig_1 ;Se presiono tecla(1,1). Si antes estaba suelta
-		mov R2, 'B'
-		clr tecla_byte_1.6 ;Marco que ahora esta presionada
+		mov R2, #'B'
 		call enviar_tecla
 		jmp sig_1
 suelta_1:
-		setb tecla_byte_1.6 ;Marco que ahora esta suelta			
+			
 sig_1:
 
 
 		ret
 
 enviar_tecla:
-		clr TI ;Cuando el micro termina la transmisión, avisará seteando TI
+		jnb TI, $ ;Cuando el micro termina la transmisión, avisará seteando TI
+		clr TI 
 		mov SBUF, R2
 		ret
 
