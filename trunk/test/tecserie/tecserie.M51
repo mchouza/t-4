@@ -1,4 +1,4 @@
-BL51 BANKED LINKER/LOCATER V6.02                                                        11/03/2007  15:59:04  PAGE 1
+BL51 BANKED LINKER/LOCATER V6.02                                                        11/05/2007  18:06:50  PAGE 1
 
 
 BL51 BANKED LINKER/LOCATER V6.02, INVOKED BY:
@@ -23,7 +23,7 @@ LINK MAP OF MODULE:  tecserie (TECSERIE)
             DATA    0028H     0001H     ABSOLUTE     
 
             * * * * * * *   C O D E   M E M O R Y   * * * * * * *
-            CODE    0000H     0046H     ABSOLUTE     
+            CODE    0000H     003FH     ABSOLUTE     
 
 
 
@@ -33,9 +33,9 @@ SYMBOL TABLE OF MODULE:  tecserie (TECSERIE)
   ----------------------------------
 
   -------         MODULE        TECSERIE
-  C:0041H         SYMBOL        ENVIAR_TECLA
-  C:0012H         SYMBOL        INICIO
-  C:0014H         SYMBOL        MAS
+  C:0037H         SYMBOL        ENVIAR_TECLA
+  C:0016H         SYMBOL        INICIO
+  C:0018H         SYMBOL        MAS
   D:00A0H         SYMBOL        P2
   B:00A0H.0       SYMBOL        PUERTO_TECLADO_0
   B:00A0H.1       SYMBOL        PUERTO_TECLADO_1
@@ -45,21 +45,21 @@ SYMBOL TABLE OF MODULE:  tecserie (TECSERIE)
   B:00A0H.5       SYMBOL        PUERTO_TECLADO_5
   B:00A0H.6       SYMBOL        PUERTO_TECLADO_6
   B:00A0H.7       SYMBOL        PUERTO_TECLADO_7
-  C:001EH         SYMBOL        REVISAR_TECLADO
+  C:0022H         SYMBOL        REVISAR_TECLADO
   D:0099H         SYMBOL        SBUF
-  C:0030H         SYMBOL        SIG_0
-  C:0040H         SYMBOL        SIG_1
+  C:002DH         SYMBOL        SIG_0
+  C:0036H         SYMBOL        SIG_1
   B:0098H.7       SYMBOL        SM0
   B:0098H.6       SYMBOL        SM1
-  C:002EH         SYMBOL        SUELTA_0
-  C:003EH         SYMBOL        SUELTA_1
+  C:002DH         SYMBOL        SUELTA_0
+  C:0036H         SYMBOL        SUELTA_1
   D:0020H         SYMBOL        TECLA_BYTE_1
   D:0028H         SYMBOL        TECLA_BYTE_2
   B:0098H.1       SYMBOL        TI
   C:0000H         LINE#         20
   C:0003H         LINE#         21
   C:0006H         LINE#         23
-BL51 BANKED LINKER/LOCATER V6.02                                                      11/03/2007  15:59:04  PAGE 2
+BL51 BANKED LINKER/LOCATER V6.02                                                      11/05/2007  18:06:50  PAGE 2
 
 
   C:0008H         LINE#         24
@@ -67,36 +67,33 @@ SYMBOL TABLE OF MODULE:  tecserie (TECSERIE)
   C:000CH         LINE#         26
   C:000EH         LINE#         29
   C:0010H         LINE#         30
-  C:0012H         LINE#         32
-  C:0014H         LINE#         33
+  C:0012H         LINE#         31
+  C:0014H         LINE#         32
   C:0016H         LINE#         34
   C:0018H         LINE#         35
   C:001AH         LINE#         36
   C:001CH         LINE#         37
-  C:001EH         LINE#         40
-  C:0020H         LINE#         42
-  C:0023H         LINE#         43
-  C:0026H         LINE#         44
-  C:0028H         LINE#         45
-  C:002AH         LINE#         46
-  C:002CH         LINE#         47
-  C:002EH         LINE#         49
-  C:0030H         LINE#         53
-  C:0033H         LINE#         54
-  C:0036H         LINE#         55
-  C:0038H         LINE#         56
-  C:003AH         LINE#         57
-  C:003CH         LINE#         58
-  C:003EH         LINE#         60
-  C:0040H         LINE#         64
-  C:0041H         LINE#         67
-  C:0043H         LINE#         68
-  C:0045H         LINE#         69
+  C:001EH         LINE#         39
+  C:0020H         LINE#         40
+  C:0022H         LINE#         43
+  C:0024H         LINE#         45
+  C:0027H         LINE#         46
+  C:0029H         LINE#         47
+  C:002BH         LINE#         48
+  C:002DH         LINE#         54
+  C:0030H         LINE#         55
+  C:0032H         LINE#         56
+  C:0034H         LINE#         57
+  C:0036H         LINE#         63
+  C:0037H         LINE#         66
+  C:003AH         LINE#         67
+  C:003CH         LINE#         68
+  C:003EH         LINE#         69
   -------         ENDMOD        TECSERIE
 
 ******************************************************************************
-* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 0046H BYTE ( 3%) *
+* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 003FH BYTE ( 3%) *
 ******************************************************************************
 
-Program Size: data=10.0 xdata=0 code=70
+Program Size: data=10.0 xdata=0 code=63
 LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)
