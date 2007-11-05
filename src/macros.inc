@@ -86,3 +86,58 @@ LOCAL phys_line_loop, short_wait
 	;; y hace 'ret'
 
 	ENDM
+
+;;; Línea física
+LS_n MACRO SLS_X, SLS_O, SLS_E ; (-14)
+LOCAL LS_n_2, LS_n_2_E, LS_n_2_X, LS_n_2_O, LS_n_1, LS_n_1_E, LS_n_1_X, LS_n_1_O, LS_n_0, LS_n_0_E, LS_n_0_X, LS_n_0_O
+	
+	LS_n_2: ; (-14)		
+		jb board_line.4, LS_n_2_X ; + 1 px = (-13)
+		jb board_line.5, LS_n_2_O ; + 1 px = (-12)
+
+	LS_n_2_E: ; (-12)
+		PUSH_ADDRESS SLS_E ; + 3 px = (-9)
+		jmp LS_n_1 ; + 1 px = (-8)
+
+	LS_n_2_X: ; (-13)
+		SHORT_SLEEP 2 ; + 1 px = (-12)
+		PUSH_ADDRESS SLS_X ; + 3 px = (-9)
+		jmp LS_n_1 ; + 1 px = (-8)
+
+	LS_n_2_O: ; (-12)
+		PUSH_ADDRESS SLS_O ; + 3 px = (-9)
+		jmp LS_n_1 ; + 1 px = (-8)
+
+	LS_n_1: ; (-8)
+		jb board_line.2, LS_n_1_X ; + 1 px = (-7)
+		jb board_line.3, LS_n_1_O ; + 1 px = (-6)
+
+	LS_n_1_E: ; (-6)
+		PUSH_ADDRESS SLS_E ; + 3 px = (-3)
+		jmp LS_n_0 ; + 1 px = (-2)
+
+	LS_n_1_X: ; (-7)
+		SHORT_SLEEP 2 ; + 1 px = (-6)
+		PUSH_ADDRESS SLS_X ; + 3 px = (-3)
+		jmp LS_n_0 ; + 1 px = (-2)
+
+	LS_n_1_O: ; (-6)
+		PUSH_ADDRESS SLS_O ; + 3 px = (-3)
+		jmp LS_n_0 ; + 1 px = (-2)
+
+	LS_n_0: ; (-2)
+		jb board_line.0, LS_n_0_X ; + 1 px = (-1)
+		jb board_line.1, LS_n_0_O ; + 1 px = (0)
+
+	LS_n_0_E: ; (0)
+		jmp SLS_E ; + 1 px = (1)
+
+	LS_n_0_X: ; (-1)
+		SHORT_SLEEP 2 ; + 1 px = (0)
+		jmp SLS_X ; + 1 px = (1)
+
+	LS_n_0_O: ; (0)
+		jmp SLS_O ; + 1 px = (1)
+	
+		;; No hay 'ret', el último símbolo ya se encarga de eso
+		ENDM
