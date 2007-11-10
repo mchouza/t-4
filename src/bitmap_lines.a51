@@ -14,7 +14,6 @@ $INCLUDE(variables.inc)
 ;;; línea lógica, de modo que la relación de aspecto de cada pixel sea cercana
 ;;; a 1.
 
-
 ;;; De acuerdo a lo diseñado en las imágenes, elegimos bitmaps de 10 X 10
 ;;; para representar a las Xs y Ox.
 
@@ -101,7 +100,7 @@ $INCLUDE(variables.inc)
 ;;;   42 a 44 -> negro
 
 ;;;	Comienzo del código
-CSEG AT 0x252
+CSEG AT 0x300
 
 ;;; Todas las posiciones se miden con respecto a xBase, a diferencia
 ;;; de en el caso del loop principal.
@@ -129,7 +128,43 @@ LEV: ; (-14)
 LSH: ; (-14)
 		INT_SLEEP 13, R0 ; + 13 px = (-1)
 		mov graphics_port, #gray_level ; + 1 px = (0)
-		INT_SLEEP 43, R0 ; + 43 px = (43)
+
+		;; Reviso si es una línea de cambio (o sea la primera)
+		;; Recordar que R2 contiene el número de línea física dentro de la
+		;; línea lógica actual.
+		cjne R2, #5, normal_LSH ; + 1 px = (1)
+		
+		;; Reviso si estamos en la línea 1
+		mov A, line_num ; + 0.5 px = (1.5)
+		cjne A, #1, not_line_one ; + 1 px = (2.5)
+
+		;; Estoy en la línea 1, pongo dicha línea como línea actual
+		mov board_line, linea_2 ; + 1 px = (3.5)
+		mov line_num, #2 ; + 1 px = (4.5)
+		SHORT_SLEEP 2 ; + 1 px = (5.5)
+		jmp rest_of_LSH ; + 1 px = (6.5)
+
+	not_line_one: ; Sé que no estoy en la línea 1 (2.5)
+		;; Me fijo si estoy en la 0 o en la 2
+		jc line_zero ; + 1 px = (3.5)
+		
+	line_two: ; (3.5)
+		mov board_line, linea_3 ; + 1 px = (4.5)
+		mov line_num, #0 ; + 1 px = (5.5)
+		jmp rest_of_LSH ; + 1 px = (6.5)
+		
+	line_zero: ; (3.5)
+		mov board_line, linea_1 ; + 1 px = (4.5)
+		mov line_num, #1 ; + 1 px = (5.5)
+		jmp rest_of_LSH ; + 1 px = (6.5)
+
+	normal_LSH: ; (1)
+		SHORT_SLEEP 1 ; + 0.5 px = (1.5)
+		INT_SLEEP 5, R0 ; + 5 px = (6.5)
+
+	rest_of_LSH: ; (6.5)
+		SHORT_SLEEP 1 ; + 0.5 px = (7)
+		INT_SLEEP 36, R0 ; + 36 px = (43)
 		mov graphics_port, #black_level ; + 1 px = (44)
 		SHORT_SLEEP 2 ; + 1 px = (45)
 		ret ; +	1 px = (46)

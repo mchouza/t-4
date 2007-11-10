@@ -9,7 +9,8 @@ NAME DIBUJO_TABLERO_PRINCIPAL
 $INCLUDE(bitmap_lines.inc)
 $INCLUDE(constantes.inc)
 $INCLUDE(macros.inc)
-$INCLUdE(variables.inc)
+$INCLUDE(teclado.inc)
+$INCLUDE(variables.inc)
 
 ;;; Comienzo del código
 CSEG AT 0x0000 ; FIXME: Por ahora no hay código de inicialización
@@ -88,7 +89,18 @@ CSEG AT 0x0000 ; FIXME: Por ahora no hay código de inicialización
 ;;; (pixel, linea)
 
 ;;; FIXME: Para prueba
-		mov board_line, #0x19
+		%PUT_SYMBOL(0, 0, E)
+		%PUT_SYMBOL(0, 1, E)
+		%PUT_SYMBOL(0, 2, E)
+		%PUT_SYMBOL(1, 0, E)
+		%PUT_SYMBOL(1, 1, E)
+		%PUT_SYMBOL(1, 2, E)
+		%PUT_SYMBOL(2, 0, E)
+		%PUT_SYMBOL(2, 1, E)
+		%PUT_SYMBOL(2, 2, E)
+		mov line_num, #1
+		mov board_line, linea_1
+		call inicializar_teclado
 
 hid_lines_start: ; Comienzan las líneas ocultas
 
@@ -130,8 +142,12 @@ draw_start: ; Asociado con la parte superior izquierda de la pantalla (-2, 17)
 
 		;; Es igual que en el caso de las ocultas
 		call hsync ; + 9.5 px = (7.5, 17)
-		mov R7, #48 - 17 - 1 ; + 0.5 px = (8, 17)
+		mov R7, #47 - 17 - 1 ; + 0.5 px = (8, 17)
 		INT_SLEEP 78, R0 ; + 78 px = (86, 17) = (-2, 18)
+
+	linea_invocacion_teclado: ;En esta linea del barrido se lee el teclado
+		call hsync
+		call revisar_teclado
 
 	top_margin_loop: ; Hago el resto de las líneas (86, n - 1) = (-2, n)
 		

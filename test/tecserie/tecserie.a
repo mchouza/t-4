@@ -25,13 +25,20 @@ cseg
 		setb puerto_teclado_2 ;Pin para lectura
 		setb puerto_teclado_3 ;Pin para lectura
 
-		;Habilito el puerto serie con SCON. Modo 2 (Asincrónico 10 bits)
-		setb SM0 ;SM0=1
-		clr SM1 ;SM0=0
+		;Habilito el puerto serie con SCON. Modo 1 (Asincrónico)
+		setb SM0 ;SM0=0
+		clr SM1 ;SM0=1
+		;Configuro el timer1 en Modo 2 (8 bits autoreload)
+		MOV TMOD, 0x20
+		;Pongo TH1 en contar 5
+		MOV TH1, #251
+		;Pongo SMOD en 0 para NO duplicar el baud rate
+		ORL PCON, #0x80
+
 		setb TI
  		mov R2, #'A'
 
-inicio:	mov R0, #10
+inicio:	mov R0, #100
 mas:	mov R1, #255
 		djnz R1,$
 		djnz R0, mas

@@ -8,10 +8,12 @@ Group (Headers)
 
 File 1,2,<.\tablero.a51><tablero.a51> 0x0 
 File 1,2,<.\bitmap_lines.a51><bitmap_lines.a51> 0x0 
+File 1,2,<.\teclado.a51><teclado.a51> 0x0 
 File 2,5,<.\macros.inc><macros.inc> 0x0 
 File 2,5,<.\constantes.inc><constantes.inc> 0x0 
 File 2,5,<.\variables.inc><variables.inc> 0x0 
 File 2,5,<.\bitmap_lines.inc><bitmap_lines.inc> 0x0 
+File 2,5,<.\teclado.inc><teclado.inc> 0x0 
 
 
 Options 1,0,0  // Target 'Target 1'
@@ -79,7 +81,7 @@ Options 1,0,0  // Target 'Target 1'
  C51DEF ()
  C51UDF ()
  INCC5 ()
- AX51FL=4
+ AX51FL=5
  AX51MSC ()
  AX51SET ()
  AX51RST ()
@@ -105,7 +107,7 @@ Options 1,0,0  // Target 'Target 1'
  LX51UCL ()
  LX51CSC ()
  LX51UCS ()
- LX51COB (0X0000-0X1FFF)
+ LX51COB ()
  LX51XDB ()
  LX51PDB ()
  LX51BIB ()
