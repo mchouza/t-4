@@ -1,9 +1,9 @@
-A51 MACRO ASSEMBLER  TECSERIE                                                             11/05/2007 18:06:50 PAGE     1
+A51 MACRO ASSEMBLER  TECSERIE                                                             11/10/2007 11:18:12 PAGE     1
 
 
 MACRO ASSEMBLER A51 V8.00b
 OBJECT MODULE PLACED IN tecserie.OBJ
-ASSEMBLER INVOKED BY: C:\Keil3\C51\BIN\A51.EXE tecserie.a SET(SMALL) DEBUG EP
+ASSEMBLER INVOKED BY: C:\Archivos de programa\Keil\C51\BIN\A51.EXE tecserie.a SET(SMALL) DEBUG EP
 
 LOC  OBJ            LINE     SOURCE
 
@@ -34,53 +34,60 @@ LOC  OBJ            LINE     SOURCE
 000A D2A2             25                     setb puerto_teclado_2 ;Pin para lectura
 000C D2A3             26                     setb puerto_teclado_3 ;Pin para lectura
                       27     
-                      28                     ;Habilito el puerto serie con SCON. Modo 2 (Asincrónico 10 bits)
-000E D29F             29                     setb SM0 ;SM0=1
-0010 C29E             30                     clr SM1 ;SM0=0
-0012 D299             31                     setb TI
-0014 7A41             32                     mov R2, #'A'
-                      33     
-0016 780A             34     inicio: mov R0, #10
-0018 79FF             35     mas:    mov R1, #255
-001A D9FE             36                     djnz R1,$
-001C D8FA             37                     djnz R0, mas
-                      38     
-001E 1122             39                     call revisar_teclado
-0020 80F4             40                 jmp inicio
-                      41     
-0022                  42     revisar_teclado:
-0022 C2A4             43                     clr puerto_teclado_4 ;Exploro primera columna
-                      44                     
-0024 20A006           45                     jb puerto_teclado_0, suelta_0
-0027 7A41             46                     mov R2, #'A'
-0029 1137             47                     call enviar_tecla
-002B 8000             48                     jmp sig_0
-002D                  49     suelta_0:
-                      50                             
-002D                  51     sig_0:
-                      52     
-                      53     
-002D 20A106           54                     jb puerto_teclado_1, suelta_1
-0030 7A42             55                     mov R2, #'B'
-0032 1137             56                     call enviar_tecla
-0034 8000             57                     jmp sig_1
-0036                  58     suelta_1:
-A51 MACRO ASSEMBLER  TECSERIE                                                             11/05/2007 18:06:50 PAGE     2
+                      28                     ;Habilito el puerto serie con SCON. Modo 1 (Asincrónico)
+000E D29F             29                     setb SM0 ;SM0=0
+0010 C29E             30                     clr SM1 ;SM0=1
+                      31                     ;Configuro el timer1 en Modo 2 (8 bits autoreload)
+0012 852089           32                     MOV TMOD, 0x20
+                      33                     ;Pongo TH1 en contar 5
+0015 758DFB           34                     MOV TH1, #251
+                      35                     ;Pongo SMOD en 0 para NO duplicar el baud rate
+0018 438780           36                     ORL PCON, #0x80
+                      37     
+001B D299             38                     setb TI
+001D 7A41             39                     mov R2, #'A'
+                      40     
+001F 7864             41     inicio: mov R0, #100
+0021 79FF             42     mas:    mov R1, #255
+0023 D9FE             43                     djnz R1,$
+0025 D8FA             44                     djnz R0, mas
+                      45     
+0027 112B             46                     call revisar_teclado
+0029 80F4             47                 jmp inicio
+                      48     
+002B                  49     revisar_teclado:
+002B C2A4             50                     clr puerto_teclado_4 ;Exploro primera columna
+                      51                     
+002D 20A006           52                     jb puerto_teclado_0, suelta_0
+0030 7A41             53                     mov R2, #'A'
+0032 1140             54                     call enviar_tecla
+0034 8000             55                     jmp sig_0
+0036                  56     suelta_0:
+                      57                             
+0036                  58     sig_0:
+A51 MACRO ASSEMBLER  TECSERIE                                                             11/10/2007 11:18:12 PAGE     2
 
-                      59                             
-0036                  60     sig_1:
-                      61     
-                      62     
-0036 22               63                     ret
-                      64     
-0037                  65     enviar_tecla:
-0037 3099FD           66                     jnb TI, $ ;Cuando el micro termina la transmisión, avisará seteando TI
-003A C299             67                     clr TI 
-003C 8A99             68                     mov SBUF, R2
-003E 22               69                     ret
-                      70     
-                      71     end
-A51 MACRO ASSEMBLER  TECSERIE                                                             11/05/2007 18:06:50 PAGE     3
+                      59     
+                      60     
+0036 20A106           61                     jb puerto_teclado_1, suelta_1
+0039 7A42             62                     mov R2, #'B'
+003B 1140             63                     call enviar_tecla
+003D 8000             64                     jmp sig_1
+003F                  65     suelta_1:
+                      66                             
+003F                  67     sig_1:
+                      68     
+                      69     
+003F 22               70                     ret
+                      71     
+0040                  72     enviar_tecla:
+0040 3099FD           73                     jnb TI, $ ;Cuando el micro termina la transmisión, avisará seteando TI
+0043 C299             74                     clr TI 
+0045 8A99             75                     mov SBUF, R2
+0047 22               76                     ret
+                      77     
+                      78     end
+A51 MACRO ASSEMBLER  TECSERIE                                                             11/10/2007 11:18:12 PAGE     3
 
 SYMBOL TABLE LISTING
 ------ ----- -------
@@ -88,10 +95,11 @@ SYMBOL TABLE LISTING
 
 N A M E             T Y P E  V A L U E   ATTRIBUTES
 
-ENVIAR_TECLA . . .  C ADDR   0037H   A   
-INICIO . . . . . .  C ADDR   0016H   A   
-MAS. . . . . . . .  C ADDR   0018H   A   
+ENVIAR_TECLA . . .  C ADDR   0040H   A   
+INICIO . . . . . .  C ADDR   001FH   A   
+MAS. . . . . . . .  C ADDR   0021H   A   
 P2 . . . . . . . .  D ADDR   00A0H   A   
+PCON . . . . . . .  D ADDR   0087H   A   
 PUERTO_TECLADO_0 .  B ADDR   00A0H.0 A   
 PUERTO_TECLADO_1 .  B ADDR   00A0H.1 A   
 PUERTO_TECLADO_2 .  B ADDR   00A0H.2 A   
@@ -100,17 +108,19 @@ PUERTO_TECLADO_4 .  B ADDR   00A0H.4 A
 PUERTO_TECLADO_5 .  B ADDR   00A0H.5 A   
 PUERTO_TECLADO_6 .  B ADDR   00A0H.6 A   
 PUERTO_TECLADO_7 .  B ADDR   00A0H.7 A   
-REVISAR_TECLADO. .  C ADDR   0022H   A   
+REVISAR_TECLADO. .  C ADDR   002BH   A   
 SBUF . . . . . . .  D ADDR   0099H   A   
-SIG_0. . . . . . .  C ADDR   002DH   A   
-SIG_1. . . . . . .  C ADDR   0036H   A   
+SIG_0. . . . . . .  C ADDR   0036H   A   
+SIG_1. . . . . . .  C ADDR   003FH   A   
 SM0. . . . . . . .  B ADDR   0098H.7 A   
 SM1. . . . . . . .  B ADDR   0098H.6 A   
-SUELTA_0 . . . . .  C ADDR   002DH   A   
-SUELTA_1 . . . . .  C ADDR   0036H   A   
+SUELTA_0 . . . . .  C ADDR   0036H   A   
+SUELTA_1 . . . . .  C ADDR   003FH   A   
 TECLA_BYTE_1 . . .  D ADDR   0020H   A   
 TECLA_BYTE_2 . . .  D ADDR   0028H   A   
+TH1. . . . . . . .  D ADDR   008DH   A   
 TI . . . . . . . .  B ADDR   0098H.1 A   
+TMOD . . . . . . .  D ADDR   0089H   A   
 
 
 REGISTER BANK(S) USED: 0 

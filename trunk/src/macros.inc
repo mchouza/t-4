@@ -48,6 +48,20 @@ VSYNC_PULSE MACRO ; (n, -1)
 		SHORT_SLEEP 5 ; + 0.5 px = (n, 43)
 		ENDM
 
+;;; Pone el símbolo que corresponda en una posición del teclado
+;;; Utilizo E para indicar vacío
+%*define (PUT_SYMBOL (row,col,sym)) (
+		anl linea_1 + %row, #~(0x3 << %col) ; Ponemos 0s en la posición
+		%if (%eqs(%sym, E)) then (
+		) else (
+			%if (%eqs(%sym, X)) then (
+				orl linea_1 + %row, #~(0x1 << %col)
+			) else (
+				orl linea_1 + %row, #~(0x2 << %col)
+			) fi
+		) fi
+)
+
 ;;; Sirve para dibujar una lìnea lógica
 LOGICAL_LINE MACRO draw_line_func, trim_last_line ; (-2.5, n)
 LOCAL phys_line_loop, short_wait
