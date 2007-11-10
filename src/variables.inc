@@ -19,4 +19,4 @@ line_num: ds 1
 linea_1: ds 1
 linea_2: ds 1
 linea_3: ds 1
-jugar: ds 1 ;Turno. 1: Jugador. 0: Máquina
+jugar: ds 1 ;Turno. 1: Humano. 0: Máquina

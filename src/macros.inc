@@ -51,13 +51,13 @@ VSYNC_PULSE MACRO ; (n, -1)
 ;;; Pone el símbolo que corresponda en una posición del teclado
 ;;; Utilizo E para indicar vacío
 %*define (PUT_SYMBOL (row,col,sym)) (
-		anl linea_1 + %row, #~(0x3 << %col) ; Ponemos 0s en la posición
+		anl linea_1 + %row, #~(0x3 << 2 * %col) ; Ponemos 0s en la posición
 		%if (%eqs(%sym, E)) then (
 		) else (
 			%if (%eqs(%sym, X)) then (
-				orl linea_1 + %row, #~(0x1 << %col)
+				orl linea_1 + %row, #(0x1 << 2 * %col)
 			) else (
-				orl linea_1 + %row, #~(0x2 << %col)
+				orl linea_1 + %row, #(0x2 << 2 * %col)
 			) fi
 		) fi
 )
