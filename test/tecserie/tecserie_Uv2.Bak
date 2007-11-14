@@ -32,7 +32,7 @@ Options 1,0,0  // Target 'Target 1'
  EnvLib ()
  EnvReg (ÿAtmel\)
  OrgReg (ÿAtmel\)
- TgStat=16
+ TgStat=25
  OutDir (.\)
  OutName (tecserie)
  GenApp=1
