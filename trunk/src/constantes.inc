@@ -1,7 +1,9 @@
 ;;;; T^4 para 66.09 Laboratorio de Microcomputadoras
 ;;;; Por Mariano Beiró y Mariano Chouza
 ;;;; Constantes
-						   
+
+;;; FIXME: Documentar mejor las constantes
+					   
 sync_level equ 0xE0 ; Salida para obtener el nivel de sincronización
 black_level equ 0xF0 ; Salida para obtener el nivel de negro o supresión (es
                      ; indistinto en nuestro caso)

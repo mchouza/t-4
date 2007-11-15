@@ -2,6 +2,8 @@
 ;;;; Por Mariano Beiró y Mariano Chouza
 ;;;; Macros
 
+;;; FIXME: Documentar mejor las macros
+
 ;;; Sirve para esperas cortas. Consume 1 byte por cada medio pixel de espera.
 SHORT_SLEEP MACRO delay_in_half_pixels
 		REPT delay_in_half_pixels
@@ -26,6 +28,24 @@ PUSH_ADDRESS MACRO address
 		push acc	; + 1 px = 1.5 px
 		mov a, #address >> 8 ; + 0.5 px = 2 px
 		push acc ; + 1 px = 3 px
+		ENDM
+
+;;; Sirve para seleccionar un banco de registros
+SEL_BANK MACRO num	
+		USING	num
+$IF	(num = 0)
+		clr RS0
+		clr RS1
+$ELSEIF (num = 1)
+		setb RS0
+		clr RS1	
+$ELSEIF (num = 2)
+		clr RS0
+		setb RS1
+$ELSEIF (num = 3)
+		setb RS0
+		setb RS1
+$ENDIF
 		ENDM
 
 ;;; Sirve para realizar un pulso de ecualización
