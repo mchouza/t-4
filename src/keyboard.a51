@@ -1,35 +1,63 @@
-$INCLUDE(constantes.inc)
-$INCLUDE(macros.inc)
-$INCLUDE(variables.inc)
+;;;; T^4 para 66.09 Laboratorio de Microcomputadoras
+;;;; Por Mariano Beiró y Mariano Chouza
+;;;; Módulo de teclado (KEYBOARD)
+;;;; Se encarga de realizar la inicialización y revisa el teclado
+		
+$INCLUDE(macros.inc)		; Macros de propósito general
+$INCLUDE(constantes.inc)	; Constantes de utilidad general
 
-CSEG AT 0x0700
+NAME KEYBOARD
 
-;1 ciclo de maquina lleva (1/33 Mhz) * 12 = aprox. 0.3 us
-;255 movs serían aprox. 80 us
-;200*255 movs serían aprox 16 ms
+;;; Segmento propio de este módulo
+KEYBOARD_SEG SEGMENT CODE
 
-PUBLIC inicializar_teclado, revisar_teclado
+;;; Importa
+$INCLUDE(variables.inc)		; Variables compartidas a nivel global
 
-;Rutina que inicializa el teclado. Se ejecuta al arranque del programa
-inicializar_teclado:
-		setb puerto_teclado_0 ;Pin para lectura
-		setb puerto_teclado_1 ;Pin para lectura
-		setb puerto_teclado_2 ;Pin para lectura
-		setb puerto_teclado_3 ;Pin para lectura
-		MOV jugar, #1 ;Turno del humano
-		ret
+;;; Exporta solo la función de inicialización y la de revisióm
+PUBLIC keyboard_init, keyboard_check
 
+;;; Comienza el segmento KEYBOARD_SEG
+RSEG KEYBOARD_SEG
 
-;Rutina que revisa el teclado. Se ejecuta una vez por barrido de pantalla (20 ms)
-revisar_teclado:
+;;;
+;;; inicializar_teclado
+;;;
+;;;	Rutina que inicializa el teclado.
+;;;
+
+keyboard_init:
+		;; Pone en 1 los pins para lectura
+		setb puerto_teclado_0 ; Pin para lectura
+		setb puerto_teclado_1 ; Pin para lectura
+		setb puerto_teclado_2 ; Pin para lectura
+		setb puerto_teclado_3 ; Pin para lectura
+
+		mov jugar, #1 ; Turno del humano
+
+		ret ; Vuelve
+
+;;; FIXME: Poner parámetros etc...
+
+;;;
+;;; keyboard_check
+;;;
+;;;	Rutina que revisa el teclado.
+;;;
+;;; Se ejecuta una vez por barrido de pantalla (20 ms)
+;;;
+ 
+keyboard_check:
 		MOV A, jugar
 		;FIXME!!! Eliminar la próxima línea!!! Es para que el humano pueda jugar sin esperar a la máquina
 		MOV A, #1
 		CJNE A, #1, saltar_a_fin ;Si no es el turno del jugador, salgo
 		JMP no_saltar
-saltar_a_fin: 
+
+	saltar_a_fin: 
 		JMP fin
-no_saltar:
+
+	no_saltar:
 		CLR puerto_teclado_4 ;Exploro primera columna
 		
 		JB puerto_teclado_0, sig_11 ;Veo si está suelta la tecla (1,1)
@@ -42,7 +70,7 @@ no_saltar:
 		%PUT_SYMBOL(0, 0, X)
 		MOV jugar, #0
    
-sig_11: 	
+	sig_11: 	
 		jb puerto_teclado_1, sig_21 ;Veo si está suelta la tecla (2,1)
 		;Analizo si ese lugar del tablero ya está ocupado
 		MOV A, linea_2 ;Obtengo la segunda fila
@@ -53,7 +81,7 @@ sig_11:
 		%PUT_SYMBOL(1, 0, X)
 		MOV jugar, #0
 
-sig_21:
+	sig_21:
 		jb puerto_teclado_2, sig_31 ;veo si está suelta la tecla (3,1)
 		;Analizo si ese lugar del tablero ya está ocupado
 		MOV A, linea_3 ;Obtengo la tercera fila
@@ -64,8 +92,7 @@ sig_21:
 		%PUT_SYMBOL(2, 0, X)
 		MOV jugar, #0
 
-sig_31: 
-
+	sig_31: 
 		setb puerto_teclado_4 ;Dejo primera columna
 		clr puerto_teclado_5 ;Exploro segunda columna
 	
@@ -81,7 +108,7 @@ sig_31:
 		%PUT_SYMBOL(0, 1, X)
 		MOV jugar, #0
 
-sig_12: 	
+	sig_12: 	
 		jb puerto_teclado_1, sig_22 ;Veo si está suelta la tecla (2,2)
 		;Analizo si ese lugar del tablero ya está ocupado
 		MOV A, linea_2 ;Obtengo la segunda fila
@@ -94,7 +121,7 @@ sig_12:
 		%PUT_SYMBOL(1, 1, X)
 		MOV jugar, #0
 
-sig_22: 	
+	sig_22: 	
 		jb puerto_teclado_2, sig_32 ;Veo si está suelta la tecla (3,2)
 		;Analizo si ese lugar del tablero ya está ocupado
 		MOV A, linea_3 ;Obtengo la tercera fila
@@ -107,8 +134,7 @@ sig_22:
 		%PUT_SYMBOL(2, 1, X)
 		MOV jugar, #0
 
-sig_32: 	
-
+	sig_32: 	
 		setb puerto_teclado_5 ;Dejo segunda columna
 		clr puerto_teclado_6 ;Exploro tercera columna
 
@@ -126,7 +152,7 @@ sig_32:
 		%PUT_SYMBOL(0, 2, X)
 		MOV jugar, #0
 
-sig_13: 	
+	sig_13: 	
 		jb puerto_teclado_1, sig_23 ;Veo si está suelta la tecla (2,3)
 		;Analizo si ese lugar del tablero ya está ocupado
 		MOV A, linea_2 ;Obtengo la segunda fila
@@ -141,7 +167,7 @@ sig_13:
 		%PUT_SYMBOL(1, 2, X)
 		MOV jugar, #0
 
-sig_23: 	
+	sig_23: 	
 		jb puerto_teclado_2, sig_33 ;Veo si está suelta la tecla (3,3)
 		;Analizo si ese lugar del tablero ya está ocupado
 		MOV A, linea_3 ;Obtengo la tercera fila
@@ -156,11 +182,11 @@ sig_23:
 		%PUT_SYMBOL(2, 2, X)
 		MOV jugar, #0
 
-sig_33:
+	sig_33:
 		setb puerto_teclado_6 ;Dejo tercera columna
-fin:
+	
+	fin:
 		ret
-;Fin de rutina revisar_teclado
 
-
-end
+;;; Fin del módulo
+END

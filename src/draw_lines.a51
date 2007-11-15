@@ -1,14 +1,21 @@
 ;;;; T^4 para 66.09 Laboratorio de Microcomputadoras
 ;;;; Por Mariano Beiró y Mariano Chouza
-;;;; Dibujo del tablero
-;;;; Partes para el dibujo de las líneas del tablero
+;;;; Módulo de dibujo, sección líneas (DRAW_LINES)
+;;;; Se encarga de dibujar efectivamente a las líneas
 
-NAME DIBUJO_TABLERO_PARTES_LINEA
+$INCLUDE(macros.inc)		; Macros de propósito general
+$INCLUDE(constantes.inc)	; Constantes de utilidad general
 
-;;; Inclusiones
-$INCLUDE(constantes.inc)
-$INCLUDE(macros.inc)
-$INCLUDE(variables.inc)
+NAME DRAW_LINES
+
+;;; Segmento propio de este módulo
+DRAW_LINES_SEG SEGMENT CODE
+
+;;; Importa
+$INCLUDE(variables.inc)		; Variables compartidas a nivel global
+
+;;; Exporta todas las funciones de dibujo de _líneas_, no de sus partes
+PUBLIC LEV, LSH, LS_0, LS_1, LS_2, LS_3, LS_4
 
 ;;; De acuerdo a lo medido, se utilizarán 5 líneas físicas para constituir una
 ;;; línea lógica, de modo que la relación de aspecto de cada pixel sea cercana
@@ -99,16 +106,16 @@ $INCLUDE(variables.inc)
 ;;;   32 a 42 -> línea 'n' símbolo columna 2
 ;;;   42 a 44 -> negro
 
-;;;	Comienzo del código
-CSEG AT 0x300
-
 ;;; Todas las posiciones se miden con respecto a xBase, a diferencia
 ;;; de en el caso del loop principal.
 ;;; Se omiten las coordenadas Y ya que dependen de donde se invoque el
 ;;; procedimiento.
 
-;;; Este módulo exporta las siguientes funciones:
-PUBLIC LEV, LSH, LS_0, LS_1, LS_2, LS_3, LS_4
+;;; FIXME: Poner descripciones más detalladas de cada procedimiento
+;;; _exportado_.
+
+;;; Comienza el segmento DRAW_LINES_SEG
+RSEG DRAW_LINES_SEG
 
 ;;; Línea de espacio vertical
 LEV: ; (-14)
@@ -303,4 +310,5 @@ SLS_N_E: ; (1) (tomando la primera columna, sino es equivalente a 16 o 31)
 		mov graphics_port, #black_level ; + 1 px = (15)
 		ret ; + 1 px = (16)
 
+;;; Fin del módulo
 END
