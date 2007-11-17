@@ -146,7 +146,7 @@ LSH: ; (-14)
 		cjne A, #1, not_line_one ; + 1 px = (2.5)
 
 		;; Estoy en la línea 1, pongo dicha línea como línea actual
-		mov board_line, linea_2 ; + 1 px = (3.5)
+		mov board_line, linea_1 ; + 1 px = (3.5)
 		mov line_num, #2 ; + 1 px = (4.5)
 		SHORT_SLEEP 2 ; + 1 px = (5.5)
 		jmp rest_of_LSH ; + 1 px = (6.5)
@@ -156,12 +156,12 @@ LSH: ; (-14)
 		jc line_zero ; + 1 px = (3.5)
 		
 	line_two: ; (3.5)
-		mov board_line, linea_3 ; + 1 px = (4.5)
+		mov board_line, linea_2 ; + 1 px = (4.5)
 		mov line_num, #0 ; + 1 px = (5.5)
 		jmp rest_of_LSH ; + 1 px = (6.5)
 		
 	line_zero: ; (3.5)
-		mov board_line, linea_1 ; + 1 px = (4.5)
+		mov board_line, linea_0 ; + 1 px = (4.5)
 		mov line_num, #1 ; + 1 px = (5.5)
 		jmp rest_of_LSH ; + 1 px = (6.5)
 

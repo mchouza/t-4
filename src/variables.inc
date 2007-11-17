@@ -4,9 +4,9 @@
 
 EXTRN DATA(board_line)
 EXTRN DATA(line_num)
+EXTRN DATA(linea_0)
 EXTRN DATA(linea_1)
 EXTRN DATA(linea_2)
-EXTRN DATA(linea_3)
 EXTRN DATA(jugar)
 
 EXTRN IDATA(stack)
