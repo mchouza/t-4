@@ -24,9 +24,9 @@ INT_SLEEP MACRO delay, tmp_reg
 ;;; Sirve para poner una dirección de retorno en el stack de forma manual
 ;;; Destruye el contenido del acumulador
 PUSH_ADDRESS MACRO address
-		mov a, #address & 0xff	; + 0.5 px = 0.5 px
-		push acc	; + 1 px = 1.5 px
-		mov a, #address >> 8 ; + 0.5 px = 2 px
+		mov a, #LOW(address) ; + 0.5 px = 0.5 px
+		push acc ; + 1 px = 1.5 px
+		mov a, #HIGH(address) ; + 0.5 px = 2 px
 		push acc ; + 1 px = 3 px
 		ENDM
 
@@ -70,17 +70,16 @@ VSYNC_PULSE MACRO ; (n, -1)
 
 ;;; Pone el símbolo que corresponda en una posición del teclado
 ;;; Utilizo E para indicar vacío
-%*define (PUT_SYMBOL (row,col,sym)) (
-		anl linea_0 + %row, #~(0x3 << 2 * %col) ; Ponemos 0s en la posición
-		%if (%eqs(%sym, E)) then (
-		) else (
-			%if (%eqs(%sym, X)) then (
-				orl linea_0 + %row, #(0x1 << 2 * %col)
-			) else (
-				orl linea_0 + %row, #(0x2 << 2 * %col)
-			) fi
-		) fi
-)
+PUT_SYMBOL MACRO row, col, sym
+		anl linea_0 + row, #(NOT(0x3) SHL (2 * col)) ; Ponemos 0s en la posición
+IF (sym = "E")
+		orl linea_0 + row, #(0x0 SHL (2 * col))
+ELSEIF (sym = "X")
+		orl linea_0 + row, #(0x1 SHL (2 * col))
+ELSE
+		orl linea_0 + row, #(0x2 SHL (2 * col))
+ENDIF
+		ENDM
 
 ;;; Sirve para dibujar una lìnea lógica
 LOGICAL_LINE MACRO draw_line_func, trim_last_line ; (-2.5, n)
@@ -177,9 +176,9 @@ LOCAL LS_n_2, LS_n_2_E, LS_n_2_X, LS_n_2_O, LS_n_1, LS_n_1_E, LS_n_1_X, LS_n_1_O
 		ENDM
 
 ;Lee una tecla del teclado. Recibe fila y columna, de 0 a 2
-leer_tecla MACRO fila, columna
+leer_tecla_puerto MACRO fila, columna, puerto
 LOCAL no_vacia, suelta, sig
-		JB puerto_teclado_&fila, suelta ;Veo si está suelta la tecla (1,1)
+		JB puerto_teclado_&puerto, suelta ;Veo si está suelta la tecla (1,1)
 		;Analizo si ese lugar del tablero ya está ocupado
 		MOV A, linea_&fila ;Obtengo la primera fila
 $IF (columna = 0)
@@ -200,10 +199,10 @@ $ELSE
 $ENDIF
 
 		MOV B, #4
-		DIV AB ;Tengo en B los últimos dos bits de fila_1
+		DIV AB ;Tengo en B los últimos dos bits de fila
 		MOV A,B
 		CJNE A, #0, no_vacia ;Si no está vacía salgo
-		%PUT_SYMBOL(fila, columna, X)
+		PUT_SYMBOL fila, columna, "X"
 		MOV jugar, #0
 	no_vacia:	;Agrego el tiempo del put_symbol y del mov
 		SHORT_SLEEP 4
@@ -214,3 +213,6 @@ $ENDIF
 	sig:	
 		ENDM
 
+leer_tecla MACRO fila, columna
+		leer_tecla_puerto fila, columna, %(2-fila) ;Adapta la fila al puerto que corresponde (están invertidos en orden)
+		ENDM

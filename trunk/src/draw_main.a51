@@ -109,15 +109,15 @@ RSEG DRAW_MAIN_SEG
 
 draw_init:
 		;; FIXME: Para prueba
-		%PUT_SYMBOL(0, 0, E)
-		%PUT_SYMBOL(0, 1, E)
-		%PUT_SYMBOL(0, 2, E)
-		%PUT_SYMBOL(1, 0, E)
-		%PUT_SYMBOL(1, 1, E)
-		%PUT_SYMBOL(1, 2, E)
-		%PUT_SYMBOL(2, 0, E)
-		%PUT_SYMBOL(2, 1, E)
-		%PUT_SYMBOL(2, 2, E)
+		PUT_SYMBOL 0, 0, "E" 
+		PUT_SYMBOL 0, 1, "E"
+		PUT_SYMBOL 0, 2, "E"
+		PUT_SYMBOL 1, 0, "E"
+		PUT_SYMBOL 1, 1, "E"
+		PUT_SYMBOL 1, 2, "E"
+		PUT_SYMBOL 2, 0, "E"
+		PUT_SYMBOL 2, 1, "E"
+		PUT_SYMBOL 2, 2, "E"
 		mov line_num, #1
 		mov board_line, linea_0
 
