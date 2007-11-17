@@ -8,5 +8,8 @@ EXTRN DATA(linea_0)
 EXTRN DATA(linea_1)
 EXTRN DATA(linea_2)
 EXTRN DATA(jugar)
+EXTRN DATA(cmt_ptr)
+EXTRN DATA(cmt_bit_offset)
+EXTRN DATA(cmt_byte_buffer)
 
 EXTRN IDATA(stack)

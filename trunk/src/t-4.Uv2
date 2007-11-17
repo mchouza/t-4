@@ -11,7 +11,7 @@ File 1,2,<.\draw_main.a51><draw_main.a51> 0x0
 File 1,2,<.\draw_lines.a51><draw_lines.a51> 0x0 
 File 1,2,<.\keyboard.a51><keyboard.a51> 0x0 
 File 1,2,<.\variables.a51><variables.a51> 0x0 
-File 1,2,<.\comp_table.a51><comp_table.a51> 0x0 
+File 1,2,<.\ai.a51><ai.a51> 0x0 
 File 2,5,<.\macros.inc><macros.inc> 0x0 
 File 2,5,<.\constantes.inc><constantes.inc> 0x0 
 File 2,5,<.\variables.inc><variables.inc> 0x0 
