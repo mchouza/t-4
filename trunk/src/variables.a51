@@ -31,6 +31,10 @@ board_line: ds 1
 PUBLIC line_num
 line_num: ds 1
 
+;;; Contenido de la línea 0 (sigue el mismo formato que board_line)
+PUBLIC linea_0
+linea_0: ds 1
+
 ;;; Contenido de la línea 1 (sigue el mismo formato que board_line)
 PUBLIC linea_1
 linea_1: ds 1
@@ -38,10 +42,6 @@ linea_1: ds 1
 ;;; Contenido de la línea 2 (sigue el mismo formato que board_line)
 PUBLIC linea_2
 linea_2: ds 1
-
-;;; Contenido de la línea 3 (sigue el mismo formato que board_line)
-PUBLIC linea_3
-linea_3: ds 1
 
 ;;; Turno: 1 -> Humano, 0 -> Máquina
 PUBLIC jugar

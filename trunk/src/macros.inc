@@ -71,13 +71,13 @@ VSYNC_PULSE MACRO ; (n, -1)
 ;;; Pone el símbolo que corresponda en una posición del teclado
 ;;; Utilizo E para indicar vacío
 %*define (PUT_SYMBOL (row,col,sym)) (
-		anl linea_1 + %row, #~(0x3 << 2 * %col) ; Ponemos 0s en la posición
+		anl linea_0 + %row, #~(0x3 << 2 * %col) ; Ponemos 0s en la posición
 		%if (%eqs(%sym, E)) then (
 		) else (
 			%if (%eqs(%sym, X)) then (
-				orl linea_1 + %row, #(0x1 << 2 * %col)
+				orl linea_0 + %row, #(0x1 << 2 * %col)
 			) else (
-				orl linea_1 + %row, #(0x2 << 2 * %col)
+				orl linea_0 + %row, #(0x2 << 2 * %col)
 			) fi
 		) fi
 )
@@ -175,3 +175,42 @@ LOCAL LS_n_2, LS_n_2_E, LS_n_2_X, LS_n_2_O, LS_n_1, LS_n_1_E, LS_n_1_X, LS_n_1_O
 	
 		;; No hay 'ret', el último símbolo ya se encarga de eso
 		ENDM
+
+;Lee una tecla del teclado. Recibe fila y columna, de 0 a 2
+leer_tecla MACRO fila, columna
+LOCAL no_vacia, suelta, sig
+		JB puerto_teclado_&fila, suelta ;Veo si está suelta la tecla (1,1)
+		;Analizo si ese lugar del tablero ya está ocupado
+		MOV A, linea_&fila ;Obtengo la primera fila
+$IF (columna = 0)
+			NOP
+			NOP
+			NOP
+			NOP
+$ELSEIF (columna = 1)
+			RR A
+			RR A
+			NOP
+			NOP
+$ELSE
+			RR A
+			RR A
+			RR A
+			RR A
+$ENDIF
+
+		MOV B, #4
+		DIV AB ;Tengo en B los últimos dos bits de fila_1
+		MOV A,B
+		CJNE A, #0, no_vacia ;Si no está vacía salgo
+		%PUT_SYMBOL(fila, columna, X)
+		MOV jugar, #0
+	no_vacia:	;Agrego el tiempo del put_symbol y del mov
+		SHORT_SLEEP 4
+		JMP sig
+	suelta:	;Agrego todo el tiempo anterior
+		INT_SLEEP 9, R0
+   		JMP sig
+	sig:	
+		ENDM
+
