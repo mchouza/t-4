@@ -46,6 +46,7 @@ main:
 		;SEL_BANK 0 ; Selecciono el banco de registros 0.
 
 		;; FIXME: Agregar inicializaciones
+		call draw_init
 		call keyboard_init
 
 		;; FIXME: No activo las interrupciones, analizar consecuencias

@@ -45,7 +45,7 @@ Options 1,0,0  // Target 'Target 1'
  EnvLib ()
  EnvReg (ÿAtmel\)
  OrgReg (ÿAtmel\)
- TgStat=25
+ TgStat=16
  OutDir (.\Objects\)
  OutName (t-4)
  GenApp=1
@@ -127,9 +127,9 @@ Options 1,0,0  // Target 'Target 1'
  LX51IDS ()
   OPTDL (S8051.DLL)()(DP51.DLL)(-pAT52)(S8051.DLL)()(TP51.DLL)(-pAT52)
   OPTDBG 48125,-1,()()()()()()()()()() ()()()()
- FLASH1 { 1,0,0,0,0,0,0,0,255,255,255,255,0,0,0,0,0,0,0,0 }
+ FLASH1 { 6,0,0,0,0,0,0,0,255,255,255,255,0,0,0,0,0,0,0,0 }
  FLASH2 ()
- FLASH3 ("" ())
+ FLASH3 ("E:\Mariano\aec\Aec_isp.exe" (Objects\t-4.hex))
  FLASH4 ()
 EndOpt
 
