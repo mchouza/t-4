@@ -47,6 +47,18 @@ linea_2: ds 1
 PUBLIC jugar
 jugar: ds 1
 
+;;; Puntero al próximo byte de la tabla a leer
+PUBLIC cmt_ptr
+cmt_ptr: ds 2
+
+;;; Offset de bit a leer
+PUBLIC cmt_bit_offset
+cmt_bit_offset: ds 1
+
+;;; Byte que actúa de buffer
+PUBLIC cmt_byte_buffer
+cmt_byte_buffer: ds 1
+
 ;;;
 ;;; Variables de bit 
 ;;;

@@ -1,23 +1,26 @@
 ;;;; T^4 para 66.09 Laboratorio de Microcomputadoras
 ;;;; Por Mariano Beiró y Mariano Chouza
-;;;; Módulo de tabla comprimida (COMP_TABLE)
-;;;; Contiene la tabla comprimida y lso procedimientos para acceder a ella
+;;;; Módulo de AI (AI)
+;;;; Contiene la tabla comprimida y los procedimeintos para decidir y ejecutar
+;;;; la jugada
 
 $INCLUDE(macros.inc)		; Macros de propósito general
 $INCLUDE(constantes.inc)	; Constantes de utilidad general
+$INCLUDE(variables.inc)		; Variables globales
 
-NAME COMP_TABLE
+NAME AI
 
 ;;; Segmento propio de este módulo
-COMP_TABLE_SEG SEGMENT CODE
+AI_SEG SEGMENT CODE
 
-;; Exporto el símbolo
-PUBLIC comp_table
+;;; Exporto solo la función que juega por la máquina
+PUBLIC ai_play
 
-;; Empiezo el segmento
-RSEG COMP_TABLE_SEG
+;;; Empiezo el segmento
+RSEG AI_SEG
 
-comp_table:
+;;; Tabla comprimida de respuestas para cada posible tablero
+comp_move_table:
 db 0xf2, 0xe8, 0xa2, 0x96, 0x24, 0x66, 0x48, 0xa7, 0x10, 0xed
 db 0x27, 0xd8, 0x91, 0x29, 0xfa, 0xc9, 0x29, 0x35, 0xec, 0x3e
 db 0xba, 0x52, 0x09, 0x0e, 0xd3, 0x07, 0xb1, 0x98, 0xe8, 0xfc
@@ -495,6 +498,89 @@ db 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
 db 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x04, 0x01
 db 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
 db 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+
+;;; Reinicializa las variables para la lectura secuencial de
+;;; la tabla
+reset_comp_table_reading:
+	
+		;; Pongo el primer byte en el puntero al próximo byte
+		mov cmt_ptr, #high(comp_move_table)
+		mov cmt_ptr + 1, #low(comp_move_table)
+
+		;; Pongo 8 en el offset actual (para que lea)
+		mov cmt_bit_offset, #8
+
+		;; Vuelve
+		ret
+
+;;; Lee el próximo bit desde la tabla comprimida
+comp_table_read_next_bit:
+
+		;; Si el offset de bit no es 8, leo del buffer
+		mov A, cmt_bit_offset
+		cjne A, #8, cmt_read_bit
+
+		;;
+		;; Tengo que leer un byte
+		;;
+
+		;; Cargo el puntero en DPTR
+		mov DPH, cmt_ptr
+		mov DPL, cmt_ptr + 1
+	
+		;; Leo de DPTR al buffer
+		clr A
+		movc A, @A+DPTR
+		mov cmt_byte_buffer, A
+	
+		;; Incremento DPTR
+		inc DPTR
+	
+		;; Guardo el puntero incrementado
+		mov cmt_ptr, DPH
+		mov cmt_ptr + 1, DPL
+
+		;; Limpio el contador de bits
+		mov cmt_bit_offset, #0
+
+	;; Si tiene el buffer lleno, lee un bit
+	cmt_read_bit:
+
+		;; Incremento el bit offset
+		inc cmt_bit_offset
+
+		;; Guardo el bit menos significativo en carry
+		rrc A
+		
+		;; Vuelvo
+		ret
+
+;;; Obtiene la movida correspondiente a la siguiente posición del tablero
+comp_table_read_next_move:
+
+		;; FIXME: ARMAR LA FSM
+
+		;; Vuelvo
+		ret
+
+;;; Obtiene la movida correspondiente a un tablero dado en una cierta
+;;; codificación
+comp_table_get_move_from_board:
+
+		;; FIXME: ITERAR HASTA LEER LA JUGADA QUE CORRESPONDA
+
+		;; Vuelvo
+		ret
+
+;;; Obtiene y ejecuta la movida correspondiente al tablero actual
+ai_play:
+
+		;; FIXME: CODIFICA EL TABLERO ACTUAL
+		;; FIXME: BUSCA LA MOVIDA CORRESPONDIENTE
+		;; FIXME: EJECUTA DICHA MOVIDA
+
+		;; Vuelvo
+		ret
 
 ;;; Fin del módulo
 END
