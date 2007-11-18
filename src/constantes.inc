@@ -3,7 +3,11 @@
 ;;;; Constantes
 
 ;;; FIXME: Documentar mejor las constantes
-					   
+
+;;; Utilizo el banco 0
+USING 0
+
+		   
 sync_level equ 0xE0 ; Salida para obtener el nivel de sincronización
 black_level equ 0xF0 ; Salida para obtener el nivel de negro o supresión (es
                      ; indistinto en nuestro caso)

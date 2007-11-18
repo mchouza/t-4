@@ -572,6 +572,100 @@ comp_table_get_move_from_board:
 		;; Vuelvo
 		ret
 
+;;; Codifica el tablero en los registros R0 y R1
+;;; Las líneas en memoria se codifican siguiendo el formato '00aabbcc', donde
+;;; 'aa', 'bb' y 'cc' representan las columnas 2, 1 y 0, respectivamente.
+;;; Debe codificarse todo el tablero en un formato tal que, si denominamos las
+;;; posiciones de acurdo al siguiente diagrama:
+;;;
+;;; 0|1|2
+;;; -+-+-
+;;; 3|4|5
+;;; -+-+-
+;;; 6|7|8
+;;;
+;;; quedaría codificado como: Pos_0 * 3^0 + Pos_1 * 3^1 + ... + Pos_8 * 3^8
+
+get_encoded_board:
+
+		;; Empiezo apuntando a linea_0
+		mov R1, #linea_0
+
+		;; Guardo en buffer
+		mov R0, #buffer
+
+		;; Son 3 líneas
+		mov R3, #3
+		
+		encode_line: ; Codifico la línea apuntada por R1
+	
+			;; Pongo la posición 2 en A
+			mov A, @R1
+			swap A
+			anl A, #3
+	
+			;; Multiplico por 3
+			mov B, #3
+			mul AB ; Solo me interesa la parte baja, que queda en A
+	
+			;; Guardo lo acumulado en R2
+			mov R2, A
+	
+			;; Pongo la posición 1 en A
+			mov A, @R1
+			rr A
+			rr A
+			anl A, #3
+	
+			;; La sumo con lo acumulado
+			add A, R2
+	
+			;; Multiplico por 3
+			mov B, #3
+			mul AB
+	
+			;; Pongo la posición 0 en R2
+			mov AR2, @R1
+			anl AR2, #3
+
+			;; Sumo con lo acumulado
+			add A, R2
+	
+			;; Guardo en buffer
+			mov @R0, A
+	
+			;; Paso a la siguiente línea
+			inc R0
+			inc R1
+			djnz R3, encode_line
+
+		;;
+		;; Tengo las 3 líneas codificadas por separado; debo combinarlas
+		;;
+
+		;; Apunto R0 a la última línea codificada
+		mov R0, buffer + 2
+
+		;; Guardo en A
+		mov A, @R0
+
+		;; Apunto a la anterior
+		dec R0	
+
+		;; Multiplico por 27, sumo una nueva línea y guardo en R2 y R3
+		mov B, #27
+		mul AB
+		add A, @R0
+		mov R3, A
+		mov A, B
+		addc A, #0
+		mov R2, A
+
+		
+							
+		;; Vuelvo
+		ret
+
 ;;; Obtiene y ejecuta la movida correspondiente al tablero actual
 ai_play:
 

@@ -11,5 +11,6 @@ EXTRN DATA(jugar)
 EXTRN DATA(cmt_ptr)
 EXTRN DATA(cmt_bit_offset)
 EXTRN DATA(cmt_byte_buffer)
+EXTRN DATA(buffer)
 
 EXTRN IDATA(stack)
