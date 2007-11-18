@@ -59,6 +59,10 @@ cmt_bit_offset: ds 1
 PUBLIC cmt_byte_buffer
 cmt_byte_buffer: ds 1
 
+;;; Buffer de 3 bytes
+PUBLIC buffer
+buffer: ds 3
+
 ;;;
 ;;; Variables de bit 
 ;;;
