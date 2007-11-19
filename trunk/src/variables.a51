@@ -43,9 +43,9 @@ linea_1: ds 1
 PUBLIC linea_2
 linea_2: ds 1
 
-;;; Turno: 1 -> Humano, 0 -> Máquina
-PUBLIC jugar
-jugar: ds 1
+;;; Turno de jugada: 1 -> Humano, 0 -> Máquina
+PUBLIC turno
+turno: ds 1
 
 ;;; Puntero al próximo byte de la tabla a leer
 PUBLIC cmt_ptr
@@ -75,6 +75,10 @@ nota_actual: ds 1
 ;;; Es un timer que se inicializa con la duración de la nota (en frames), de manera que al llegar a cero la nota se acabe
 PUBLIC timer_nota_actual
 timer_nota_actual: ds 1
+
+;;; Es un timer que se inicializa con el tiempo a esperar después de la jugada del humano para responder
+PUBLIC timer_jugada_maquina
+timer_jugada_maquina: ds 1
 
 ;;;
 ;;; Variables de bit 

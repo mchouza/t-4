@@ -668,12 +668,18 @@ get_encoded_board:
 
 ;;; Obtiene y ejecuta la movida correspondiente al tablero actual
 ai_play:
+		MOV R0, turno ;Guardo el turno en R0 para poder compararlo
+		CJNE R0, #turno_maquina, fin_jugar_maquina ;Si no le toca jugar a la máquina, salgo
+		DJNZ timer_jugada_maquina, fin_jugar_maquina ;Si le toca jugar, veo si terminó el tiempo de espera
+		call ai_play ;Si el timer llegó a cero, juego
 
 		;; FIXME: CODIFICA EL TABLERO ACTUAL
 		;; FIXME: BUSCA LA MOVIDA CORRESPONDIENTE
 		;; FIXME: EJECUTA DICHA MOVIDA
 
+		MOV turno, #turno_humano ;Pasa el turno al humano
 		;; Vuelvo
+fin_jugar_maquina:
 		ret
 
 ;;; Fin del módulo

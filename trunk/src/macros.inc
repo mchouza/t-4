@@ -204,12 +204,15 @@ $ENDIF
 		CJNE A, #0, no_vacia ;Si no está vacía salgo
 		PUT_SYMBOL fila, columna, "X"
 		MOV estado_melodia, #melodia_humano ;Comienzo a reproducir la melodia
-		MOV jugar, #turno_maquina ;Turno=maquina
+		MOV nota_actual, #(-1) ;Para empezar desde la primera nota
+		MOV timer_nota_actual, #0; Para que se tome a continuación la nota 0
+		MOV turno, #turno_maquina ;Turno=maquina
+		MOV timer_jugada_maquina, #40 ;Para que espere 2 segundos (40 frames) antes de jugar la máquina
 	no_vacia:	;Agrego el tiempo del put_symbol y del mov
-		SHORT_SLEEP 4
+		SHORT_SLEEP 1
 		JMP sig
 	suelta:	;Agrego todo el tiempo anterior
-		INT_SLEEP 9, R0
+		INT_SLEEP 6, R0
    		JMP sig
 	sig:	
 		ENDM
