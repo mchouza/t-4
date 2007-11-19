@@ -33,7 +33,7 @@ keyboard_init:
 		setb puerto_teclado_2 ; Pin para lectura
 		setb puerto_teclado_3 ; Pin para lectura
 
-		mov jugar, #1 ; Turno del humano
+		mov turno, #turno_humano ; Turno del humano
 
 		ret ; Vuelve
 
@@ -48,7 +48,7 @@ keyboard_init:
 ;;;
  
 keyboard_check:
-		MOV A, jugar
+		MOV A, turno
 		;FIXME!!! Eliminar la próxima línea!!! Es para que el humano pueda jugar sin esperar a la máquina
 		MOV A, #turno_humano
 		CJNE A, #turno_humano, saltar_a_fin ;Si no es el turno del jugador, salgo

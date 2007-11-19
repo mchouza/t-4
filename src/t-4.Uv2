@@ -21,6 +21,7 @@ File 2,5,<.\keyboard.inc><keyboard.inc>
 File 2,5,<.\draw_main.inc><draw_main.inc>
 File 2,5,<.\draw_lines.inc><draw_lines.inc>
 File 2,5,<.\sound.inc><sound.inc>
+File 2,5,<.\ai.inc><ai.inc>
 
 
 Options 1,0,0  // Target 'Target 1'
