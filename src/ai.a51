@@ -558,21 +558,171 @@ comp_table_read_next_bit:
 ;;; Obtiene la movida correspondiente a la siguiente posición del tablero
 comp_table_read_next_move:
 
-		;; FIXME: ARMAR LA FSM
+		;; La tabla presenta una codificación Hufmann de acuerdo a lo
+		;; siguiente:
 
-		;; Vuelvo
+		;; 0	111
+		;; 1	1101
+		;; 2	1011
+		;; 3	10001
+		;; 4	1001
+		;; 5	110001
+		;; 6	110011
+		;; 7	11000006
+		;; 8	110010
+		;; 9	1100001
+		;; 10	1010
+		;; 11	10000
+		;; 12	0
+
+		;; La decodificación procede interpretando el proceso como un árbol en
+		;; donde cada nodo representa una decisión a tomar en base a un bit de
+		;; la entrada. Ver la documentación para más detalles
+
+	node_A:
+		call comp_table_read_next_bit
+		jc node_B
+		mov A, #12
+		ret
+
+	node_B:
+		call comp_table_read_next_bit
+		jc node_D
+		jmp node_C
+
+	node_C:
+		call comp_table_read_next_bit
+		jc node_F
+		jmp node_E
+
+	node_D:
+		call comp_table_read_next_bit
+		jnc node_G
+		mov A, #0
+		ret
+
+	node_E:
+		call comp_table_read_next_bit
+		jnc node_H
+		mov A, #4
+		ret
+		
+	node_F:
+		call comp_table_read_next_bit
+		jc node_F_2
+		mov A, #10
+		ret
+	node_F_2:
+		mov A, #2
+		ret
+
+	node_G:
+		call comp_table_read_next_bit
+		jnc node_I
+		mov A, #1
+		ret
+
+	node_H:
+		call comp_table_read_next_bit
+		jc node_H_2
+		mov A, #11
+		ret
+	node_H_2:
+		mov A, #3
+		ret
+
+	node_I:
+		call comp_table_read_next_bit
+		jc node_K
+		jmp node_J
+
+	node_J:
+		call comp_table_read_next_bit
+		jnc node_L
+		mov A, #5
+		ret
+
+	node_K:
+		call comp_table_read_next_bit
+		jc node_K_2
+		mov A, #8
+		ret
+	node_K_2:
+		mov A, #6
+		ret
+
+	node_L:
+		call comp_table_read_next_bit
+		jc node_L_2
+		mov A, #7
+		ret
+	node_L_2:
+		mov A, #9
 		ret
 
 ;;; Obtiene la movida correspondiente a un tablero dado en una cierta
 ;;; codificación
 comp_table_get_move_from_board:
 
-		;; FIXME: ITERAR HASTA LEER LA JUGADA QUE CORRESPONDA
+		;; Inicializo la lectura para empezar desde el principio
+		call reset_comp_table_reading
+		
+		;;
+		;; Leo del tablero la cantidad de veces indicada por el par R1 - R0:
+		;; como este par indica posición, debo incrementarlo por uno para tener
+		;; la cantidad de lecturas requeridas.
+		;;
+
+		mov A, R0
+		add A, #1
+		mov R0, A
+		mov A, R1
+		addc A, #0
+		mov R1, A
+
+	ctgmfb_loop:
+
+		;; Lee la próxima movida desde la tabla comprimida
+		call comp_table_read_next_move 
+
+		;; Dos loops anidados: el interno se ejecuta R0 veces inicialmente.
+		;; Luego, durante R1 veces, se ejecuta el loop interno partiendo desde
+		;; cero. Esto significa que el contenido interno a ambos loops se
+		;; ejecuta R0 + R1 * 256 veces, que es exactamente lo buscado.
+
+		djnz R0, ctgmfb_loop
+		djnz R1, ctgmfb_loop
+
+		;; La última ejecución es la que se encarga de dejar en el acumulador
+		;; la movida a realizar
 
 		;; Vuelvo
 		ret
 
-;;; Codifica el tablero en los registros R0 y R1
+;;; Multiplica el número formado por R2 (parte alta) y R3 (parte baja) por 3
+mult_r2_r3_by_3:
+
+		;; Copio a B y A
+		mov B, R2
+		mov A, R3
+
+		;; Roto B y A un bit a la izquierda
+		rlc A
+		xch A, B
+		rlc A
+		xch A, B
+		
+		;; Sumo con R2 y R3
+		add A, R3
+		mov R3, A
+		mov A, B
+		addc A, R2
+		mov R2, A
+		
+		;; Vuelvo
+		ret 
+
+;;; Codifica el tablero en los registros R1 (parte alta) y R0 (parte baja)
 ;;; Las líneas en memoria se codifican siguiendo el formato '00aabbcc', donde
 ;;; 'aa', 'bb' y 'cc' representan las columnas 2, 1 y 0, respectivamente.
 ;;; Debe codificarse todo el tablero en un formato tal que, si denominamos las
@@ -656,30 +806,131 @@ get_encoded_board:
 		mov B, #27
 		mul AB
 		add A, @R0
+		dec R0
 		mov R3, A
 		mov A, B
 		addc A, #0
 		mov R2, A
 
-		
-							
+		;; Multiplico por 27 al contenido de R2 (alto) y R3 (bajo)
+		;; Aprovecho que 27 = 3^3, multiplico 3 veces por 3
+		call mult_r2_r3_by_3
+		call mult_r2_r3_by_3
+		call mult_r2_r3_by_3
+
+		;; Sumo la línea 0 codificada
+		mov A, R3
+		add A, @R0
+		mov R3, A
+		mov A, R2
+		addc A, #0
+		mov R2, A
+									
 		;; Vuelvo
+		ret
+
+;;; Ejecuta la movida indicada por el acumulador
+make_ai_move:
+		
+		;; Se fija si es una movida real o simplemente una indicación
+		cjne A, #9, $+3
+		jnc not_a_real_move
+
+		;;
+		;; Es una movida real, la lleva a cabo
+		;;
+
+	mam_xxxx:
+		jb ACC.3, mam_1000
+
+	mam_0xxx:
+		jb ACC.2, mam_01xx
+
+	mam_00xx:
+		jb ACC.1, mam_001x
+
+	mam_000x:
+		jb ACC.0, mam_0001
+
+	mam_0000:
+		PUT_SYMBOL 0, 0, "O"
+		ret
+
+	mam_1000:
+		PUT_SYMBOL 2, 2, "O"
+		ret
+
+	mam_01xx:
+		jb ACC.1, mam_011x
+
+	mam_010x:
+		jb ACC.0, mam_0101
+
+	mam_0100:
+		PUT_SYMBOL 1, 1, "O"
+		ret
+
+	mam_001x:
+		jb ACC.0, mam_0011
+
+	mam_0010:
+		PUT_SYMBOL 0, 2, "O"
+		ret
+
+	mam_0001:
+		PUT_SYMBOL 0, 1, "O"
+		ret
+
+	mam_011x:
+		jb ACC.0, mam_0111
+
+	mam_0110:
+		PUT_SYMBOL 2, 0, "O"
+		ret
+
+	mam_0101:
+		PUT_SYMBOL 1, 2, "O"
+		ret
+		
+	mam_0011:
+		PUT_SYMBOL 1, 0, "O"
+		ret
+		
+	mam_0111:
+		PUT_SYMBOL 2, 1, "O"
+		ret			
+
+	not_a_real_move:
+
+		;; FIXME: VER QUE HACER!!
+
+		;; Vuelve
 		ret
 
 ;;; Obtiene y ejecuta la movida correspondiente al tablero actual
 ai_play:
-		MOV R0, turno ;Guardo el turno en R0 para poder compararlo
-		CJNE R0, #turno_maquina, fin_jugar_maquina ;Si no le toca jugar a la máquina, salgo
-		DJNZ timer_jugada_maquina, fin_jugar_maquina ;Si le toca jugar, veo si terminó el tiempo de espera
-		call ai_play ;Si el timer llegó a cero, juego
+		;; Decide si le corresponde jugar o no
+		mov R0, turno ; Guardo el turno en R0 para poder compararlo
+		cjne R0, #turno_maquina, fin_jugar_maquina ; Si no le toca jugar a la máquina, salgo
+		djnz timer_jugada_maquina, fin_jugar_maquina ; Si le toca jugar, veo si terminó el tiempo de espera
+		call ai_play ; Si el timer llegó a cero, juego
 
-		;; FIXME: CODIFICA EL TABLERO ACTUAL
-		;; FIXME: BUSCA LA MOVIDA CORRESPONDIENTE
-		;; FIXME: EJECUTA DICHA MOVIDA
+		;; Obtengo el tablero codificado en el par R1 - R0
+		call get_encoded_board
 
-		MOV turno, #turno_humano ;Pasa el turno al humano
-		;; Vuelvo
+		;; Obtiene la movida correspondiente al tablero indicado por el par
+		;; R1 - R0 y la devuelve en el acumulador
+		call comp_table_get_move_from_board
+
+		;; Ejecuta la movida indicada por el acumulador
+		call make_ai_move
+
+		;; Pasa el turno al humano
+		mov turno, #turno_humano
+		
 fin_jugar_maquina:
+
+		;; Vuelvo
 		ret
 
 ;;; Fin del módulo
