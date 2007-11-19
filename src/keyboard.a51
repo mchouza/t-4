@@ -21,7 +21,7 @@ PUBLIC keyboard_init, keyboard_check
 RSEG KEYBOARD_SEG
 
 ;;;
-;;; inicializar_teclado
+;;; keyboard_init
 ;;;
 ;;;	Rutina que inicializa el teclado.
 ;;;
@@ -50,8 +50,8 @@ keyboard_init:
 keyboard_check:
 		MOV A, jugar
 		;FIXME!!! Eliminar la próxima línea!!! Es para que el humano pueda jugar sin esperar a la máquina
-		MOV A, #1
-		CJNE A, #1, saltar_a_fin ;Si no es el turno del jugador, salgo
+		MOV A, #turno_humano
+		CJNE A, #turno_humano, saltar_a_fin ;Si no es el turno del jugador, salgo
 		JMP no_saltar
 	saltar_a_fin: 
 		INT_SLEEP 73, R0

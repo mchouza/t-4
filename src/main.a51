@@ -16,6 +16,7 @@ MAIN_SEG SEGMENT CODE
 $INCLUDE(variables.inc)		; Variables compartidas a nivel global
 $INCLUDE(draw_main.inc)			; Procedimientos de dibujo
 $INCLUDE(keyboard.inc)		; Procedimientos de manejo de teclado
+$INCLUDE(sound.inc)		; Procedimientos de manejo de teclado
 
 ;;; Exporta solo el punto de entrada
 PUBLIC main
@@ -48,6 +49,7 @@ main:
 		;; FIXME: Agregar inicializaciones
 		call draw_init
 		call keyboard_init
+		call sound_init
 
 		;; FIXME: No activo las interrupciones, analizar consecuencias
 

@@ -13,4 +13,8 @@ EXTRN DATA(cmt_bit_offset)
 EXTRN DATA(cmt_byte_buffer)
 EXTRN DATA(buffer)
 
+EXTRN DATA(estado_melodia)
+EXTRN DATA(nota_actual)
+EXTRN DATA(timer_nota_actual)
+
 EXTRN IDATA(stack)

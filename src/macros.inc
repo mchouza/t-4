@@ -203,7 +203,8 @@ $ENDIF
 		MOV A,B
 		CJNE A, #0, no_vacia ;Si no está vacía salgo
 		PUT_SYMBOL fila, columna, "X"
-		MOV jugar, #0
+		MOV estado_melodia, #melodia_humano ;Comienzo a reproducir la melodia
+		MOV jugar, #turno_maquina ;Turno=maquina
 	no_vacia:	;Agrego el tiempo del put_symbol y del mov
 		SHORT_SLEEP 4
 		JMP sig
