@@ -913,7 +913,8 @@ ai_play:
 		mov R0, turno ; Guardo el turno en R0 para poder compararlo
 		cjne R0, #turno_maquina, fin_jugar_maquina ; Si no le toca jugar a la máquina, salgo
 		djnz timer_jugada_maquina, fin_jugar_maquina ; Si le toca jugar, veo si terminó el tiempo de espera
-		call ai_play ; Si el timer llegó a cero, juego
+		
+		;; Si el timer llega a cero, pasa de largo y juega
 
 		;; Obtengo el tablero codificado en el par R1 - R0
 		call get_encoded_board
