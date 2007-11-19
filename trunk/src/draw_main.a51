@@ -15,6 +15,7 @@ DRAW_MAIN_SEG SEGMENT CODE
 ;;; Importa
 $INCLUDE(variables.inc)		; Variables compartidas a nivel global
 $INCLUDE(keyboard.inc)		; Procedimientos para acceder al teclado
+$INCLUDE(sound.inc)			; Procedimientos para reproducir melodias
 $INCLUDE(draw_lines.inc)	; Procedimeintos que se encargan de dibujar las líneas físicas
 
 ;;; Exporta solo la función de inicialización y el loop
@@ -177,12 +178,16 @@ draw_loop:
 	
 			;; Es igual que en el caso de las ocultas
 			call hsync ; + 9.5 px = (7.5, 17)
-			mov R7, #47 - 17 - 1 ; + 0.5 px = (8, 17)
+			mov R7, #47 - 17 - 2 ; + 0.5 px = (8, 17)
 			INT_SLEEP 78, R0 ; + 78 px = (86, 17) = (-2, 18)
 	
 		linea_invocacion_teclado: ; En esta linea del barrido se lee el teclado
 			call hsync
 			call keyboard_check
+	
+		linea_reproduccion_melodias: ; En esta linea del barrido se reproducen notas musicales
+			call hsync
+			call sound_play
 	
 		top_margin_loop: ; Hago el resto de las líneas (86, n - 1) = (-2, n)
 			

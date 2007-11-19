@@ -63,6 +63,19 @@ cmt_byte_buffer: ds 1
 PUBLIC buffer
 buffer: ds 3
 
+;;; Indica qué melodía se está reproduciendo actualmente
+;;;	valores_posibles: melodia_humano, melodia_maquina, melodia_final
+PUBLIC estado_melodia
+estado_melodia: ds 1
+
+;;; Es un iterador para avanzar por la partitura (lista de notas a reproducir)
+PUBLIC nota_actual
+nota_actual: ds 1
+
+;;; Es un timer que se inicializa con la duración de la nota (en frames), de manera que al llegar a cero la nota se acabe
+PUBLIC timer_nota_actual
+timer_nota_actual: ds 1
+
 ;;;
 ;;; Variables de bit 
 ;;;

@@ -29,3 +29,28 @@ puerto_teclado_4 EQU P2.4
 puerto_teclado_5 EQU P2.5
 puerto_teclado_6 EQU P2.6
 puerto_teclado_7 EQU P2.7
+
+nota_1 EQU 0x04
+nota_2 EQU 0x08
+nota_3 EQU 0x10
+nota_4 EQU 0x20
+silencio EQU 0x00
+
+;La duración mínima de una nota es de 1 frame (50 ms) y se corresponderá con una corchea
+tiempo_musical EQU 0x01
+corchea EQU (tiempo_musical)
+negra EQU (2*corchea)
+blanca EQU (2*negra)
+
+fin_melodia EQU 0xFF
+
+puerto_sonido EQU P0
+
+;Estados de melodia
+detenida EQU 0
+melodia_humano EQU 1
+melodia_maquina EQU 2
+melodia_final EQU 3
+
+turno_maquina EQU 0
+turno_humano EQU 1
