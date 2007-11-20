@@ -94,33 +94,52 @@ sound_play:
 
 		;Si no sigue, tomo la próxima nota
 		INC nota_actual	  ;Sumo uno al iterador
-		MOV A, nota_actual ;Lo guardo en A para llamar a la rutina que lee de la tabla (partitura)					  
 		
-		CJNE A, #fin_melodia, cambiar_nota;Si es la última nota,
-		MOV estado_melodia, #detenida ;Detengo la reproducción
-		JMP fin_sound_play ;y salgo
-
 cambiar_nota:
+		MOV A, estado_melodia ;Para comparar el estado de la melodía
 		CJNE A, #melodia_humano, cambiar_nota_2 ;Si estoy reproduciendo melodia_humano
 		MOV A, nota_actual ;Guardo el iterador en A para llamar a la rutina que lee de la tabla (partitura)					  
 		call obtener_nota_melodia_humano ;Guarda en A la próxima nota
 		MOV puerto_sonido, A ;Y la reproduzco
+		MOV altura_nota_actual, A ;Me guardo el valor de esta nota
+		CJNE A, #fin_melodia, no_detener ;Si no es la última nota
+		JMP detener
+no_detener:
 		call obtener_altura_melodia_humano ;Guarda en A la duración de la próxima nota
 		MOV timer_nota_actual, A ;La guardo en memoria
+		JMP descontar_tiempo;
 cambiar_nota_2:
+		MOV A, estado_melodia ;Para comparar el estado de la melodía
 		CJNE A, #melodia_maquina, cambiar_nota_3 ;Si estoy reproduciendo melodia_maquina
 		MOV A, nota_actual ;Guardo el iterador en A para llamar a la rutina que lee de la tabla (partitura)					  
 		call obtener_nota_melodia_maquina ;Guarda en A la próxima nota
 		MOV puerto_sonido, A ;Y la reproduzco
+		MOV altura_nota_actual, A ;Me guardo el valor de esta nota
+		CJNE A, #fin_melodia, no_detener_2 ;Si no es la última nota
+		JMP detener
+no_detener_2:
 		call obtener_altura_melodia_maquina ;Guarda en A la duración de la próxima nota
 		MOV timer_nota_actual, A ;La guardo en memoria
+		JMP descontar_tiempo
 cambiar_nota_3:
 		;Estoy reproduciendo melodia del final del juego
+		MOV A, estado_melodia ;Para comparar el estado de la melodía
 		call obtener_nota_melodia_final ;Guarda en A la próxima nota
 		MOV A, nota_actual ;Guardo el iterador en A para llamar a la rutina que lee de la tabla (partitura)					  
 		MOV puerto_sonido, A ;Y la reproduzco
+		MOV altura_nota_actual, A ;Me guardo el valor de esta nota
+		CJNE A, #fin_melodia, no_detener_3 ;Si no es la última nota
+		JMP detener
+no_detener_3:
 		call obtener_altura_melodia_final ;Guarda en A la duración de la próxima nota
 		MOV timer_nota_actual, A ;La guardo en memoria
+		JMP descontar_tiempo
+
+detener:
+		MOV puerto_sonido, #silencio ;Limpio el puerto
+		MOV estado_melodia, #detenida ;Guardo que la reproducción está detenida
+		JMP fin_sound_play ;y salgo
+
 		
 descontar_tiempo:
 		DEC timer_nota_actual ;Decremento la duración de la nota que en este frame se va a reproducir

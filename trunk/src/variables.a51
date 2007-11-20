@@ -72,6 +72,10 @@ estado_melodia: ds 1
 PUBLIC nota_actual
 nota_actual: ds 1
 
+;;; Guarda la altura de la nota actualmente en reproducción
+PUBLIC altura_nota_actual
+altura_nota_actual: ds 1
+
 ;;; Es un timer que se inicializa con la duración de la nota (en frames), de manera que al llegar a cero la nota se acabe
 PUBLIC timer_nota_actual
 timer_nota_actual: ds 1

@@ -178,7 +178,7 @@ LOCAL LS_n_2, LS_n_2_E, LS_n_2_X, LS_n_2_O, LS_n_1, LS_n_1_E, LS_n_1_X, LS_n_1_O
 ;Lee una tecla del teclado. Recibe fila y columna, de 0 a 2
 leer_tecla_puerto MACRO fila, columna, puerto
 LOCAL no_vacia, suelta, sig
-		JB puerto_teclado_&puerto, suelta ;Veo si está suelta la tecla (1,1)
+		JB puerto_teclado_&puerto, suelta ;Veo si está suelta la tecla
 		;Analizo si ese lugar del tablero ya está ocupado
 		MOV A, linea_&fila ;Obtengo la primera fila
 $IF (columna = 0)
@@ -218,5 +218,5 @@ $ENDIF
 		ENDM
 
 leer_tecla MACRO fila, columna
-		leer_tecla_puerto fila, columna, %(2-fila) ;Adapta la fila al puerto que corresponde (están invertidos en orden)
+		leer_tecla_puerto fila, columna, 2-fila ;Adapta la fila al puerto que corresponde (están invertidos en orden)
 		ENDM

@@ -915,7 +915,10 @@ ai_play:
 		djnz timer_jugada_maquina, fin_jugar_maquina ; Si le toca jugar, veo si terminó el tiempo de espera
 		
 		;; Si el timer llega a cero, pasa de largo y juega
-
+		
+		;; FIXME: Borrar!!!! Es para que la máquina pase su turno sin jugar!!!!
+		;;JMP fin_jugar_maquina
+		
 		;; Obtengo el tablero codificado en el par R1 - R0
 		call get_encoded_board
 

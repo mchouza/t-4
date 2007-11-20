@@ -50,7 +50,7 @@ keyboard_init:
 keyboard_check:
 		MOV A, turno
 		;FIXME!!! Eliminar la próxima línea!!! Es para que el humano pueda jugar sin esperar a la máquina
-		MOV A, #turno_humano
+		;MOV A, #turno_humano
 		CJNE A, #turno_humano, saltar_a_fin ;Si no es el turno del jugador, salgo
 		JMP no_saltar
 	saltar_a_fin: 
