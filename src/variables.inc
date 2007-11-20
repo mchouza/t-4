@@ -15,6 +15,7 @@ EXTRN DATA(buffer)
 
 EXTRN DATA(estado_melodia)
 EXTRN DATA(nota_actual)
+EXTRN DATA(altura_nota_actual)
 EXTRN DATA(timer_nota_actual)
 
 EXTRN DATA(timer_jugada_maquina)

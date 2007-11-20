@@ -36,9 +36,12 @@ nota_3 EQU 0x10
 nota_4 EQU 0x20
 silencio EQU 0x00
 
-;La duración mínima de una nota es de 1 frame (50 ms) y se corresponderá con una corchea
+;La duración mínima de una nota es de 1 frame (20 ms) y se corresponderá con una corchea
 tiempo_musical EQU 0x01
-corchea EQU (tiempo_musical)
+semifusa EQU (tiempo_musical)
+fusa EQU (2*semifusa)
+semicorchea EQU (2*fusa)
+corchea EQU (2*semicorchea)
 negra EQU (2*corchea)
 blanca EQU (2*negra)
 

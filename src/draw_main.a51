@@ -122,6 +122,7 @@ draw_init:
 		PUT_SYMBOL 2, 2, "E"
 		mov line_num, #1
 		mov board_line, linea_0
+		ret
 
 ;;;
 ;;; Procedimiento draw_loop
