@@ -5,6 +5,7 @@
 		
 $INCLUDE(macros.inc)		; Macros de propósito general
 $INCLUDE(constantes.inc)	; Constantes de utilidad general
+$INCLUDE(sound.inc)	; Constantes de utilidad general
 
 NAME KEYBOARD
 
@@ -32,9 +33,7 @@ keyboard_init:
 		setb puerto_teclado_1 ; Pin para lectura
 		setb puerto_teclado_2 ; Pin para lectura
 		setb puerto_teclado_3 ; Pin para lectura
-
-		mov turno, #turno_humano ; Turno del humano
-
+												   
 		ret ; Vuelve
 
 ;;; FIXME: Poner parámetros etc...
@@ -50,7 +49,7 @@ keyboard_init:
 keyboard_check:
 		MOV A, turno
 		;FIXME!!! Eliminar la próxima línea!!! Es para que el humano pueda jugar sin esperar a la máquina
-		;MOV A, #turno_humano
+		MOV A, #turno_humano
 		CJNE A, #turno_humano, saltar_a_fin ;Si no es el turno del jugador, salgo
 		JMP no_saltar
 	saltar_a_fin: 

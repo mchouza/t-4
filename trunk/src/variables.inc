@@ -20,4 +20,6 @@ EXTRN DATA(timer_nota_actual)
 
 EXTRN DATA(timer_jugada_maquina)
 
+EXTRN DATA(arranca)
+
 EXTRN IDATA(stack)

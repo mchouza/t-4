@@ -6,7 +6,7 @@ unsigned char retorno;
 
 unsigned char hi_ret, lo_ret;
 
-extern unsigned char board_line;
+extern unsigned char linea_0, linea_1, linea_2;
 extern void encode_board();
 extern void read_table();
 
@@ -19,40 +19,32 @@ void test_board_enc()
 	unsigned char pos_2_0, pos_2_1, pos_2_2;
 	int eb = 0;
 
-	SPEC_FOR(pos_0_0)
-	SPEC_FOR(pos_0_1)
-	SPEC_FOR(pos_0_2)
-	SPEC_FOR(pos_1_0)
-	SPEC_FOR(pos_1_1)
-	SPEC_FOR(pos_1_2)
-	SPEC_FOR(pos_2_0)
-	SPEC_FOR(pos_2_1)
 	SPEC_FOR(pos_2_2)
+	SPEC_FOR(pos_2_1)
+	SPEC_FOR(pos_2_0)
+	SPEC_FOR(pos_1_2)
+	SPEC_FOR(pos_1_1)
+	SPEC_FOR(pos_1_0)
+	SPEC_FOR(pos_0_2)
+	SPEC_FOR(pos_0_1)
+	SPEC_FOR(pos_0_0)
 	{
 		/* Codifico el tablero */
-		(&board_line)[0] = pos_0_2 << 4 | pos_0_1 << 2 | pos_0_0;
-		(&board_line)[1] = pos_1_2 << 4 | pos_1_1 << 2 | pos_1_0;
-		(&board_line)[2] = pos_2_2 << 4 | pos_2_1 << 2 | pos_2_0;
+		linea_0 = pos_0_2 << 4 | pos_0_1 << 2 | pos_0_0;
+		linea_1 = pos_1_2 << 4 | pos_1_1 << 2 | pos_1_0;
+		linea_2 = pos_2_2 << 4 | pos_2_1 << 2 | pos_2_0;
 
 		/* Llamo al procedimeinto que codifica el tablero */
 		encode_board();
 
-		/* Realizo una codificación propia */
-		eb =	pos_0_0 + 3 * (
-				pos_0_1 + 3 * (
-				pos_0_2 + 3 * (
-				pos_1_0 + 3 * (
-				pos_1_1 + 3 * (
-				pos_1_2 + 3 * (
-				pos_2_0 + 3 * (
-				pos_2_1 + 3 * (
-				pos_2_2))))))));
-
 		/* Comparo */
 		if (eb >> 8 != hi_ret || (eb & 0xff) != lo_ret)
 		{
-			eb += 1;
+			int a = 0;
 		}
+
+		/* Incremento eb, que mantiene el tablero */
+		++eb;
 	}
 	
 #undef SPEC_FOR
@@ -67,7 +59,7 @@ void test_comp_table_read()
 	unsigned char all_numbers_sum = 0;
 	
 	/* Pruebo con todos los valores posibles del tablero */
-	for (board = 0; board < NUM_BOARDS; board++)
+	for (board = NUM_BOARDS-1; board < NUM_BOARDS; board++)
 	{
 		/* Paso el offset en una variable global */
 		/* Me devuelve el valor de retorno en retorno */

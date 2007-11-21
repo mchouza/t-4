@@ -1,7 +1,7 @@
-A51 MACRO ASSEMBLER  TECSOUN2                                                             10/28/2007 23:27:50 PAGE     1
+A51 MACRO ASSEMBLER  TECSOUN2                                                             11/21/2007 18:06:58 PAGE     1
 
 
-MACRO ASSEMBLER A51 V8.00d
+MACRO ASSEMBLER A51 V6.23
 OBJECT MODULE PLACED IN tecsoun2.OBJ
 ASSEMBLER INVOKED BY: C:\Keil\C51\BIN\A51.EXE tecsoun2.a SET(SMALL) DEBUG EP
 
@@ -65,7 +65,7 @@ LOC  OBJ            LINE     SOURCE
 0038 C206             56                     clr tecla_byte_1.6 ;Marco que ahora esta presionada
 003A 117E             57                     call soltar_nota
 003C 1172             58                     call tocar_nota_2
-A51 MACRO ASSEMBLER  TECSOUN2                                                             10/28/2007 23:27:50 PAGE     2
+A51 MACRO ASSEMBLER  TECSOUN2                                                             11/21/2007 18:06:58 PAGE     2
 
 003E 8005             59                     jmp sig_1
 0040                  60     suelta_1:
@@ -116,7 +116,7 @@ LOC  OBJ            LINE     SOURCE
 0081 22              105                     ret
                      106     
                      107     end
-A51 MACRO ASSEMBLER  TECSOUN2                                                             10/28/2007 23:27:50 PAGE     3
+A51 MACRO ASSEMBLER  TECSOUN2                                                             11/21/2007 18:06:58 PAGE     3
 
 SYMBOL TABLE LISTING
 ------ ----- -------

@@ -84,6 +84,11 @@ timer_nota_actual: ds 1
 PUBLIC timer_jugada_maquina
 timer_jugada_maquina: ds 1
 
+;;; Indica quién comienza el juego.
+;;; valores posibles: arranca_humano, arranca_maquina
+PUBLIC arranca
+arranca: ds 1
+
 ;;;
 ;;; Variables de bit 
 ;;;
