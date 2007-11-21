@@ -57,3 +57,10 @@ melodia_final EQU 3
 
 turno_maquina EQU 0
 turno_humano EQU 1
+
+arranca_maquina EQU 0
+arranca_humano EQU 1
+
+sym_e EQU 0
+sym_x EQU 1
+sym_o EQU 2

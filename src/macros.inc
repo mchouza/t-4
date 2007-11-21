@@ -81,6 +81,13 @@ ELSE
 ENDIF
 		ENDM
 
+;;; Pone el símbolo indicado en R3
+PUT_SYMBOL_VARM MACRO row, col
+		mov R0, #row
+		mov R1, #col
+		call put_symbol_var ; Toma el tipo de símbolo desde R3
+		ENDM 
+
 ;;; Sirve para dibujar una lìnea lógica
 LOGICAL_LINE MACRO draw_line_func, trim_last_line ; (-2.5, n)
 LOCAL phys_line_loop, short_wait
@@ -177,7 +184,7 @@ LOCAL LS_n_2, LS_n_2_E, LS_n_2_X, LS_n_2_O, LS_n_1, LS_n_1_E, LS_n_1_X, LS_n_1_O
 
 ;Lee una tecla del teclado. Recibe fila y columna, de 0 a 2
 leer_tecla_puerto MACRO fila, columna, puerto
-LOCAL no_vacia, suelta, sig
+LOCAL no_vacia, suelta, sig, poner_circulo, ficha_puesta
 		JB puerto_teclado_&puerto, suelta ;Veo si está suelta la tecla
 		;Analizo si ese lugar del tablero ya está ocupado
 		MOV A, linea_&fila ;Obtengo la primera fila
@@ -202,18 +209,24 @@ $ENDIF
 		DIV AB ;Tengo en B los últimos dos bits de fila
 		MOV A,B
 		CJNE A, #0, no_vacia ;Si no está vacía salgo
-		PUT_SYMBOL fila, columna, "X"
-		MOV estado_melodia, #melodia_humano ;Comienzo a reproducir la melodia
-		MOV nota_actual, #(-1) ;Para empezar desde la primera nota
-		MOV timer_nota_actual, #0; Para que se tome a continuación la nota 0
+		;Veo si pone cruz (arranca_humano) o circulo (arranca_maquina)
+		MOV R0, arranca
+		CJNE R0, #arranca_humano, poner_circulo
+		PUT_SYMBOL fila, columna, "X"  ;Si arrancó el humano, juega con cruces
+		JMP ficha_puesta
+	poner_circulo:
+		PUT_SYMBOL fila, columna, "O"  ;Si arrancó la máquina, el humano juega con círculos
+		JMP ficha_puesta
+	ficha_puesta:
+		MOV A, #melodia_humano
+		CALL sound_start_melody ;; Reproduzco la melodia
 		MOV turno, #turno_maquina ;Turno=maquina
-		MOV timer_jugada_maquina, #40 ;Para que espere 2 segundos (40 frames) antes de jugar la máquina
+		MOV timer_jugada_maquina, #100 ;Para que espere 2 segundos (40 frames) antes de jugar la máquina
 	no_vacia:	;Agrego el tiempo del put_symbol y del mov
 		SHORT_SLEEP 1
 		JMP sig
 	suelta:	;Agrego todo el tiempo anterior
-		INT_SLEEP 6, R0
-   		JMP sig
+		JMP sig
 	sig:	
 		ENDM
 

@@ -15,7 +15,7 @@ SOUND_SEG SEGMENT CODE
 $INCLUDE(variables.inc)		; Variables compartidas a nivel global
 
 ;;; Exporta solo la función de inicialización y la de reproduccion
-PUBLIC sound_init, sound_play
+PUBLIC sound_init, sound_start_melody, sound_play
 
 ;;; Comienza el segmento SOUND_SEG
 RSEG SOUND_SEG
@@ -48,7 +48,7 @@ obtener_nota_melodia_maquina:
 	INC A
 	MOVC A, @A + PC
 	RET
-	db nota_1, 	nota_2,	nota_3,	silencio,	nota_1,	nota_2,	nota_3,	fin_melodia
+	db nota_3, 	nota_2,	silencio, nota_1, nota_1,	nota_2,	nota_3,	fin_melodia
 
 obtener_altura_melodia_maquina:
 	INC A
@@ -61,13 +61,20 @@ obtener_nota_melodia_final:
 	INC A
 	MOVC A, @A + PC
 	RET
-	db nota_1, 	nota_2,	nota_3,	silencio,	nota_1,	nota_2,	nota_3,	fin_melodia
+	db nota_1, 	nota_2,	nota_1, nota_2, nota_1, 	nota_2, nota_1, 	fin_melodia
 
 obtener_altura_melodia_final:
 	INC A
 	MOVC A, @A + PC
 	RET
-	db negra, 	negra, 	blanca,	blanca,		negra, 	negra, 	blanca,	fin_melodia
+	db corchea,corchea,corchea,corchea,corchea,corchea,corchea,	fin_melodia
+
+;; Rutina que recibe en A la melodia a reproducir
+sound_start_melody:
+		MOV estado_melodia, A ;Comienzo a reproducir la melodia
+		MOV nota_actual, #(-1) ;Para empezar desde la primera nota
+		MOV timer_nota_actual, #0; Para que se tome a continuación la nota 0
+		RET
 
 sound_play:
 ;		Si reproduciendo == false
@@ -86,6 +93,8 @@ sound_play:
 ;			Fin
 ;			duracion--
 ;		Fin
+
+
 		MOV A, estado_melodia ;Paso el estado a R0 para comparar
 		JZ fin_sound_play ;Si no hay que reproducir nada, salgo
 		
@@ -105,11 +114,11 @@ cambiar_nota:
 		CJNE A, #fin_melodia, no_detener ;Si no es la última nota
 		JMP detener
 no_detener:
+		MOV A, nota_actual ;Guardo el iterador en A para llamar a la rutina que lee de la tabla (partitura)				
 		call obtener_altura_melodia_humano ;Guarda en A la duración de la próxima nota
 		MOV timer_nota_actual, A ;La guardo en memoria
 		JMP descontar_tiempo;
 cambiar_nota_2:
-		MOV A, estado_melodia ;Para comparar el estado de la melodía
 		CJNE A, #melodia_maquina, cambiar_nota_3 ;Si estoy reproduciendo melodia_maquina
 		MOV A, nota_actual ;Guardo el iterador en A para llamar a la rutina que lee de la tabla (partitura)					  
 		call obtener_nota_melodia_maquina ;Guarda en A la próxima nota
@@ -118,19 +127,36 @@ cambiar_nota_2:
 		CJNE A, #fin_melodia, no_detener_2 ;Si no es la última nota
 		JMP detener
 no_detener_2:
+		MOV A, nota_actual ;Guardo el iterador en A para llamar a la rutina que lee de la tabla (partitura)				
 		call obtener_altura_melodia_maquina ;Guarda en A la duración de la próxima nota
 		MOV timer_nota_actual, A ;La guardo en memoria
 		JMP descontar_tiempo
 cambiar_nota_3:
 		;Estoy reproduciendo melodia del final del juego
-		MOV A, estado_melodia ;Para comparar el estado de la melodía
-		call obtener_nota_melodia_final ;Guarda en A la próxima nota
 		MOV A, nota_actual ;Guardo el iterador en A para llamar a la rutina que lee de la tabla (partitura)					  
+		call obtener_nota_melodia_final ;Guarda en A la próxima nota
 		MOV puerto_sonido, A ;Y la reproduzco
 		MOV altura_nota_actual, A ;Me guardo el valor de esta nota
 		CJNE A, #fin_melodia, no_detener_3 ;Si no es la última nota
+		;;FIN DEL JUEGO		  
+		;; Limpio el tablero
+		mov linea_0, #0
+		mov linea_1, #0
+		mov linea_2, #0
+
+		MOV R0, arranca
+		CJNE R0, #arranca_humano, ahora_arranca_humano ;La proxima partida empieza el otro
+		MOV arranca, #arranca_maquina ;Arrancará la máquina
+		MOV turno, #turno_maquina
+		JMP arranque_configurado
+ahora_arranca_humano:
+		MOV arranca, #arranca_humano  ;Arrancará el humano
+		MOV turno, #turno_humano
+arranque_configurado:
+
 		JMP detener
 no_detener_3:
+		MOV A, nota_actual ;Guardo el iterador en A para llamar a la rutina que lee de la tabla (partitura)				
 		call obtener_altura_melodia_final ;Guarda en A la duración de la próxima nota
 		MOV timer_nota_actual, A ;La guardo en memoria
 		JMP descontar_tiempo

@@ -1,7 +1,7 @@
-BL51 BANKED LINKER/LOCATER V6.05                                                        10/28/2007  23:27:50  PAGE 1
+BL51 BANKED LINKER/LOCATER V4.23                                                        11/21/2007  18:06:58  PAGE 1
 
 
-BL51 BANKED LINKER/LOCATER V6.05, INVOKED BY:
+BL51 BANKED LINKER/LOCATER V4.23, INVOKED BY:
 C:\KEIL\C51\BIN\BL51.EXE tecsoun2.obj TO tecsoun2 RAMSIZE (256)
 
 
@@ -23,7 +23,7 @@ LINK MAP OF MODULE:  tecsoun2 (TECSOUN2)
             DATA    0028H     0001H     ABSOLUTE     
 
             * * * * * * *   C O D E   M E M O R Y   * * * * * * *
-            CODE    0000H     0082H     ABSOLUTE     
+            CODE    0000H     008FH     ABSOLUTE     
 
 
 
@@ -59,7 +59,7 @@ SYMBOL TABLE OF MODULE:  tecsoun2 (TECSOUN2)
   C:0040H         SYMBOL        SUELTA_1
   C:0053H         SYMBOL        SUELTA_2
   C:0066H         SYMBOL        SUELTA_3
-BL51 BANKED LINKER/LOCATER V6.05                                                      10/28/2007  23:27:50  PAGE 2
+BL51 BANKED LINKER/LOCATER V4.23                                                      11/21/2007  18:06:58  PAGE 2
 
 
   D:0020H         SYMBOL        TECLA_BYTE_1
@@ -119,7 +119,7 @@ SYMBOL TABLE OF MODULE:  tecsoun2 (TECSOUN2)
   C:006EH         LINE#         91
   C:0071H         LINE#         92
   C:0072H         LINE#         94
-BL51 BANKED LINKER/LOCATER V6.05                                                      10/28/2007  23:27:50  PAGE 3
+BL51 BANKED LINKER/LOCATER V4.23                                                      11/21/2007  18:06:58  PAGE 3
 
 
   C:0075H         LINE#         95
@@ -131,9 +131,5 @@ SYMBOL TABLE OF MODULE:  tecsoun2 (TECSOUN2)
   C:0081H         LINE#         105
   -------         ENDMOD        TECSOUN2
 
-******************************************************************************
-* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 0082H BYTE ( 6%) *
-******************************************************************************
-
-Program Size: data=10.0 xdata=0 code=130
+Program Size: data=10.0 xdata=0 code=143
 LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -47,6 +47,9 @@ main:
 		;SEL_BANK 0 ; Selecciono el banco de registros 0.
 
 		;; FIXME: Agregar inicializaciones
+		mov arranca, #arranca_humano ;El primer partido, arranca el humano
+		mov turno, #turno_humano ; Turno del humano
+
 		call draw_init
 		call keyboard_init
 		call sound_init

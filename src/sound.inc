@@ -2,4 +2,4 @@
 ;;;; Por Mariano Beiró y Mariano Chouza
 ;;;; Header para los procedimientos exportados desde SOUND
 
-EXTRN CODE(sound_init, sound_play)
+EXTRN CODE(sound_init, sound_start_melody, sound_play)

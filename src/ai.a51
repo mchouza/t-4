@@ -7,6 +7,8 @@
 $INCLUDE(macros.inc)		; Macros de propósito general
 $INCLUDE(constantes.inc)	; Constantes de utilidad general
 $INCLUDE(variables.inc)		; Variables globales
+$INCLUDE(sound.inc)			; Sonido
+$INCLUDE(util.inc)			; Funciones varias
 
 NAME AI
 
@@ -834,7 +836,7 @@ get_encoded_board:
 		;;
 
 		;; Apunto R0 a la última línea codificada
-		mov R0, buffer + 2
+		mov R0, #buffer + 2
 
 		;; Guardo en A
 		mov A, @R0
@@ -883,6 +885,18 @@ make_ai_move:
 		jnc not_a_real_move
 
 		;;
+		;; Decide con qué ficha juega
+		;;
+
+		mov R0, arranca
+		cjne R0, #arranca_maquina, mam_play_with_o
+	mam_play_with_x:
+		mov R3, #sym_x
+		jmp mam_xxxx
+	mam_play_with_o:
+		mov R3, #sym_o
+
+		;;
 		;; Es una movida real, la lleva a cabo
 		;;
 
@@ -899,12 +913,12 @@ make_ai_move:
 		jb ACC.0, mam_0001
 
 	mam_0000:
-		PUT_SYMBOL 0, 0, "O"
-		ret
+		PUT_SYMBOL_VARM 0, 0
+		jmp real_move
 
 	mam_1000:
-		PUT_SYMBOL 2, 2, "O"
-		ret
+		PUT_SYMBOL_VARM 2, 2
+		jmp real_move
 
 	mam_01xx:
 		jb ACC.1, mam_011x
@@ -913,43 +927,53 @@ make_ai_move:
 		jb ACC.0, mam_0101
 
 	mam_0100:
-		PUT_SYMBOL 1, 1, "O"
-		ret
+		PUT_SYMBOL_VARM 1, 1
+		jmp real_move
 
 	mam_001x:
 		jb ACC.0, mam_0011
 
 	mam_0010:
-		PUT_SYMBOL 0, 2, "O"
-		ret
+		PUT_SYMBOL_VARM 0, 2
+		jmp real_move
 
 	mam_0001:
-		PUT_SYMBOL 0, 1, "O"
-		ret
+		PUT_SYMBOL_VARM 0, 1
+		jmp real_move
 
 	mam_011x:
 		jb ACC.0, mam_0111
 
 	mam_0110:
-		PUT_SYMBOL 2, 0, "O"
-		ret
+		PUT_SYMBOL_VARM 2, 0
+		jmp real_move
 
 	mam_0101:
-		PUT_SYMBOL 1, 2, "O"
-		ret
+		PUT_SYMBOL_VARM 1, 2
+		jmp real_move
 		
 	mam_0011:
-		PUT_SYMBOL 1, 0, "O"
-		ret
+		PUT_SYMBOL_VARM 1, 0
+		jmp real_move
 		
 	mam_0111:
-		PUT_SYMBOL 2, 1, "O"
-		ret			
+		PUT_SYMBOL_VARM 2, 1
+		jmp real_move			
+
+	real_move:
+		MOV A, #melodia_maquina
+		CALL sound_start_melody ;; Reproduzco la melodia
+		RET
 
 	not_a_real_move:
 
-		;; FIXME: VER QUE HACER!!
+		;;
+		;; Terminó el juego
+		;;
 
+		MOV A, #melodia_final
+		CALL sound_start_melody ;; Reproduzco la melodia
+		
 		;; Vuelve
 		ret
 
