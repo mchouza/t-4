@@ -1,9 +1,10 @@
 TEST_SEG SEGMENT CODE
 
-PUBLIC read_table
+PUBLIC read_table, encode_board
 EXTRN DATA(board)
 EXTRN DATA(retorno)
-EXTRN CODE(comp_table_get_move_from_board)
+EXTRN DATA(hi_ret, lo_ret)
+EXTRN CODE(comp_table_get_move_from_board, get_encoded_board)
 
 RSEG TEST_SEG
 
@@ -13,5 +14,12 @@ read_table:
 		call comp_table_get_move_from_board
 		mov retorno, A
 		ret
+
+encode_board:
+		;; Ya tengo en board_line el tablero
+		call get_encoded_board
+		mov hi_ret, R1
+		mov lo_ret, R0
+		ret	
 
 END

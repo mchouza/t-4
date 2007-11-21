@@ -16,6 +16,9 @@ AI_SEG SEGMENT CODE
 ;;; Exporto solo la función que juega por la máquina
 PUBLIC ai_play
 
+;;; FIXME: PARA DEBUGGING
+PUBLIC comp_table_get_move_from_board, get_encoded_board
+
 ;;; Empiezo el segmento
 RSEG AI_SEG
 
@@ -549,8 +552,14 @@ comp_table_read_next_bit:
 		;; Incremento el bit offset
 		inc cmt_bit_offset
 
-		;; Guardo el bit menos significativo en carry
-		rrc A
+		;; Obtengo el byte
+		mov A, cmt_byte_buffer
+		
+		;; Guardo el bit más significativo en carry
+		rlc A
+
+		;; Guardo el resto en el buffer
+		mov cmt_byte_buffer, A
 		
 		;; Vuelvo
 		ret
@@ -668,27 +677,58 @@ comp_table_get_move_from_board:
 		call reset_comp_table_reading
 		
 		;;
-		;; Leo del tablero la cantidad de veces indicada por el par R1 - R0:
-		;; como este par indica posición, debo incrementarlo por uno para tener
-		;; la cantidad de lecturas requeridas.
+		;; Modifico R1 - R0, que indican el offset a leer dentro de la tabla,
+		;; para que sirvan como contadores. La modificación requerida es hacer 
+		;; inc sobre cada 1, pero esto es no trivial.
 		;;
+		;; Para convencernos de esto, observemos que un loop normal realizado
+		;; con DJNZ sobre un registro que empieza con valor X ejecuta el
+		;; cuerpo (X - 1) % 256 + 1 veces (donde el operador % siempre da
+		;; resultados positivos). Por ello si X = 1, 2, ..., 255 el cuerpo del
+		;; loop se ejecuta X veces, pero si es 0, se ejecuta 256 veces.
+		;;
+		;; En este caso controlaremos el loop interno con R0 y el externo con
+		;; R1. Si llamamos X al valor inicial de R0 e Y al valor inicial de
+		;; R1, tendremos que el loop externo se ejecutará (Y - 1) % 256 + 1
+		;; veces. La primera de ellas el cuerpo del loop interno se ejecutará
+		;; (X - 1) % 256 + 1 veces. Las otras iteraciones se ejecutará 256
+		;; veces, ya que R0 empezará en 0.
+		;;
+		;; Combianndo todo esto, tenemos que el número total de veces que se
+		;; ejecutará el cuerpo del loop interno será:
+		;; 
+		;; N = [(Y - 1) % 256] * 256 + (X - 1) % 256 + 1
+		;;
+		;; Como el número de veces que requerimos leer de la tabla es igual a
+		;; offset + 1, tenemos:
+		;;
+		;; offset = [(Y - 1) % 256] * 256 + (X - 1) % 256
+		;;
+		;; Partiendo en partes altas y bajas:
+		;;
+		;; HIGH(offset) = (Y - 1) % 256
+		;; LOW(offset)  = (X - 1) % 256
+		;;
+		;; Ahora podemos observar que HIGH(offset) y LOW(offset) caen en el
+		;; rango 0..255, por lo que no se verían afectados con un módulo:
+		;;
+		;; HIGH(offset) % 256 = (Y - 1) % 256
+		;; [HIGH(offset) + 1] % 256 = Y % 256
+		;; Y = [HIGH(offset) + 1] % 256 (teniendo en cuenta que Y cae en
+		;;                               0..255)
+		;; 
+		;; Identicamente:
+		;; Y = [LOW(offset) + 1] % 256
 
-		mov A, R0
-		add A, #1
-		mov R0, A
-		mov A, R1
-		addc A, #0
-		mov R1, A
+		inc R0
+		inc R1
 
 	ctgmfb_loop:
 
 		;; Lee la próxima movida desde la tabla comprimida
 		call comp_table_read_next_move 
 
-		;; Dos loops anidados: el interno se ejecuta R0 veces inicialmente.
-		;; Luego, durante R1 veces, se ejecuta el loop interno partiendo desde
-		;; cero. Esto significa que el contenido interno a ambos loops se
-		;; ejecuta R0 + R1 * 256 veces, que es exactamente lo buscado.
+		;; Dos loops anidados. Ver la explicación más arriba.
 
 		djnz R0, ctgmfb_loop
 		djnz R1, ctgmfb_loop
@@ -825,6 +865,12 @@ get_encoded_board:
 		mov A, R2
 		addc A, #0
 		mov R2, A
+
+		;; Paso a R1 y R0
+		mov A, R2
+		mov R1, A
+		mov A, R3
+		mov R0, A
 									
 		;; Vuelvo
 		ret
