@@ -977,6 +977,32 @@ make_ai_move:
 		;; Vuelve
 		ret
 
+;;; Revisa si ganó o empató
+check_for_endgame:
+		
+		;; Obtiene el tablero codificado en R1 - R0, ahora que ya se realizó
+		;; la jugada
+		call get_encoded_board
+
+		;; Obtiene la movida correspondiente. No interesa en el caso
+		;; de que sea una movida normal, pero si el caso en el que indica el
+		;; fin del juego.
+		call comp_table_get_move_from_board
+
+		;; Compara la movida con #9
+		cjne A, #9, $+3
+		jnc cfe_endgame
+
+		;; Si llega aca es porque el juego no termina: vuelvo.
+		ret
+
+	cfe_endgame:
+		;; Si llega acá es porque el juego terminó
+		mov A, #melodia_maquina
+		call sound_start_melody ; Reproduce la melodia
+		ret
+
+
 ;;; Obtiene y ejecuta la movida correspondiente al tablero actual
 ai_play:
 		;; Decide si le corresponde jugar o no
@@ -985,9 +1011,6 @@ ai_play:
 		djnz timer_jugada_maquina, fin_jugar_maquina ; Si le toca jugar, veo si terminó el tiempo de espera
 		
 		;; Si el timer llega a cero, pasa de largo y juega
-		
-		;; FIXME: Borrar!!!! Es para que la máquina pase su turno sin jugar!!!!
-		;;JMP fin_jugar_maquina
 		
 		;; Obtengo el tablero codificado en el par R1 - R0
 		call get_encoded_board
@@ -998,6 +1021,9 @@ ai_play:
 
 		;; Ejecuta la movida indicada por el acumulador
 		call make_ai_move
+
+		;; Se fija si ganó o empató
+		call check_for_endgame
 
 		;; Pasa el turno al humano
 		mov turno, #turno_humano
