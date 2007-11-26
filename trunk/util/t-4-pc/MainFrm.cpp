@@ -1,5 +1,15 @@
-// MainFrm.cpp : implementation of the CMainFrame class
-//
+//=============================================================================
+// T^4 PC Terminal
+//=============================================================================
+// MainFrm.cpp
+// Implementa la clase CMainFrame, encargada de representar la ventana
+// principal.
+//-----------------------------------------------------------------------------
+// Desarrollado por Mariano Beiró y Mariano Chouza para Laboratorio de
+// Microcomputadoras.
+//-----------------------------------------------------------------------------
+// Desarrollo comenzado el 26/11/2007
+//=============================================================================
 
 #include "stdafx.h"
 #include "t-4-pc.h"
@@ -104,5 +114,3 @@ BOOL CMainFrame::OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO*
 	// otherwise, do default handling
 	return CFrameWnd::OnCmdMsg(nID, nCode, pExtra, pHandlerInfo);
 }
-
-

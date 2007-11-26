@@ -12,6 +12,7 @@
 
 #include "stdafx.h"
 #include "t4board.h"
+#include <cassert>
 #include <cmath>
 
 // Contiene funciones útiles
@@ -49,7 +50,7 @@ namespace
 		// Pen utilizada para dibujar la X
 		static CPen redPen(PS_SOLID, 10, RGB(255, 0, 0));
 		
-		// Selecciono el pen blanco
+		// Selecciono el pen rojo
 		CPen* pOldPen = dc.SelectObject(&redPen);
 
 		// Dibujo la X
@@ -78,7 +79,7 @@ namespace
 		// Pen utilizada para dibujar la O
 		static CPen bluePen(PS_SOLID, 10, RGB(0, 0, 255));
 		
-		// Selecciono el pen blanco
+		// Selecciono el pen azul
 		CPen* pOldPen = dc.SelectObject(&bluePen);
 
 		// Para evitar errores de redondeo
@@ -107,6 +108,58 @@ namespace
 		// Restauro el pen anterior
 		dc.SelectObject(pOldPen);
 	}
+
+	// Dibuja las marcas de TA-TE-TI
+	void drawT3Marks(CDC& dc, const bool t3MarkerAt[],
+		const double t3MarkerDrawProgress[])
+	{
+		// Pen utilizada para dibujar las marcas de TA-TE-TI
+		static CPen yellowPen(PS_SOLID, 7, RGB(255, 255, 0));
+		
+		// Selecciono el pen amarillo
+		CPen* pOldPen = dc.SelectObject(&yellowPen);		
+
+		// Dibujo las horizontales
+		for (size_t i = 0; i < 3; i++)
+		{
+			if (t3MarkerAt[i])
+			{
+				dc.MoveTo(10, static_cast<int>(50 + 100 * i));
+				dc.LineTo(10 + static_cast<int>(280 * t3MarkerDrawProgress[i]),
+					static_cast<int>(50 + 100 * i));
+			}
+		}
+
+		// Dibujo las verticales
+		for (size_t i = 0; i < 3; i++)
+		{
+			if (t3MarkerAt[i + 3])
+			{
+				dc.MoveTo(static_cast<int>(50 + 100 * i), 10);
+				dc.LineTo(static_cast<int>(50 + 100 * i),
+					10 + static_cast<int>(280 * t3MarkerDrawProgress[i + 3]));
+			}
+		}
+
+		// Dibujo la diagonal principal
+		if (t3MarkerAt[6])
+		{
+			dc.MoveTo(10, 10);
+			dc.LineTo(10 + static_cast<int>(280 * t3MarkerDrawProgress[6]),
+				10 + static_cast<int>(280 * t3MarkerDrawProgress[6]));
+		}
+
+		// Dibujo la diagonal secundaria
+		if (t3MarkerAt[7])
+		{
+			dc.MoveTo(10, 290);
+			dc.LineTo(10 + static_cast<int>(280 * t3MarkerDrawProgress[7]),
+				290 - static_cast<int>(280 * t3MarkerDrawProgress[7]));
+		}
+
+		// Restauro el viejo pen
+		dc.SelectObject(pOldPen);	
+	}
 }
 
 T4Board::T4Board()
@@ -125,7 +178,7 @@ void T4Board::draw(CDC& dc) const
 
 	// Recorro las posiciones llamando a las funciones de dibujo
 	for (size_t i = 0; i < 9; i++)
-	{
+	{		
 		int index = static_cast<int>(i);
 
 		if (boardData_[i] == T4S_X)
@@ -135,6 +188,9 @@ void T4Board::draw(CDC& dc) const
 			drawO(dc, (index % 3) * 100, (index / 3) * 100,
 				boardDrawProgress_[i]);
 	}
+
+	// Dibujo los TA-TE-TIs observados
+	drawT3Marks(dc, t3MarkerAt_, t3MarkerDrawProgress_);
 }
 
 void T4Board::sendCodedRow(unsigned char codedRow)
@@ -157,21 +213,99 @@ void T4Board::updateBoardCell(size_t index, ET4Symbol newValue)
 	// Me fijo si cambió el valor
 	if (boardData_[index] != newValue)
 	{
-		// Si, actualizo
+		// Si, actualizo el valor
 		boardData_[index] = newValue;
 		boardDrawProgress_[index] = 0.0;
 
-		// FIXME: Incorporar contador
+		// Actualizo los marcadores de TA-TE-TI
+		updateT3Markers(index);
 	}
+
+	assert(boardData_[index] >= 0 && boardData_[index] < 3);
 }
 
 void T4Board::timeStep()
 {
-	// Recorro todos...
+	// Recorro todos los símbolos...
 	for (size_t i = 0; i < 9; i++)
 		// Si no se terminó de dibujar...
 		if (boardDrawProgress_[i] < 1.0)
 			boardDrawProgress_[i] += DRAW_PROGRESS_STEP;
 		else
 			boardDrawProgress_[i] = 1.0;
+
+	// Recorro todos los marcadores de TA-TE-TI...
+	for (size_t i = 0; i < 8; i++)
+	// Si no se terminó de dibujar...
+		if (t3MarkerDrawProgress_[i] < 1.0)
+			t3MarkerDrawProgress_[i] += DRAW_PROGRESS_STEP;
+		else
+			t3MarkerDrawProgress_[i] = 1.0;
+}
+
+void T4Board::updateT3Markers(size_t index)
+{
+	// Me fijo si cambia la diagonal principal
+	if (index / 3 == index % 3)
+		updateT3Marker(6);
+
+	// Me fijo si cambia la diagonal secundaria
+	if (index / 3 == 2 - index % 3)
+		updateT3Marker(7);
+
+	// Cambia una fila
+	updateT3Marker(index / 3);
+
+	// Cambia una columna
+	updateT3Marker(index % 3 + 3);
+}
+
+void T4Board::updateT3Marker(size_t mi)
+{
+	// Nuevo estado del marcador
+	bool newMarkerState;
+
+	// Referencia para mayor comodidad
+	const ET4Symbol (&b)[9] = boardData_;
+	
+	// Me fijo si actualiza fila
+	if (mi < 3)
+	{
+		// Obtengo el nuevo estado
+		newMarkerState =
+			(b[3 * mi] == b[3 * mi + 1] &&
+			b[3 * mi + 1] == b[3 * mi + 2] &&
+			b[3 * mi] != T4S_E);
+	}
+	// O si actualiza columna...
+	else if (mi < 6)
+	{
+		// Obtengo el nuevo estado
+		newMarkerState =
+			(b[mi - 3] == b[mi - 3 + 3] &&
+			b[mi - 3 + 3] == b[mi - 3 + 6] &&
+			b[mi - 3] != T4S_E);
+	}
+	// O si actualiza la diagonal principal
+	else if (mi == 6)
+	{
+		// Obtengo el nuevo estado
+		newMarkerState = (b[0] == b[4] && b[4] == b[8] && b[0] != T4S_E);
+	}
+	// Si llega hasta acá debe actualizar la diagonal secundaria
+	else
+	{
+		assert(mi == 7);
+		
+		// Obtengo el nuevo estado
+		newMarkerState = (b[2] == b[4] && b[4] == b[6] && b[2] != T4S_E);
+	}
+
+	// Comparo el nuevo estado con el viejo
+	if (newMarkerState != t3MarkerAt_[mi])
+	{
+		// Actualizo
+		t3MarkerAt_[mi] = newMarkerState;
+		t3MarkerDrawProgress_[mi] = 0.0;
+	}
 }
