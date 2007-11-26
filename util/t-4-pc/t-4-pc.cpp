@@ -1,5 +1,14 @@
-// t-4-pc.cpp : Defines the class behaviors for the application.
-//
+//=============================================================================
+// T^4 PC Terminal
+//=============================================================================
+// t-4-pc.cpp
+// Implementa la clase CT4PCApp, encargada de representar la aplicación.
+//-----------------------------------------------------------------------------
+// Desarrollado por Mariano Beiró y Mariano Chouza para Laboratorio de
+// Microcomputadoras.
+//-----------------------------------------------------------------------------
+// Desarrollo comenzado el 26/11/2007
+//=============================================================================
 
 #include "stdafx.h"
 #include "t-4-pc.h"

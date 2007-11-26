@@ -24,8 +24,22 @@ class T4Board
 	// Grado de avance en el dibujo de todos
 	double boardDrawProgress_[9];
 
+	// TA-TE-TI en...
+	// 0 -> 3 indica fila, 3 -> 6 indica columna + 3, 6 -> 8 indica
+	// diagonal, donde 6 sería la diagonal principal y 7 la secundaria
+	bool t3MarkerAt_[8];
+
+	// Grado de avance en el dibujo del marcador
+	double t3MarkerDrawProgress_[8];
+
 	// Actualiza una celda del tablero
-	void updateBoardCell(unsigned index, ET4Symbol newValue);
+	void updateBoardCell(size_t index, ET4Symbol newValue);
+
+	// Actualiza los marcadores de TA-TE-TI
+	void updateT3Markers(size_t index);
+
+	// Actualiza un marcador de TA-TE-TI dado
+	void updateT3Marker(size_t markerIndex);
 
 public:
 	// Constructor

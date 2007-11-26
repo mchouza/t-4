@@ -1,5 +1,14 @@
-// ChildView.cpp : implementation of the CChildView class
-//
+//=============================================================================
+// T^4 PC Terminal
+//=============================================================================
+// ChildView.cpp
+// Implementa la clase CChildView, encargada de mostrar los gráficos.
+//-----------------------------------------------------------------------------
+// Desarrollado por Mariano Beiró y Mariano Chouza para Laboratorio de
+// Microcomputadoras.
+//-----------------------------------------------------------------------------
+// Desarrollo comenzado el 26/11/2007
+//=============================================================================
 
 #include "stdafx.h"
 #include "t-4-pc.h"
@@ -10,9 +19,6 @@
 #define new DEBUG_NEW
 #endif
 
-
-// CChildView
-
 CChildView::CChildView()
 {
 }
@@ -21,7 +27,6 @@ CChildView::~CChildView()
 {
 }
 
-
 BEGIN_MESSAGE_MAP(CChildView, CWnd)
 	ON_WM_CREATE()
 	ON_WM_ERASEBKGND()
@@ -29,10 +34,6 @@ BEGIN_MESSAGE_MAP(CChildView, CWnd)
 	ON_WM_PAINT()
 	ON_WM_TIMER()
 END_MESSAGE_MAP()
-
-
-
-// CChildView message handlers
 
 BOOL CChildView::PreCreateWindow(CREATESTRUCT& cs) 
 {
@@ -70,10 +71,13 @@ void CChildView::OnLButtonDown(UINT nFlags, CPoint point)
 	unsigned cellNumber = row * 3 + col;
 
 	// FIXME: SOLO PARA DEBUG
-	std::ostringstream oss;
-	oss << "Número de celda: " << cellNumber;
-	MessageBox(oss.str().c_str());
-	board_.sendCodedRow((rand() & 0x3f) | ((rand() % 3) << 6));
+	//std::ostringstream oss;
+	//oss << "Número de celda: " << cellNumber;
+	//MessageBox(oss.str().c_str());
+	board_.sendCodedRow((rand() % 3) |
+		((rand() % 3) << 2) |
+		((rand() % 3) << 4) |
+		((rand() % 3) << 6));
 }
 
 int CChildView::OnCreate(LPCREATESTRUCT lpCreateStruct)

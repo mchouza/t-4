@@ -27,6 +27,9 @@ enum ET4Symbol
 // Mapa de configuración
 typedef std::map<std::string, std::string> TConfigMap;
 
+// Mapa de secciones de configuración
+typedef std::map<std::string, TConfigMap> TConfigSecMap;
+
 // PI!!!
 const double PI = 3.1415926535897932384626433832795;
 
