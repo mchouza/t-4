@@ -5,6 +5,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "table_gen", "table_gen\tabl
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "table_test", "table_test\table_test.vcproj", "{47594CD8-5FAB-4685-9433-F5DAE2C298B4}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "t-4-pc", "t-4-pc\t-4-pc.vcproj", "{42B20906-BF01-4C6A-9A5A-E52BEE3FC215}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -19,6 +21,10 @@ Global
 		{47594CD8-5FAB-4685-9433-F5DAE2C298B4}.Debug|Win32.Build.0 = Debug|Win32
 		{47594CD8-5FAB-4685-9433-F5DAE2C298B4}.Release|Win32.ActiveCfg = Release|Win32
 		{47594CD8-5FAB-4685-9433-F5DAE2C298B4}.Release|Win32.Build.0 = Release|Win32
+		{42B20906-BF01-4C6A-9A5A-E52BEE3FC215}.Debug|Win32.ActiveCfg = Debug|Win32
+		{42B20906-BF01-4C6A-9A5A-E52BEE3FC215}.Debug|Win32.Build.0 = Debug|Win32
+		{42B20906-BF01-4C6A-9A5A-E52BEE3FC215}.Release|Win32.ActiveCfg = Release|Win32
+		{42B20906-BF01-4C6A-9A5A-E52BEE3FC215}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
