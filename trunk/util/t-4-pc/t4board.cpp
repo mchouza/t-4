@@ -22,13 +22,10 @@ namespace
 	const double DRAW_PROGRESS_STEP = 0.05;
 	
 	// Dibuja la grilla
-	void drawGrid(CDC& dc)
+	void drawGrid(CDC& dc, CPen& pen)
 	{
-		// Pen utilizada para dibujar la grilla
-		static CPen whitePen(PS_SOLID, 5, RGB(255, 255, 255));
-		
-		// Selecciono el pen blanco
-		CPen* pOldPen = dc.SelectObject(&whitePen);
+		// Selecciono el pen
+		CPen* pOldPen = dc.SelectObject(&pen);
 
 		// Dibujo la grilla
 		dc.MoveTo(100, 5);
@@ -45,13 +42,11 @@ namespace
 	}
 
 	// Dibuja una X
-	void drawX(CDC& dc, int xBase, int yBase, double completionFactor)
+	void drawX(CDC& dc, int xBase, int yBase, double completionFactor,
+		CPen& pen)
 	{
-		// Pen utilizada para dibujar la X
-		static CPen redPen(PS_SOLID, 10, RGB(255, 0, 0));
-		
-		// Selecciono el pen rojo
-		CPen* pOldPen = dc.SelectObject(&redPen);
+		// Selecciono el pen
+		CPen* pOldPen = dc.SelectObject(&pen);
 
 		// Dibujo la X
 		if (completionFactor > 0.5)
@@ -74,13 +69,11 @@ namespace
 	}
 
 	// Dibuja una O
-	void drawO(CDC& dc, int xBase, int yBase, double completionFactor)
+	void drawO(CDC& dc, int xBase, int yBase, double completionFactor,
+		CPen& pen)
 	{
-		// Pen utilizada para dibujar la O
-		static CPen bluePen(PS_SOLID, 10, RGB(0, 0, 255));
-		
-		// Selecciono el pen azul
-		CPen* pOldPen = dc.SelectObject(&bluePen);
+		// Selecciono el pen
+		CPen* pOldPen = dc.SelectObject(&pen);
 
 		// Para evitar errores de redondeo
 		completionFactor += 0.01;
@@ -111,13 +104,10 @@ namespace
 
 	// Dibuja las marcas de TA-TE-TI
 	void drawT3Marks(CDC& dc, const bool t3MarkerAt[],
-		const double t3MarkerDrawProgress[])
+		const double t3MarkerDrawProgress[], CPen& pen)
 	{
-		// Pen utilizada para dibujar las marcas de TA-TE-TI
-		static CPen yellowPen(PS_SOLID, 7, RGB(255, 255, 0));
-		
-		// Selecciono el pen amarillo
-		CPen* pOldPen = dc.SelectObject(&yellowPen);		
+		// Selecciono el pen
+		CPen* pOldPen = dc.SelectObject(&pen);		
 
 		// Dibujo las horizontales
 		for (size_t i = 0; i < 3; i++)
@@ -162,7 +152,12 @@ namespace
 	}
 }
 
-T4Board::T4Board()
+T4Board::T4Board(const TConfigMap& config) :
+config_(config),
+xPen_(PS_SOLID, 10, readIntFromConfigMap(config_, "XColor")),
+oPen_(PS_SOLID, 10, readIntFromConfigMap(config_, "OColor")),
+gridPen_(PS_SOLID, 5, readIntFromConfigMap(config_, "GridColor")),
+slashPen_(PS_SOLID, 7, readIntFromConfigMap(config_, "SlashColor"))
 {
 	for (int i = 0; i < 9; i++)
 		updateBoardCell(i, T4S_E);
@@ -174,7 +169,7 @@ void T4Board::draw(CDC& dc) const
 	dc.BitBlt(0, 0, 300, 300, NULL, 0, 0, BLACKNESS);
 	
 	// Dibujo la grilla básica
-	drawGrid(dc);
+	drawGrid(dc, gridPen_);
 
 	// Recorro las posiciones llamando a las funciones de dibujo
 	for (size_t i = 0; i < 9; i++)
@@ -183,14 +178,14 @@ void T4Board::draw(CDC& dc) const
 
 		if (boardData_[i] == T4S_X)
 			drawX(dc, (index % 3) * 100, (index / 3) * 100,
-				boardDrawProgress_[i]);
+				boardDrawProgress_[i], xPen_);
 		else if (boardData_[i] == T4S_O)
 			drawO(dc, (index % 3) * 100, (index / 3) * 100,
-				boardDrawProgress_[i]);
+				boardDrawProgress_[i], oPen_);
 	}
 
 	// Dibujo los TA-TE-TIs observados
-	drawT3Marks(dc, t3MarkerAt_, t3MarkerDrawProgress_);
+	drawT3Marks(dc, t3MarkerAt_, t3MarkerDrawProgress_, slashPen_);
 }
 
 void T4Board::sendCodedRow(unsigned char codedRow)

@@ -18,6 +18,15 @@
 // Clase que representa el tablero
 class T4Board
 {
+	// Configuración
+	const TConfigMap& config_;
+
+	// Pens (son mutable porque se "modifican" al dibujar)
+	mutable CPen xPen_;
+	mutable CPen oPen_;
+	mutable CPen gridPen_;
+	mutable CPen slashPen_;
+	
 	// Contenido del tablero
 	ET4Symbol boardData_[9];
 
@@ -43,7 +52,7 @@ class T4Board
 
 public:
 	// Constructor
-	T4Board();
+	T4Board(const TConfigMap& config);
 
 	// Dibuja el tablero en el DC indicado como parámetro
 	void draw(CDC& dc) const;

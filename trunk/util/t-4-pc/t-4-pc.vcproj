@@ -229,6 +229,10 @@
 				RelativePath=".\t4board.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\t4common.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
