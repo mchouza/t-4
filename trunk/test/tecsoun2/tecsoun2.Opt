@@ -13,9 +13,8 @@
 Target (Target 1), 0x0000 // Tools: 'MCS-51'
 GRPOPT 1,(Source Group 1),1,0,0
 
-OPTFFF 1,1,2,838860800,0,0,0,0,<.\tecsoun2.a><tecsoun2.a> 
+OPTFFF 1,1,2,553648130,0,1,19,0,<.\tecsoun2.a><tecsoun2.a> { 44,0,0,0,2,0,0,0,3,0,0,0,255,255,255,255,255,255,255,255,252,255,255,255,226,255,255,255,22,0,0,0,29,0,0,0,164,2,0,0,86,1,0,0 }
 
-ExtF <C:\Documents and Settings\Mariano\Escritorio\teclado.a> 18,36,0,{ 44,0,0,0,2,0,0,0,3,0,0,0,255,255,255,255,255,255,255,255,252,255,255,255,226,255,255,255,44,0,0,0,58,0,0,0,186,2,0,0,115,1,0,0 }
 
 TARGOPT 1, (Target 1)
  CLK51=33000000
@@ -26,7 +25,6 @@ TARGOPT 1, (Target 1)
   OPTLT 1,1,1,0,1,1,0,1,0,0,0,0
   OPTXL 1,1,1,1,1,1,1,0,0
   OPTFL 1,0,1
-  OPTAX 0
   OPTBL 0,(Data Sheet)<DATASHTS\ATMEL\AT89S52_DS.PDF>
   OPTBL 1,(Instruction Set Manual)<DATASHTS\ATMEL\AT_C51ISM.PDF>
   OPTDL (S8051.DLL)()(DP51.DLL)(-pAT52)(S8051.DLL)()(TP51.DLL)(-pAT52)

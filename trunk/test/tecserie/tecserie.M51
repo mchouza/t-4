@@ -1,8 +1,8 @@
-BL51 BANKED LINKER/LOCATER V6.02                                                        11/14/2007  18:51:56  PAGE 1
+BL51 BANKED LINKER/LOCATER V6.05                                                        11/27/2007  16:25:00  PAGE 1
 
 
-BL51 BANKED LINKER/LOCATER V6.02, INVOKED BY:
-C:\ARCHIVOS DE PROGRAMA\KEIL\C51\BIN\BL51.EXE tecserie.obj TO tecserie RAMSIZE (256)
+BL51 BANKED LINKER/LOCATER V6.05, INVOKED BY:
+C:\KEIL\C51\BIN\BL51.EXE tecserie.obj TO tecserie RAMSIZE (256)
 
 
 INPUT MODULES INCLUDED:
@@ -59,7 +59,7 @@ SYMBOL TABLE OF MODULE:  tecserie (TECSERIE)
   D:008DH         SYMBOL        TH1
   B:0098H.1       SYMBOL        TI
   D:008BH         SYMBOL        TL1
-BL51 BANKED LINKER/LOCATER V6.02                                                      11/14/2007  18:51:56  PAGE 2
+BL51 BANKED LINKER/LOCATER V6.05                                                      11/27/2007  16:25:00  PAGE 2
 
 
   D:0089H         SYMBOL        TMOD

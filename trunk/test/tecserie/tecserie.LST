@@ -1,9 +1,9 @@
-A51 MACRO ASSEMBLER  TECSERIE                                                             11/14/2007 18:51:32 PAGE     1
+A51 MACRO ASSEMBLER  TECSERIE                                                             11/27/2007 16:25:00 PAGE     1
 
 
-MACRO ASSEMBLER A51 V8.00b
+MACRO ASSEMBLER A51 V8.00d
 OBJECT MODULE PLACED IN tecserie.OBJ
-ASSEMBLER INVOKED BY: C:\Archivos de programa\Keil\C51\BIN\A51.EXE tecserie.a SET(SMALL) DEBUG EP
+ASSEMBLER INVOKED BY: C:\Keil\C51\BIN\A51.EXE tecserie.a SET(SMALL) DEBUG EP
 
 LOC  OBJ            LINE     SOURCE
 
@@ -65,7 +65,7 @@ LOC  OBJ            LINE     SOURCE
 0035 7A41             56                     mov R2, #'A'
 0037 1145             57                     call enviar_tecla
 0039 8000             58                     jmp sig_0
-A51 MACRO ASSEMBLER  TECSERIE                                                             11/14/2007 18:51:32 PAGE     2
+A51 MACRO ASSEMBLER  TECSERIE                                                             11/27/2007 16:25:00 PAGE     2
 
 003B                  59     suelta_0:
                       60                             
@@ -90,7 +90,7 @@ LOC  OBJ            LINE     SOURCE
 004C 22               79                     ret
                       80     
                       81     end
-A51 MACRO ASSEMBLER  TECSERIE                                                             11/14/2007 18:51:32 PAGE     3
+A51 MACRO ASSEMBLER  TECSERIE                                                             11/27/2007 16:25:00 PAGE     3
 
 SYMBOL TABLE LISTING
 ------ ----- -------

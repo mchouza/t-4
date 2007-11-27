@@ -5,7 +5,7 @@ Target (Target 1), 0x0000 // Tools: 'MCS-51'
 
 Group (Source Group 1)
 
-File 1,2,<.\tecsoun2.a><tecsoun2.a>
+File 1,2,<.\tecsoun2.a><tecsoun2.a> 0x0 
 
 
 Options 1,0,0  // Target 'Target 1'
@@ -33,7 +33,7 @@ Options 1,0,0  // Target 'Target 1'
  EnvReg (ÿAtmel\)
  OrgReg (ÿAtmel\)
  TgStat=16
- OutDir (.\)
+ OutDir (.\Objects\)
  OutName (tecsoun2)
  GenApp=1
  GenLib=0
@@ -48,8 +48,6 @@ Options 1,0,0  // Target 'Target 1'
  RunUsr 1 0 <>
  BrunUsr 0 0 <>
  BrunUsr 1 0 <>
- CrunUsr 0 0 <>
- CrunUsr 1 0 <>
  SVCSID <>
  MODEL5=0
  RTOS5=0
@@ -60,7 +58,7 @@ Options 1,0,0  // Target 'Target 1'
  XT51FL=0
  CBANKS5=0
  XBANKS5=0
- RCB51 { 0,0,0,0,0,0,0,1,0 }
+ RCB51 { 0,0,0,0,0,255,255,0,0 }
  RXB51 { 0,0,0,0,0,0,0,0,0 }
  OCM51 { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }
  OCR51 { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }
@@ -116,9 +114,9 @@ Options 1,0,0  // Target 'Target 1'
  LX51IDS ()
   OPTDL (S8051.DLL)()(DP51.DLL)(-pAT52)(S8051.DLL)()(TP51.DLL)(-pAT52)
   OPTDBG 48125,-1,()()()()()()()()()() ()()()()
- FLASH1 { 0,0,0,0,0,0,0,0,255,255,255,255,0,0,0,0,0,0,0,0 }
+ FLASH1 { 2,0,0,0,0,0,0,0,255,255,255,255,0,0,0,0,0,0,0,0 }
  FLASH2 ()
- FLASH3 ()
+ FLASH3 ("E:\Mariano\aec\Aec_isp.exe" (Objects\tecsoun2.hex))
  FLASH4 ()
 EndOpt
 

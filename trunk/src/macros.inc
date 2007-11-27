@@ -218,6 +218,7 @@ $ENDIF
 		PUT_SYMBOL fila, columna, "O"  ;Si arrancó la máquina, el humano juega con círculos
 		JMP ficha_puesta
 	ficha_puesta:
+		call serial_send
 		MOV A, #melodia_humano
 		CALL sound_start_melody ;; Reproduzco la melodia
 		MOV turno, #turno_maquina ;Turno=maquina
