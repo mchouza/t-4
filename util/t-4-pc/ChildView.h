@@ -12,13 +12,20 @@
 
 #pragma once
 
+#include "serial_port.h"
 #include "t4board.h"
 
 // Clase encargada de mostrar los gráficos
 class CChildView : public CWnd
 {
+	// Configuración
+	TConfigSecMap config_;
+
 	// Tablero
 	T4Board board_;
+
+	// Puerto serie
+	SerialPort serialPort_;
 
 	// DC del buffer
 	CDC bufferDC_;

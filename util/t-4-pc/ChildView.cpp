@@ -19,7 +19,26 @@
 #define new DEBUG_NEW
 #endif
 
-CChildView::CChildView()
+namespace
+{
+	// Actualiza el tablero en base a lo que lea del puerto serie
+	void updateBoardFromSerialPort(T4Board& b, SerialPort& sp)
+	{
+		using std::vector;
+
+		// Leo desde el puerto serie
+		vector<unsigned char> v = sp.read();
+
+		// Envío hacia el tablero
+		for (size_t i = 0; i < v.size(); i++)
+			b.sendCodedRow(v[i]);
+	}
+}
+
+CChildView::CChildView() :
+config_(parseINIFile("config.ini")),
+board_(config_["Board"]),
+serialPort_(config_["SerialPort"])
 {
 }
 
@@ -68,16 +87,10 @@ void CChildView::OnLButtonDown(UINT nFlags, CPoint point)
 	col = (col > 2) ? 2 : col;
 
 	// Obtengo el número de celda donde se hizo click
-	unsigned cellNumber = row * 3 + col;
+	unsigned char cellNumber = row * 3 + col;
 
-	// FIXME: SOLO PARA DEBUG
-	//std::ostringstream oss;
-	//oss << "Número de celda: " << cellNumber;
-	//MessageBox(oss.str().c_str());
-	board_.sendCodedRow((rand() % 3) |
-		((rand() % 3) << 2) |
-		((rand() % 3) << 4) |
-		((rand() % 3) << 6));
+	// Envío al puerto serie
+	serialPort_.write(&cellNumber, 1);
 }
 
 int CChildView::OnCreate(LPCREATESTRUCT lpCreateStruct)
@@ -100,6 +113,10 @@ int CChildView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 void CChildView::OnTimer(UINT_PTR nIDEvent)
 {
+	// Obtengo datos desde el puerto serie y los utilizo para actualziar el
+	// tablero
+	updateBoardFromSerialPort(board_, serialPort_);
+	
 	// Notifico al tablero
 	board_.timeStep();
 

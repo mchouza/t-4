@@ -30,6 +30,18 @@ typedef std::map<std::string, std::string> TConfigMap;
 // Mapa de secciones de configuración
 typedef std::map<std::string, TConfigMap> TConfigSecMap;
 
+// Parsea un INI
+TConfigSecMap parseINIFile(const std::string& filename);
+
+// Lee un entero desde un config map
+int readIntFromConfigMap(const TConfigMap& configMap,
+						 const std::string& key);
+
+// Lee una string desde un config map
+const std::string& readStringFromConfigMap(const TConfigMap& configMap,
+										   const std::string& key);
+
+
 // PI!!!
 const double PI = 3.1415926535897932384626433832795;
 
