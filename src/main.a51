@@ -13,9 +13,10 @@ NAME MAIN
 MAIN_SEG SEGMENT CODE
 
 ;;; Importa
-$INCLUDE(variables.inc)		; Variables compartidas a nivel global
-$INCLUDE(draw_main.inc)			; Procedimientos de dibujo
-$INCLUDE(keyboard.inc)		; Procedimientos de manejo de teclado
+$INCLUDE(variables.inc)	; Variables compartidas a nivel global
+$INCLUDE(draw_main.inc)	; Procedimientos de dibujo
+$INCLUDE(keyboard.inc)	; Procedimientos de manejo de teclado
+$INCLUDE(serial.inc)	; Puerto serie
 $INCLUDE(sound.inc)		; Procedimientos de manejo de teclado
 
 ;;; Exporta solo el punto de entrada
@@ -52,6 +53,7 @@ main:
 
 		call draw_init
 		call keyboard_init
+		call serial_init
 		call sound_init
 
 		;; FIXME: No activo las interrupciones, analizar consecuencias

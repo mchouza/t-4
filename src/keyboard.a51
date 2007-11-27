@@ -5,7 +5,8 @@
 		
 $INCLUDE(macros.inc)		; Macros de propósito general
 $INCLUDE(constantes.inc)	; Constantes de utilidad general
-$INCLUDE(sound.inc)	; Constantes de utilidad general
+$INCLUDE(serial.inc)		; Puerto serie
+$INCLUDE(sound.inc)			; Sonido
 
 NAME KEYBOARD
 
