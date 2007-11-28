@@ -39,6 +39,10 @@ class SerialPort
 	// Thread de espera
 	CWinThread* pFT_;
 
+	// Para impedir copias...
+	SerialPort(const SerialPort&);
+	const SerialPort& operator=(const SerialPort&);
+
 public:
 	// C & D
 	SerialPort(const TConfigMap& config);

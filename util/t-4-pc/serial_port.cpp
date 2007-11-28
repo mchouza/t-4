@@ -28,7 +28,7 @@ struct SFeedingParams
 	// Handle del puerto
 	HANDLE hComm_;
 	// Buffer de lectura
-	std::vector<unsigned char> readBuffer_;
+	std::vector<unsigned char>& readBuffer_;
 	// Critical section
 	CCriticalSection& cs_;
 	// Quiero que salga
