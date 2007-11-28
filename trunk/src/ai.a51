@@ -998,8 +998,10 @@ check_for_endgame:
 
 	cfe_endgame:
 		;; Si llega acá es porque el juego terminó
-		mov A, #melodia_maquina
+		mov A, #melodia_final
 		call sound_start_melody ; Reproduce la melodia
+
+		;; Vuelve
 		ret
 
 
