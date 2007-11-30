@@ -998,6 +998,18 @@ check_for_endgame:
 
 	cfe_endgame:
 		;; Si llega acá es porque el juego terminó
+		;; Me fijo si ganó la máquina o empató
+		cjne A, #9, cfe_ai_won
+
+		;; Si es 9, es empate
+		mov A, #melodia_empate
+		call sound_start_melody
+
+		;; Vuelve
+		ret
+
+	cfe_ai_won: ; Ganó la máquina
+
 		mov A, #melodia_final
 		call sound_start_melody ; Reproduce la melodia
 
