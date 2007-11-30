@@ -182,18 +182,20 @@ draw_loop:
 			call hsync ; + 9.5 px = (7.5, 17)
 			mov R7, #47 - 17 - 3 ; + 0.5 px = (8, 17)
 			INT_SLEEP 78, R0 ; + 78 px = (86, 17) = (-2, 18)
-	
+
+		linea_jugada_maquina: ; En esta linea del barrido se analiza si la máquina debe jugar
+			call hsync ; + 9.5 px = (7.5, 18)
+			call ai_play ; + 5 px = (12.5, 18)
+			SHORT_SLEEP 1 ; + 0.5 px = (13, 18)
+			INT_SLEEP 73, R0 ; + 73 px = (86, 18) = (-2, 19)
+		
 		linea_invocacion_teclado: ; En esta linea del barrido se lee el teclado
-			call hsync
+			call hsync ; + 9.5 px = (7.5, 19)
 			call keyboard_check
 	
 		linea_reproduccion_melodias: ; En esta linea del barrido se reproducen notas musicales
-			call hsync
+			call hsync ; + 9.5 px = (7.5, 20)
 			call sound_play
-	
-		linea_jugada_maquina: ; En esta linea del barrido se analiza si la máquina debe jugar
-			call hsync
-			call ai_play
 	
 		top_margin_loop: ; Hago el resto de las líneas (86, n - 1) = (-2, n)
 			
@@ -355,7 +357,7 @@ bl_12:
 bl_13:
 
 	; Todas corresponden a un espacio vertical
-	LOGICAL_LINE LEV, 0
+	LOGICAL_LINE LEV, 0, 0
 
 ;;;
 ;;; Procedimientos bl_2 y bl_11
@@ -371,7 +373,7 @@ bl_13:
 bl_2: ; (-3, n)
 bl_11:
 	
-	LOGICAL_LINE LS_0, 0
+	LOGICAL_LINE LS_0, 0, 0
 
 ;;;
 ;;; Procedimientos bl_3 y bl_10
@@ -387,7 +389,7 @@ bl_11:
 bl_3: ; (-3, n)
 bl_10:
 	
-	LOGICAL_LINE LS_1, 0
+	LOGICAL_LINE LS_1, 0, 0
 
 ;;;
 ;;; Procedimientos bl_4 y bl_9
@@ -403,7 +405,7 @@ bl_10:
 bl_4: ; (-3, n)
 bl_9:
 	
-	LOGICAL_LINE LS_2, 0
+	LOGICAL_LINE LS_2, 0, 0
 
 ;;;
 ;;; Procedimientos bl_5 y bl_8
@@ -419,7 +421,7 @@ bl_9:
 bl_5: ; (-3, n)
 bl_8:
 	
-	LOGICAL_LINE LS_3, 0
+	LOGICAL_LINE LS_3, 0, 0
 
 ;;;
 ;;; Procedimientos bl_6 y bl_7
@@ -435,7 +437,7 @@ bl_8:
 bl_6: ; (-3, n)
 bl_7:
 	
-	LOGICAL_LINE LS_4, 0
+	LOGICAL_LINE LS_4, 0, 0
 
 ;;;
 ;;; Procedimientos bl_14
@@ -450,7 +452,7 @@ bl_7:
 bl_14: ; (-3, n)
 
 	; Última línea de la línea del tablero
-	LOGICAL_LINE LSH, 1
+	LOGICAL_LINE LSH, 1, 2 ; El ajuste de 2 px compensa el hecho de que LSH demora 45 px en lugar de 43
 
 ;;; Fin del módulo
 END
