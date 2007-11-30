@@ -22,7 +22,7 @@ RSEG UTIL_SEG
 
 ;;; Pone un símbolo indicado por R3 en la posición:
 ;;; R0 -> fila, R1 -> columna
-;;; El símbolo si gue la codificación:
+;;; El símbolo sigue la codificación:
 ;;; 0 -> E, 1 -> X, 2 -> O
 ;;; Destruye B
 put_symbol_var:

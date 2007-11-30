@@ -54,6 +54,7 @@ detenida EQU 0
 melodia_humano EQU 1
 melodia_maquina EQU 2
 melodia_final EQU 3
+melodia_empate EQU 4
 
 turno_maquina EQU 0
 turno_humano EQU 1

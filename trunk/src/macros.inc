@@ -223,6 +223,7 @@ $ENDIF
 		CALL sound_start_melody ;; Reproduzco la melodia
 		MOV turno, #turno_maquina ;Turno=maquina
 		MOV timer_jugada_maquina, #100 ;Para que espere 2 segundos (40 frames) antes de jugar la máquina
+		JMP fin
 	no_vacia:	;Agrego el tiempo del put_symbol y del mov
 		SHORT_SLEEP 1
 		JMP sig
