@@ -21,6 +21,7 @@ active_lines equ 287 ; Cantidad de líneas activas
 hidden_lines equ (total_lines - active_lines) ; Cantidad de líneas ocultas
 
 ;Teclado
+puerto_teclado EQU P2
 puerto_teclado_0 EQU P2.0
 puerto_teclado_1 EQU P2.1
 puerto_teclado_2 EQU P2.2
