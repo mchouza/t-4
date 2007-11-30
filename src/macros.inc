@@ -89,7 +89,7 @@ PUT_SYMBOL_VARM MACRO row, col
 		ENDM 
 
 ;;; Sirve para dibujar una lìnea lógica
-LOGICAL_LINE MACRO draw_line_func, trim_last_line ; (-2.5, n)
+LOGICAL_LINE MACRO draw_line_func, trim_last_line, line_length_adjust ; (-2.5, n)
 LOCAL phys_line_loop, short_wait
 	
 	;; Pongo en R2 la cantidad de líneas físicas
@@ -105,10 +105,10 @@ LOCAL phys_line_loop, short_wait
 		INT_SLEEP 3, R0 ; + 3 px = (11, n) 
 
 		;; Llamo a la función que dibuja
-		call draw_line_func ; + 58 px = (72, n)
+		call draw_line_func ; + 58 px = (69, n)
 
 		;; Espero
-		INT_SLEEP 10 - trim_last_line, R0 ; + 10 px = (82, n)
+		INT_SLEEP 13 - trim_last_line - line_length_adjust, R0 ; + 13 px = (82, n)
 		SHORT_SLEEP 1 ; + 0.5 px = (82.5, n)
 
 		;; Retorno si es el último ciclo
@@ -128,7 +128,7 @@ LOCAL phys_line_loop, short_wait
 	ENDM
 
 ;;; Línea física
-LS_n MACRO SLS_X, SLS_O, SLS_E ; (-14)
+LS_n MACRO SLS_X, SLS_O, SLS_E, SLS_X_1st_COL, SLS_O_1st_COL SLS_E_1st_COL ; (-14)
 LOCAL LS_n_2, LS_n_2_E, LS_n_2_X, LS_n_2_O, LS_n_1, LS_n_1_E, LS_n_1_X, LS_n_1_O, LS_n_0, LS_n_0_E, LS_n_0_X, LS_n_0_O
 	
 	LS_n_2: ; (-14)		
@@ -170,14 +170,14 @@ LOCAL LS_n_2, LS_n_2_E, LS_n_2_X, LS_n_2_O, LS_n_1, LS_n_1_E, LS_n_1_X, LS_n_1_O
 		jb board_line.1, LS_n_0_O ; + 1 px = (0)
 
 	LS_n_0_E: ; (0)
-		jmp SLS_E ; + 1 px = (1)
+		jmp SLS_E_1st_COL ; + 1 px = (1)
 
 	LS_n_0_X: ; (-1)
 		SHORT_SLEEP 2 ; + 1 px = (0)
-		jmp SLS_X ; + 1 px = (1)
+		jmp SLS_X_1st_COL ; + 1 px = (1)
 
 	LS_n_0_O: ; (0)
-		jmp SLS_O ; + 1 px = (1)
+		jmp SLS_O_1st_COL ; + 1 px = (1)
 	
 		;; No hay 'ret', el último símbolo ya se encarga de eso
 		ENDM

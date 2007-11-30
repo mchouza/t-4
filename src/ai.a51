@@ -1018,11 +1018,21 @@ check_for_endgame:
 
 
 ;;; Obtiene y ejecuta la movida correspondiente al tablero actual
-ai_play:
+ai_play: ; (8.5, 18)
+		;;
 		;; Decide si le corresponde jugar o no
-		mov R0, turno ; Guardo el turno en R0 para poder compararlo
-		cjne R0, #turno_maquina, fin_jugar_maquina ; Si no le toca jugar a la máquina, salgo
-		djnz timer_jugada_maquina, fin_jugar_maquina ; Si le toca jugar, veo si terminó el tiempo de espera
+		;; Solo cuento píxeles en el caso de que no correponda jugar,
+		;; en otro caso tarda demasiado como para mentener el sincronismo.
+		;;
+		
+		;; Guardo el turno en R0 para poder compararlo
+		mov R0, turno ; + 1 px = (9.5, 18)
+		
+		;; Si no le toca jugar a la máquina, salgo
+		cjne R0, #turno_maquina, fin_jugar_maquina_wait ; + 1 px = (10.5, 18)
+
+		;; Si le toca jugar, veo si terminó el tiempo de espera
+		djnz timer_jugada_maquina, fin_jugar_maquina ; + 1 px = (11.5, 18)
 		
 		;; Si el timer llega a cero, pasa de largo y juega
 		
@@ -1041,11 +1051,16 @@ ai_play:
 
 		;; Pasa el turno al humano
 		mov turno, #turno_humano
-		
-fin_jugar_maquina:
+
+fin_jugar_maquina_wait: ; (10.5, 18) cuando no calculo movidas.
+
+		;; Espero 1 px para sincronizar...
+		SHORT_SLEEP 2 ; + 1px = (11.5, 18)
+
+fin_jugar_maquina: ; (11.5, 18)
 
 		;; Vuelvo
-		ret
+		ret	; + 1 px = (12.5, 18)
 
 ;;; Fin del módulo
 END

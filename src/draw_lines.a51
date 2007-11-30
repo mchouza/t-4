@@ -127,9 +127,8 @@ LEV: ; (-14)
 		INT_SLEEP 13, R0 ; + 13 px = (28)
 		mov graphics_port, #gray_level ; + 1 px = (29)
 		mov graphics_port, #black_level ; + 1 px = (30)
-		INT_SLEEP 14, R0 ; + 14 px = (44)
-		SHORT_SLEEP 2 ; + 1 px = (45)
-		ret ; + 1 px = (46)
+		INT_SLEEP 12, R0 ; + 12 px = (42)
+		ret ; + 1 px = (43)
 
 ;;; Línea de separador horizontal
 LSH: ; (-14)
@@ -173,37 +172,41 @@ LSH: ; (-14)
 		SHORT_SLEEP 1 ; + 0.5 px = (7)
 		INT_SLEEP 36, R0 ; + 36 px = (43)
 		mov graphics_port, #black_level ; + 1 px = (44)
-		SHORT_SLEEP 2 ; + 1 px = (45)
-		ret ; +	1 px = (46)
+		ret ; +	1 px = (45)
 
 ;;; Línea 0 y 9 de símbolo
 LS_0: ; (-14)
 LS_9: ; (-14)
-		LS_n SLS_0_X, SLS_0_O, SLS_N_E
+		LS_n SLS_0_X, SLS_0_O, SLS_N_E, SLS_0_X_1st_COL, SLS_0_O_1st_COL, SLS_N_E_1st_COL
 
 LS_1: ; (-14)
 LS_8: ; (-14)
-		LS_n SLS_1_X, SLS_1_O, SLS_N_E
+		LS_n SLS_1_X, SLS_1_O, SLS_N_E, SLS_1_X_1st_COL, SLS_1_O_1st_COL, SLS_N_E_1st_COL
 
 LS_2: ; (-14)
 LS_7: ; (-14)
-		LS_n SLS_2_X, SLS_2_O, SLS_N_E
+		LS_n SLS_2_X, SLS_2_O, SLS_N_E, SLS_2_X_1st_COL, SLS_2_O_1st_COL, SLS_N_E_1st_COL
 
 LS_3: ; (-14)
 LS_6: ; (-14)
-		LS_n SLS_3_X, SLS_3_O, SLS_N_E
+		LS_n SLS_3_X, SLS_3_O, SLS_N_E, SLS_3_X_1st_COL, SLS_3_O_1st_COL, SLS_N_E_1st_COL
 
 LS_4: ; (-14)
 LS_5: ; (-14)
-		LS_n SLS_4_X, SLS_4_O, SLS_N_E
+		LS_n SLS_4_X, SLS_4_O, SLS_N_E, SLS_4_X_1st_COL, SLS_4_O_1st_COL, SLS_N_E_1st_COL
 		
 
 ;; Fragmento de símbolo de la X	correspondiente a la línea 0 o 9
-SLS_0_X: ; (1) (tomando la primera columna, sino es equivalente a 16 o 31)
+SLS_0_X: ; (-2) = (13) = (28)
 
 ;; Fragmento de símbolo de la O correspondiente a la línea 4 o 5
-SLS_4_O: ; (1)
+SLS_4_O: ; (-2) = (13) = (28)
+		mov graphics_port, #gray_level ; + 1 px = (-1) = (14)
+		mov graphics_port, #black_level ; + 1 px = (0) = (15)
+		SHORT_SLEEP 2 ; + 1 px = (1) = (16)
 
+SLS_0_X_1st_COL: ; (1)
+SLS_4_O_1st_COL: ; (1)
 		mov graphics_port, #white_level ; + 1 px = (2)
 		SHORT_SLEEP 2 ; + 1 px = (3)
 		mov graphics_port, #black_level ; + 1 px = (4)
@@ -211,13 +214,15 @@ SLS_4_O: ; (1)
 		mov graphics_port, #white_level ; + 1 px = (10)
 		SHORT_SLEEP 2 ; + 1 px = (11)
 		mov graphics_port, #black_level ; + 1 px = (12)
-		SHORT_SLEEP 2 ; + 1 px = (13)
-		mov graphics_port, #gray_level ; + 1 px = (14)
-		mov graphics_port, #black_level ; + 1 px = (15)
-		ret ; + 1 px = (16)
+		ret ; + 1 px = (13)
 
 ;; Fragmento de símbolo de la X, correspondiente a la línea 1 u 8
-SLS_1_X: ; (1)
+SLS_1_X: ; (-2)
+		mov graphics_port, #gray_level ; + 1 px = (-1)
+		mov graphics_port, #black_level ; + 1 px = (0)
+		SHORT_SLEEP 2 ; + 1 px = (1)
+
+SLS_1_X_1st_COL: ; (1)
 		mov graphics_port, #white_level ; + 1 px = (2)
 		SHORT_SLEEP 4 ; + 2 px = (4)
 		mov graphics_port, #black_level ; + 1 px = (5)
@@ -225,16 +230,20 @@ SLS_1_X: ; (1)
 		mov graphics_port, #white_level ; + 1 px = (9)
 		SHORT_SLEEP 4 ; + 2 px = (11)
 		mov graphics_port, #black_level ; + 1 px = (12)
-		SHORT_SLEEP 2 ; + 1 px = (13)
-		mov graphics_port, #gray_level ; + 1 px = (14)
-		mov graphics_port, #black_level ; + 1 px = (15)
-		ret ; + 1 px = (16)
+		ret ; + 1 px = (13)
 
 ;; Fragmento de símbolo de la X, correspondiente a la línea 2 o 7
-SLS_2_X: ; (1)
+SLS_2_X: ; (-2)
 
 ;; Fragmento de símbolo de la O, correspondiente a la línea 2 o 7
-SLS_2_O: ; (1)
+SLS_2_O: ; (-2)
+
+		mov graphics_port, #gray_level ; + 1 px = (-1)
+		mov graphics_port, #black_level ; + 1 px = (0)
+		SHORT_SLEEP 2 ; + 1 px = (1)
+
+SLS_2_X_1st_COL: ; (1)
+SLS_2_O_1st_COL: ; (1)
 
 		mov graphics_port, #black_level ; + 1 px = (2)
 		mov graphics_port, #white_level ; + 1 px = (3)
@@ -244,52 +253,71 @@ SLS_2_O: ; (1)
 		mov graphics_port, #white_level ; + 1 px = (8)
 		SHORT_SLEEP 4 ; + 2 px = (10)
 		mov graphics_port, #black_level ; + 1 px = (11)
-		SHORT_SLEEP 4 ; + 2 px = (13)
-		mov graphics_port, #gray_level ; + 1 px = (14)
-		mov graphics_port, #black_level ; + 1 px = (15)
-		ret ; + 1 px = (16)
+		SHORT_SLEEP 2 ; + 1 px = (12)
+		ret ; + 1 px = (13)
 
 ;; Fragmento de símbolo de la X, correspondiente a la línea 3 o 6
-SLS_3_X: ; (1)
+SLS_3_X: ; (-2)
 
 ;; Fragmento de símbolo de la O, correspondiente a la línea 1 u 8
-SLS_1_O: ; (1)
+SLS_1_O: ; (-2)
+
+		mov graphics_port, #gray_level ; + 1 px = (-1)
+		mov graphics_port, #black_level ; + 1 px = (0)
+		SHORT_SLEEP 2 ; + 1 px = (1)
+
+SLS_3_X_1st_COL: ; (1)
+SLS_1_O_1st_COL: ; (1)
 
 		mov graphics_port, #black_level ; + 1 px = (2)
 		SHORT_SLEEP 2 ; + 1 px = (3)
 		mov graphics_port, #white_level	; + 1 px = (4)
 		INT_SLEEP 5, R0 ; + 5 px = (9)
 		mov graphics_port, #black_level ; + 1 px = (10)
-		INT_SLEEP 3, R0 ; + 3 px = (13)
-		mov graphics_port, #gray_level ; + 1 px = (14)
-		mov graphics_port, #black_level ; + 1 px = (15)
-		ret ; + 1 px = (16)
+		SHORT_SLEEP 4 ; + 2 px = (12)
+		ret ; + 1 px = (13)
 
 ;; Fragmento de símbolo de la X, correspondiente a la línea 4 o 5
-SLS_4_X: ; (1)
+SLS_4_X: ; (-2)
+
+		mov graphics_port, #gray_level ; + 1 px = (-1)
+		mov graphics_port, #black_level ; + 1 px = (0)
+		SHORT_SLEEP 2 ; + 1 px = (1)
+
+SLS_4_X_1st_COL: ; (1)
 		mov graphics_port, #black_level ; + 1 px = (2)
 		SHORT_SLEEP 4 ; + 2 px = (4)
 		mov graphics_port, #white_level ; + 1 px = (5)
 		INT_SLEEP 3, R0 ; + 3 px = (8)
 		mov graphics_port, #black_level ; + 1 px = (9)
-		INT_SLEEP 4, R0 ; + 4 px = (13)
-		mov graphics_port, #gray_level ; + 1 px = (14)
-		mov graphics_port, #black_level ; + 1 px = (15)
-		ret ; + 1 px = (16)
+		INT_SLEEP 3, R0 ; + 3 px = (12)
+		ret ; + 1 px = (13)
 
 ;; Fragmento de símbolo de la O	correspondiente a la línea 0 o 9
-SLS_0_O: ; (1) (tomando la primera columna, sino es equivalente a 16 o 31)
+SLS_0_O: ; (-2)
+
+		mov graphics_port, #gray_level ; + 1 px = (-1)
+		mov graphics_port, #black_level ; + 1 px = (0)
+		SHORT_SLEEP 2 ; + 1 px = (1)
+
+SLS_0_O_1st_COL: ; (1)
+
 		INT_SLEEP 4, R0 ; + 4 px = (5)
 		mov graphics_port, #white_level ; + 1 px = (6)
 		SHORT_SLEEP 2 ; + 1 px = (7)
 		mov graphics_port, #black_level ; + 1 px = (8)
-		INT_SLEEP 5, R0 ; + 5 px = (13)
-		mov graphics_port, #gray_level ; + 1 px = (14)
-		mov graphics_port, #black_level ; + 1 px = (15)
-		ret ; + 1 px = (16)
+		INT_SLEEP 4, R0 ; + 4 px = (12)
+		ret ; + 1 px = (13)
 
 ;; Fragmento de símbolo de la O	correspondiente a la línea 3 o 7
-SLS_3_O: ; (1)
+SLS_3_O: ; (-2)
+
+		mov graphics_port, #gray_level ; + 1 px = (-1)
+		mov graphics_port, #black_level ; + 1 px = (0)
+		SHORT_SLEEP 2 ; + 1 px = (1)
+
+SLS_3_O_1st_COL: ; (1)
+
 		SHORT_SLEEP 2 ; + 1 px = (2)
 		mov graphics_port, #white_level ; + 1 px = (3)
 		SHORT_SLEEP 2 ; + 1 px = (4)
@@ -298,17 +326,20 @@ SLS_3_O: ; (1)
 		mov graphics_port, #white_level ; + 1 px = (9)
 		SHORT_SLEEP 2 ; + 1 px = (10)
 		mov graphics_port, #black_level ; + 1 px = (11)
-		SHORT_SLEEP 4 ; + 2 px = (13)
-		mov graphics_port, #gray_level ; + 1 px = (14)
-		mov graphics_port, #black_level ; + 1 px = (15)
-		ret ; + 1 px = (16)	
+		SHORT_SLEEP 2 ; + 1 px = (12)
+		ret ; + 1 px = (13)	
 
 ;; Fragmento de símbolo vacío correspondiente a cualquier línea
-SLS_N_E: ; (1) (tomando la primera columna, sino es equivalente a 16 o 31)
-		INT_SLEEP 12, R0 ; + 12 px = (13)
-		mov graphics_port, #gray_level ; + 1 px = (14)
-		mov graphics_port, #black_level ; + 1 px = (15)
-		ret ; + 1 px = (16)
+SLS_N_E: ; (-2)
+
+		mov graphics_port, #gray_level ; + 1 px = (-1)
+		mov graphics_port, #black_level ; + 1 px = (0)
+		SHORT_SLEEP 2 ; + 1 px = (1)
+
+SLS_N_E_1st_COL: ; (1)
+
+		INT_SLEEP 11, R0 ; + 11 px = (12)
+		ret ; + 1 px = (13)
 
 ;;; Fin del módulo
 END
