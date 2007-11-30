@@ -59,7 +59,7 @@ keyboard_check:
 		JMP fin
 	no_saltar:
 
-		CLR puerto_teclado_4 ;Exploro primera columna
+		clr puerto_teclado_4 ;Exploro primera columna
 
 		leer_tecla 0, 0
 		leer_tecla 1, 0
@@ -79,10 +79,12 @@ keyboard_check:
 		leer_tecla 1, 2
 		leer_tecla 2, 2
 
-		setb puerto_teclado_6 ;Dejo tercera columna
-
 		;SUMAR TIEMPO PARA QUE COMPLETE LA LINEA
 	fin:
+		;; Restauro el estado del puerto
+		mov puerto_teclado, #0xff
+
+		;; Vuelvo
 		ret
 	;Fin de rutina revisar_teclado
 
