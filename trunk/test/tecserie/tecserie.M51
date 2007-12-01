@@ -1,7 +1,7 @@
-BL51 BANKED LINKER/LOCATER V6.05                                                        11/27/2007  16:25:00  PAGE 1
+BL51 BANKED LINKER/LOCATER V4.23                                                        12/01/2007  15:27:26  PAGE 1
 
 
-BL51 BANKED LINKER/LOCATER V6.05, INVOKED BY:
+BL51 BANKED LINKER/LOCATER V4.23, INVOKED BY:
 C:\KEIL\C51\BIN\BL51.EXE tecserie.obj TO tecserie RAMSIZE (256)
 
 
@@ -23,7 +23,7 @@ LINK MAP OF MODULE:  tecserie (TECSERIE)
             DATA    0028H     0001H     ABSOLUTE     
 
             * * * * * * *   C O D E   M E M O R Y   * * * * * * *
-            CODE    0000H     004DH     ABSOLUTE     
+            CODE    0000H     0052H     ABSOLUTE     
 
 
 
@@ -59,7 +59,7 @@ SYMBOL TABLE OF MODULE:  tecserie (TECSERIE)
   D:008DH         SYMBOL        TH1
   B:0098H.1       SYMBOL        TI
   D:008BH         SYMBOL        TL1
-BL51 BANKED LINKER/LOCATER V6.05                                                      11/27/2007  16:25:00  PAGE 2
+BL51 BANKED LINKER/LOCATER V4.23                                                      12/01/2007  15:27:26  PAGE 2
 
 
   D:0089H         SYMBOL        TMOD
@@ -101,5 +101,5 @@ SYMBOL TABLE OF MODULE:  tecserie (TECSERIE)
   C:004CH         LINE#         79
   -------         ENDMOD        TECSERIE
 
-Program Size: data=10.0 xdata=0 code=77
+Program Size: data=10.0 xdata=0 code=82
 LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)
