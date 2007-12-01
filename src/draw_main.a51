@@ -6,6 +6,7 @@
 
 $INCLUDE(macros.inc)		; Macros de propósito general
 $INCLUDE(constantes.inc)	; Constantes de utilidad general
+$INCLUDE(serial.inc)	; Procedimientos de manejo del puerto serie
 
 NAME DRAW_MAIN
 
@@ -180,7 +181,7 @@ draw_loop:
 	
 			;; Es igual que en el caso de las ocultas
 			call hsync ; + 9.5 px = (7.5, 17)
-			mov R7, #47 - 17 - 3 ; + 0.5 px = (8, 17)
+			mov R7, #47 - 17 - 4 ; + 0.5 px = (8, 17)
 			INT_SLEEP 78, R0 ; + 78 px = (86, 17) = (-2, 18)
 
 		linea_jugada_maquina: ; En esta linea del barrido se analiza si la máquina debe jugar
@@ -192,6 +193,10 @@ draw_loop:
 		linea_invocacion_teclado: ; En esta linea del barrido se lee el teclado
 			call hsync ; + 9.5 px = (7.5, 19)
 			call keyboard_check
+	
+		linea_envio_datos_serial: ; En esta linea se analiza si se deben enviar datos
+			call hsync ; + 9.5 px = (7.5, 19)
+			call serial_send
 	
 		linea_reproduccion_melodias: ; En esta linea del barrido se reproducen notas musicales
 			call hsync ; + 9.5 px = (7.5, 20)

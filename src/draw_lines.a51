@@ -132,8 +132,20 @@ LEV: ; (-14)
 
 ;;; Línea de separador horizontal
 LSH: ; (-14)
-		INT_SLEEP 13, R0 ; + 13 px = (-1)
+		INT_SLEEP 12, R0 ; + 12 px = (-2)
+
+		;; Me fijo si estoy en el último separador
+		cjne R1, #1, not_in_last_sep ; + 1 px = (-1)
+
+		;; Si llegué acá es porque si estoy en el último
+		;; No hago nada
+		jmp LSH_common ; + 1 px = (0)
+
+	not_in_last_sep:
+
 		mov graphics_port, #gray_level ; + 1 px = (0)
+
+	LSH_common:	; (0)
 
 		;; Reviso si es una línea de cambio (o sea la primera)
 		;; Recordar que R2 contiene el número de línea física dentro de la

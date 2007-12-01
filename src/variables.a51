@@ -89,6 +89,11 @@ timer_jugada_maquina: ds 1
 PUBLIC arranca
 arranca: ds 1
 
+;;;Indica que hay que enviar las líneas del tablero a la PC
+;;;Cuando se deben enviar las líneas se pone en 3, y luego se va decrementando a medida que se envía cada una de las 3 líneas, de a una por frame.
+PUBLIC enviar_lineas_serial
+enviar_lineas_serial: ds 1
+
 ;;;
 ;;; Variables de bit 
 ;;;

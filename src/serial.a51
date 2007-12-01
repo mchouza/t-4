@@ -40,6 +40,10 @@ serial_init:
 		setb TR1
 
 		setb TI
+
+		;Todavía no hay que enviar nada del tablero a la PC.
+		MOV enviar_lineas_serial, #0
+
 		ret
 
 ;;;
@@ -47,9 +51,31 @@ serial_init:
 ;;;
 
 serial_send:
-	   	jnb TI, $ ;Cuando el micro termina la transmisión, avisará seteando TI
-		clr TI
-		mov A, linea_1
+	   	MOV R0, enviar_lineas_serial
+		CJNE R0, #0, hay_datos_serial
+no_hay_datos_serial:
+		ret
+hay_datos_serial:
+		jnb TI, $ ;Cuando el micro termina la transmisión, avisará seteando TI
+		clr TI ;Limpio TI para indicar que envié datos.
+		CJNE R0, #1, linea_1_o_2_serial
+linea_0_serial:
+		MOV A, linea_0
+		MOV enviar_lineas_serial, #0
+		JMP fin_linea_serial
+linea_1_o_2_serial:
+		CJNE R0, #2, linea_2_serial
+linea_1_serial:
+		MOV A, linea_1
+		ADD A, #0x40
+		MOV enviar_lineas_serial, #1
+		JMP fin_linea_serial
+linea_2_serial:
+		MOV A, linea_2
+		ADD A, #0x80
+		MOV enviar_lineas_serial, #2
+
+fin_linea_serial:
 		mov SBUF, A
 		ret
 
