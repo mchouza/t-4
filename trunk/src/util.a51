@@ -5,6 +5,7 @@
 
 $INCLUDE(macros.inc)		; Macros de propósito general
 $INCLUDE(constantes.inc)	; Constantes de utilidad general
+$INCLUDE(sound.inc)	; Constantes de utilidad general
 
 NAME UTIL
 
@@ -15,7 +16,7 @@ UTIL_SEG SEGMENT CODE
 $INCLUDE(variables.inc)		; Variables compartidas a nivel global
 
 ;;; Exporta todas las funciones
-PUBLIC put_symbol_var
+PUBLIC put_symbol_var, poner_ficha
 
 ;;; Comienza el segmento UTIL_SEG
 RSEG UTIL_SEG
@@ -67,5 +68,59 @@ put_symbol_var:
 
 		;; Listo
 		ret
+
+;;; Pone un símbolo indicado por R3 en la posición:
+;;; R0 -> fila, R1 -> columna
+poner_ficha:
+		call put_symbol_var
+		MOV A, R0
+		MOV R2, A ;Mantengo la fila en R2, porque R0 lo voy a modificar
+		MOV A, R1
+		MOV R3, A ;Mantengo la columna en R3, porque R1 lo voy a modificar
+		MOV A, R0
+		add A, #linea_0 ;Tengo en A la dirección de la variable correspondiente a la fila
+		MOV R0, A
+		MOV A, @R0 ;Ahora tengo en A la variable correspondiente a la fila
+		;Tengo que shiftear a la izquierda una cantidad de bits igual a dos veces el número de columna
+		
+		INC R1 ;Sumo uno porque inmediatamente voy a decrementar
+		DJNZ R1, shifteo_listo
+		rr A
+		rr A
+shifteo_listo:
+		;Ahora tengo en los dos bits menos significativos de A el símbolo correspondiente a la fila y columna
+		anl A, #3 ;Tengo en A el símbolo correspondiente a la fila y columna
+		CJNE A, #0, no_vacia ;Si no está vacía salgo
+
+		;Veo si pone cruz (arranca_humano) o circulo (arranca_maquina)
+		MOV R0, arranca
+		CJNE R0, #arranca_humano, poner_circulo
+		MOV A, R2
+		MOV R0, A
+		MOV A, R3
+		MOV R1, A
+		MOV R3, #1 ;Cruz según la especificación de put_symbol_var
+		call put_symbol_var  ;Si arrancó el humano, juega con cruces
+		JMP ficha_puesta
+	poner_circulo:
+		MOV A, R2
+		MOV R0, A
+		MOV A, R3
+		MOV R1, A
+		MOV R3, #0 ;Círculo según la especificación de put_symbol_var
+		call put_symbol_var ;Si arrancó la máquina, el humano juega con círculos
+		JMP ficha_puesta
+	ficha_puesta:
+		MOV A, #melodia_humano
+		CALL sound_start_melody ; Reproduzco la melodia
+		MOV turno, #turno_maquina ;Turno=maquina
+		MOV timer_jugada_maquina, #100 ;Para que espere 2 segundos (100 frames) antes de jugar la máquina
+		MOV enviar_lineas_serial, #3 ;Indico que hay que enviar las 3 lineas del tablero a la PC
+	no_vacia:	;Agrego el tiempo del put_symbol y del mov
+		SHORT_SLEEP 1
+		ret
+	suelta:	;Agrego todo el tiempo anterior
+		ret
+
 
 END

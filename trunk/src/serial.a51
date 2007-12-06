@@ -5,6 +5,7 @@
 
 $INCLUDE(macros.inc)		; Macros de propósito general
 $INCLUDE(constantes.inc)	; Constantes de utilidad general
+$INCLUDE(util.inc)	; Constantes de utilidad general
 
 NAME SERIAL
 
@@ -39,7 +40,11 @@ serial_init:
 		;Activo el timer 1
 		setb TR1
 
+		;Pongo TI en 1 para indicar que estoy en condiciones de enviar datos
 		setb TI
+
+		;Habilito la recepción de datos por el puerto serie.
+		setb REN
 
 		;Todavía no hay que enviar nada del tablero a la PC.
 		MOV enviar_lineas_serial, #0
@@ -84,7 +89,21 @@ fin_linea_serial:
 ;;;
 
 serial_receive:
-		
+		jnb RI, no_hay_datos_serie ;Veo si hay un byte en el puerto o no
+		CLR RI ;Si hay, limpio la indicación de que hay, porque lo voy a procesar
+		MOV A, SBUF ;Leo el dato del buffer del puerto serie, pasándolo a R0
+		MOV B, #3
+		DIV AB ;Tengo en A la fila y en B la columna
+		MOV R0, A ;En R0 la fila
+		MOV R1, B ;En R1 la columna
+		CJNE R0, #arranca_humano, poner_cruz ;Si no arrancó el humano, juega con cruces
+		MOV R3, #2 ;Circulo
+		JMP llamar_poner_ficha
+poner_cruz:
+		MOV R3, #1 ;Cruz
+llamar_poner_ficha:
+		call poner_ficha
+no_hay_datos_serie:
 		ret
 
 ;;; Fin del módulo
