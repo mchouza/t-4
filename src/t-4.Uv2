@@ -6,26 +6,26 @@ Target (Target 1), 0x0000 // Tools: 'MCS-51'
 Group (Fuentes)
 Group (Headers)
 
-File 1,2,<.\main.a51><main.a51> 0x0 
-File 1,2,<.\draw_main.a51><draw_main.a51> 0x0 
-File 1,2,<.\draw_lines.a51><draw_lines.a51> 0x0 
-File 1,2,<.\keyboard.a51><keyboard.a51> 0x0 
-File 1,2,<.\variables.a51><variables.a51> 0x0 
-File 1,2,<.\ai.a51><ai.a51> 0x0 
-File 1,2,<.\sound.a51><sound.a51> 0x0 
-File 1,2,<.\util.a51><util.a51> 0x0 
-File 1,2,<.\serial.a51><serial.a51> 0x0 
-File 2,5,<.\macros.inc><macros.inc> 0x0 
-File 2,5,<.\constantes.inc><constantes.inc> 0x0 
-File 2,5,<.\variables.inc><variables.inc> 0x0 
-File 2,5,<.\main.inc><main.inc> 0x0 
-File 2,5,<.\keyboard.inc><keyboard.inc> 0x0 
-File 2,5,<.\draw_main.inc><draw_main.inc> 0x0 
-File 2,5,<.\draw_lines.inc><draw_lines.inc> 0x0 
-File 2,5,<.\sound.inc><sound.inc> 0x0 
-File 2,5,<.\ai.inc><ai.inc> 0x0 
-File 2,5,<.\util.inc><util.inc> 0x0 
-File 2,5,<.\serial.inc><serial.inc> 0x0 
+File 1,2,<.\main.a51><main.a51>
+File 1,2,<.\draw_main.a51><draw_main.a51>
+File 1,2,<.\draw_lines.a51><draw_lines.a51>
+File 1,2,<.\keyboard.a51><keyboard.a51>
+File 1,2,<.\variables.a51><variables.a51>
+File 1,2,<.\ai.a51><ai.a51>
+File 1,2,<.\sound.a51><sound.a51>
+File 1,2,<.\util.a51><util.a51>
+File 1,2,<.\serial.a51><serial.a51>
+File 2,5,<.\macros.inc><macros.inc>
+File 2,5,<.\constantes.inc><constantes.inc>
+File 2,5,<.\variables.inc><variables.inc>
+File 2,5,<.\main.inc><main.inc>
+File 2,5,<.\keyboard.inc><keyboard.inc>
+File 2,5,<.\draw_main.inc><draw_main.inc>
+File 2,5,<.\draw_lines.inc><draw_lines.inc>
+File 2,5,<.\sound.inc><sound.inc>
+File 2,5,<.\ai.inc><ai.inc>
+File 2,5,<.\util.inc><util.inc>
+File 2,5,<.\serial.inc><serial.inc>
 
 
 Options 1,0,0  // Target 'Target 1'
@@ -68,6 +68,8 @@ Options 1,0,0  // Target 'Target 1'
  RunUsr 1 0 <>
  BrunUsr 0 0 <>
  BrunUsr 1 0 <>
+ CrunUsr 0 0 <>
+ CrunUsr 1 0 <>
  SVCSID <>
  MODEL5=0
  RTOS5=0

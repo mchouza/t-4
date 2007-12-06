@@ -182,6 +182,8 @@ LOCAL LS_n_2, LS_n_2_E, LS_n_2_X, LS_n_2_O, LS_n_1, LS_n_1_E, LS_n_1_X, LS_n_1_O
 		;; No hay 'ret', el último símbolo ya se encarga de eso
 		ENDM
 
+	//Forma antigua de manejar el teclado. Ahora se emplea poner_ficha y el código de keyboard.a51
+  /*
 ;Lee una tecla del teclado. Recibe fila y columna, de 0 a 2
 leer_tecla_puerto MACRO fila, columna, puerto
 LOCAL no_vacia, suelta, sig, poner_circulo, ficha_puesta
@@ -231,7 +233,8 @@ $ENDIF
 		JMP sig
 	sig:	
 		ENDM
-
+  
 leer_tecla MACRO fila, columna
 		leer_tecla_puerto fila, columna, 2-fila ;Adapta la fila al puerto que corresponde (están invertidos en orden)
 		ENDM
+*/

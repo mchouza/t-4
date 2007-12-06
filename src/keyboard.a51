@@ -7,6 +7,7 @@ $INCLUDE(macros.inc)		; Macros de propósito general
 $INCLUDE(constantes.inc)	; Constantes de utilidad general
 $INCLUDE(serial.inc)		; Puerto serie
 $INCLUDE(sound.inc)			; Sonido
+$INCLUDE(util.inc)			; Sonido
 
 NAME KEYBOARD
 
@@ -59,24 +60,66 @@ keyboard_check:
 
 		clr puerto_teclado_4 ;Exploro primera columna
 
-		leer_tecla 0, 0
-		leer_tecla 1, 0
-		leer_tecla 2, 0
+		JB puerto_teclado_2, suelta_1 ;Veo si está suelta la tecla
+		MOV R0, #0
+		MOV R1, #0
+		call poner_ficha
+			
+suelta_1:
+		JB puerto_teclado_1, suelta_2 ;Veo si está suelta la tecla
+		MOV R0, #1
+		MOV R1, #0
+		call poner_ficha
 
+suelta_2:		
+		JB puerto_teclado_0, suelta_3 ;Veo si está suelta la tecla
+		MOV R0, #2
+		MOV R1, #0
+		call poner_ficha
+		
+suelta_3:
 		setb puerto_teclado_4 ;Dejo primera columna
 		clr puerto_teclado_5 ;Exploro segunda columna
 
-		leer_tecla 0, 1
-		leer_tecla 1, 1
-		leer_tecla 2, 1
-
+		JB puerto_teclado_2, suelta_4 ;Veo si está suelta la tecla
+		MOV R0, #0
+		MOV R1, #1
+		call poner_ficha
+		
+suelta_4:	
+		JB puerto_teclado_1, suelta_5 ;Veo si está suelta la tecla
+		MOV R0, #1
+		MOV R1, #1
+		call poner_ficha
+		
+suelta_5:
+		JB puerto_teclado_0, suelta_6 ;Veo si está suelta la tecla
+		MOV R0, #2
+		MOV R1, #1
+		call poner_ficha
+		
+suelta_6:
 		setb puerto_teclado_5 ;Dejo segunda columna
 		clr puerto_teclado_6 ;Exploro tercera columna
 
-		leer_tecla 0, 2
-		leer_tecla 1, 2
-		leer_tecla 2, 2
+		JB puerto_teclado_2, suelta_7 ;Veo si está suelta la tecla
+		MOV R0, #0
+		MOV R1, #2
+		call poner_ficha
 
+suelta_7:	
+		JB puerto_teclado_1, suelta_8 ;Veo si está suelta la tecla
+		MOV R0, #1
+		MOV R1, #2
+		call poner_ficha
+		
+suelta_8:
+		JB puerto_teclado_0, suelta_9 ;Veo si está suelta la tecla
+		MOV R0, #2
+		MOV R1, #2
+		call poner_ficha
+		
+suelta_9:
 		;SUMAR TIEMPO PARA QUE COMPLETE LA LINEA
 	fin:
 		;; Restauro el estado del puerto
