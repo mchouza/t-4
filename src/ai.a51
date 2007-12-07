@@ -1049,8 +1049,8 @@ ai_play: ; (8.5, 18)
 		;; Se fija si ganó o empató
 		call check_for_endgame
 
-		;Se Indica que hay que enviar las 3 lineas del tablero a la PC
-		MOV enviar_lineas_serial, #3 
+		;; Se Indica que hay que enviar las 3 lineas del tablero a la PC
+		mov enviar_lineas_serial, #3 
 
 		;; Pasa el turno al humano
 		mov turno, #turno_humano

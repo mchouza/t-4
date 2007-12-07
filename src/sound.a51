@@ -180,6 +180,9 @@ cambiar_nota_3:
 		mov linea_1, #0
 		mov linea_2, #0
 
+		;; Muestro que el tablero se limpió
+		mov enviar_lineas_serial, #3
+
 		MOV R0, arranca
 		CJNE R0, #arranca_humano, ahora_arranca_humano ;La proxima partida empieza el otro
 		MOV arranca, #arranca_maquina ;Arrancará la máquina
@@ -209,6 +212,9 @@ cambiar_nota_4:
 		mov linea_0, #0
 		mov linea_1, #0
 		mov linea_2, #0
+
+		;; Muestro que el tablero se limpió
+		mov enviar_lineas_serial, #3
 
 		MOV R0, arranca
 		CJNE R0, #arranca_humano, ahora_arranca_humano ;La proxima partida empieza el otro

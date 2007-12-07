@@ -110,7 +110,7 @@ shifteo_listo:
 		MOV R0, A
 		MOV A, R3
 		MOV R1, A
-		MOV R3, #0 ;Círculo según la especificación de put_symbol_var
+		MOV R3, #2 ;Círculo según la especificación de put_symbol_var
 		call put_symbol_var ;Si arrancó la máquina, el humano juega con círculos
 		JMP ficha_puesta
 	ficha_puesta:
