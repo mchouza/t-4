@@ -18,7 +18,7 @@ $INCLUDE(variables.inc)		; Variables compartidas a nivel global
 ;;; Exporta solo la función de inicialización y la de reproduccion
 PUBLIC serial_init, serial_send, serial_receive
 
-;;; Comienza el segmento SOUND_SEG
+;;; Comienza el segmento SERIAL_SEG
 RSEG SERIAL_SEG
 
 ;;;
@@ -90,17 +90,23 @@ fin_linea_serial:
 
 serial_receive:
 		jnb RI, no_hay_datos_serie ;Veo si hay un byte en el puerto o no
-		CLR RI ;Si hay, limpio la indicación de que hay, porque lo voy a procesar
 		MOV A, SBUF ;Leo el dato del buffer del puerto serie, pasándolo a R0
+		CLR RI ; Limpio la indicación de que hay, porque lo proces
 		MOV B, #3
 		DIV AB ;Tengo en A la fila y en B la columna
-		MOV R0, A ;En R0 la fila
-		MOV R1, B ;En R1 la columna
-		CJNE R0, #arranca_humano, poner_cruz ;Si no arrancó el humano, juega con cruces
-		MOV R3, #2 ;Circulo
-		JMP llamar_poner_ficha
-poner_cruz:
+		
+		MOV R0, A ; En R0, la fila
+		MOV A, B
+		
+		MOV R1, arranca
+		CJNE R1, #arranca_humano, poner_circulo ;Si no arrancó el humano, juega con circulos
+		
+		mov R1, A ;En R1 la columna
 		MOV R3, #1 ;Cruz
+		JMP llamar_poner_ficha
+poner_circulo:
+		mov R1, A ;En R1 la columna
+		MOV R3, #2 ;Circulo
 llamar_poner_ficha:
 		call poner_ficha
 no_hay_datos_serie:

@@ -72,7 +72,6 @@ put_symbol_var:
 ;;; Pone un símbolo indicado por R3 en la posición:
 ;;; R0 -> fila, R1 -> columna
 poner_ficha:
-		call put_symbol_var
 		MOV A, R0
 		MOV R2, A ;Mantengo la fila en R2, porque R0 lo voy a modificar
 		MOV A, R1
@@ -81,12 +80,16 @@ poner_ficha:
 		add A, #linea_0 ;Tengo en A la dirección de la variable correspondiente a la fila
 		MOV R0, A
 		MOV A, @R0 ;Ahora tengo en A la variable correspondiente a la fila
-		;Tengo que shiftear a la izquierda una cantidad de bits igual a dos veces el número de columna
+		;Tengo que shiftear a la derecha una cantidad de bits igual a dos veces el número de columna
 		
 		INC R1 ;Sumo uno porque inmediatamente voy a decrementar
-		DJNZ R1, shifteo_listo
+analizar_seguir_shifteando:
+		DJNZ R1, seguir_shifteando
+		JMP shifteo_listo
+seguir_shifteando:
 		rr A
 		rr A
+		JMP analizar_seguir_shifteando
 shifteo_listo:
 		;Ahora tengo en los dos bits menos significativos de A el símbolo correspondiente a la fila y columna
 		anl A, #3 ;Tengo en A el símbolo correspondiente a la fila y columna
