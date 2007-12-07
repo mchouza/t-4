@@ -89,27 +89,24 @@ fin_linea_serial:
 ;;;
 
 serial_receive:
-		jnb RI, no_hay_datos_serie ;Veo si hay un byte en el puerto o no
-		MOV A, SBUF ;Leo el dato del buffer del puerto serie, pasándolo a R0
+		jnb RI, no_hay_datos_serie ; Veo si hay un byte en el puerto o no
+
+		;; Se fija si tiene qu ejugar
+		MOV A, turno
+		CJNE A, #turno_humano, no_tiene_que_jugar
+
+		MOV A, SBUF ; Leo el dato del buffer del puerto serie, pasándolo a R0
 		CLR RI ; Limpio la indicación de que hay, porque lo proces
 		MOV B, #3
-		DIV AB ;Tengo en A la fila y en B la columna
+		DIV AB ; Tengo en A la fila y en B la columna
 		
 		MOV R0, A ; En R0, la fila
-		MOV A, B
-		
-		MOV R1, arranca
-		CJNE R1, #arranca_humano, poner_circulo ;Si no arrancó el humano, juega con circulos
-		
-		mov R1, A ;En R1 la columna
-		MOV R3, #1 ;Cruz
-		JMP llamar_poner_ficha
-poner_circulo:
-		mov R1, A ;En R1 la columna
-		MOV R3, #2 ;Circulo
-llamar_poner_ficha:
-		call poner_ficha
-no_hay_datos_serie:
+		MOV R1, B ; En R1 la columna
+		call poner_ficha ; Pone la ficha
+
+	no_hay_datos_serie:
+	no_tiene_que_jugar:
+
 		ret
 
 ;;; Fin del módulo
