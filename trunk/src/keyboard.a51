@@ -64,18 +64,21 @@ keyboard_check:
 		MOV R0, #0
 		MOV R1, #0
 		call poner_ficha
+		JMP fin
 			
 suelta_1:
 		JB puerto_teclado_1, suelta_2 ;Veo si está suelta la tecla
 		MOV R0, #1
 		MOV R1, #0
 		call poner_ficha
+		JMP fin
 
 suelta_2:		
 		JB puerto_teclado_0, suelta_3 ;Veo si está suelta la tecla
 		MOV R0, #2
 		MOV R1, #0
 		call poner_ficha
+		JMP fin
 		
 suelta_3:
 		setb puerto_teclado_4 ;Dejo primera columna
@@ -85,18 +88,21 @@ suelta_3:
 		MOV R0, #0
 		MOV R1, #1
 		call poner_ficha
+		JMP fin
 		
 suelta_4:	
 		JB puerto_teclado_1, suelta_5 ;Veo si está suelta la tecla
 		MOV R0, #1
 		MOV R1, #1
 		call poner_ficha
+		JMP fin
 		
 suelta_5:
 		JB puerto_teclado_0, suelta_6 ;Veo si está suelta la tecla
 		MOV R0, #2
 		MOV R1, #1
 		call poner_ficha
+		JMP fin
 		
 suelta_6:
 		setb puerto_teclado_5 ;Dejo segunda columna
@@ -106,18 +112,21 @@ suelta_6:
 		MOV R0, #0
 		MOV R1, #2
 		call poner_ficha
+		JMP fin
 
 suelta_7:	
 		JB puerto_teclado_1, suelta_8 ;Veo si está suelta la tecla
 		MOV R0, #1
 		MOV R1, #2
 		call poner_ficha
+		JMP fin
 		
 suelta_8:
 		JB puerto_teclado_0, suelta_9 ;Veo si está suelta la tecla
 		MOV R0, #2
 		MOV R1, #2
 		call poner_ficha
+		JMP fin
 		
 suelta_9:
 		;SUMAR TIEMPO PARA QUE COMPLETE LA LINEA
