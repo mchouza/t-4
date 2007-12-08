@@ -16,7 +16,7 @@ UTIL_SEG SEGMENT CODE
 $INCLUDE(variables.inc)		; Variables compartidas a nivel global
 
 ;;; Exporta todas las funciones
-PUBLIC put_symbol_var, poner_ficha
+PUBLIC put_symbol_var, poner_ficha, pantalla_negro
 
 ;;; Comienza el segmento UTIL_SEG
 RSEG UTIL_SEG
@@ -126,4 +126,49 @@ shifteo_listo:
 		ret
 
 
+pantalla_negro:
+		;;FIXME: Corregir el 220
+		MOV R2, #220
+linea_negro:
+		;; Comenzamos el pulso sync
+		mov graphics_port, #sync_level
+		;; Esperamos 5 pixels
+		INT_SLEEP 5, R0
+		;; Esperamos 1/2 pixel más
+		SHORT_SLEEP 1
+		;; Volvemos a nivel de supresión
+		mov graphics_port, #black_level
+		mov R1, #78
+		DJNZ R1, $
+		DJNZ R2, linea_negro
+
+
+sinc_vertical:
+		;; Espero 1 pixel
+		SHORT_SLEEP 2 ; + 1 px = (-1, 304)
+
+		;; Hago 6 pulsos de ecualización (-1, 304)
+		REPT 6
+			EQ_PULSE
+		ENDM ; + 3 li = (-1, 307)
+
+		;; Hago 5 pulsos de vsync
+		REPT 5
+			VSYNC_PULSE
+		ENDM ; + 2.5 li = (43, 309)
+
+		;; Hago 4 pulsos de ecualización
+		REPT 4
+			EQ_PULSE
+		ENDM ; + 2 li = (43, 311)
+
+		;; Hago el último en forma manual, para enganchar con las líneas de arriba
+		mov graphics_port, #sync_level ; + 1 px = (44, 311)
+		SHORT_SLEEP 5 ; + 2.5 px = (46.5, 311)
+		mov graphics_port, #black_level ; + 1 px = (47.5, 311)
+		INT_SLEEP 37, R0 ; + 37 px = (84.5, 311)
+		SHORT_SLEEP 1 ; + 0.5 px = (85, 311)	
+
+		ret
+		
 END

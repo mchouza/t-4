@@ -22,6 +22,8 @@ EXTRN DATA(timer_jugada_maquina)
 
 EXTRN DATA(arranca)
 
+EXTRN DATA(resincronizar)
+
 EXTRN DATA(enviar_lineas_serial)
 
 ;;;Fin variables de datos.

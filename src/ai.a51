@@ -1022,7 +1022,7 @@ ai_play: ; (8.5, 18)
 		;;
 		;; Decide si le corresponde jugar o no
 		;; Solo cuento píxeles en el caso de que no correponda jugar,
-		;; en otro caso tarda demasiado como para mentener el sincronismo.
+		;; en otro caso tarda demasiado como para mantener el sincronismo.
 		;;
 		
 		;; Guardo el turno en R0 para poder compararlo
@@ -1036,6 +1036,11 @@ ai_play: ; (8.5, 18)
 		
 		;; Si el timer llega a cero, pasa de largo y juega
 		
+
+		;;FIXME: Prueba de sincronismo para el lunes 10/12
+		call pantalla_negro
+		call pantalla_negro
+
 		;; Obtengo el tablero codificado en el par R1 - R0
 		call get_encoded_board
 
@@ -1054,6 +1059,10 @@ ai_play: ; (8.5, 18)
 
 		;; Pasa el turno al humano
 		mov turno, #turno_humano
+
+ 	    ;;FIXME: Prueba de sincronismo para el lunes 10/12
+		mov resincronizar, #1
+		ret
 
 fin_jugar_maquina_wait: ; (10.5, 18) cuando no calculo movidas.
 

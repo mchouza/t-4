@@ -6,6 +6,7 @@
 
 $INCLUDE(macros.inc)		; Macros de propósito general
 $INCLUDE(constantes.inc)	; Constantes de utilidad general
+$INCLUDE(util.inc)	; Constantes de utilidad general
 
 NAME MAIN
 
@@ -50,6 +51,8 @@ main:
 		;; FIXME: Agregar inicializaciones
 		mov arranca, #arranca_humano ;El primer partido, arranca el humano
 		mov turno, #turno_humano ; Turno del humano
+ 	    ;;FIXME: Prueba de sincronismo para el lunes 10/12
+		mov resincronizar, #0
 
 		call draw_init
 		call keyboard_init
