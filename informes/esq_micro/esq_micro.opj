@@ -108,11 +108,11 @@
       (Type "COrSchematicDoc")
       (Frame
         (Placement "44 2 3 -1 -1 -4 -30 44 914 58 495")
-        (Scroll "482 305")
-        (Zoom "146")
+        (Scroll "0 0")
+        (Zoom "73")
         (Occurrence "/"))
       (Path
-         "D:\ESCOLAR\FACULTAD\LABO DE MICROCOMPUTADORAS\CODE\T-4\INFORMES\esq_micro\esq_micro.dsn")
+         "D:\ESCOLAR\FACULTAD\LABO DE MICROCOMPUTADORAS\CODE\T-4\INFORMES\ESQ_MICRO\ESQ_MICRO.DSN")
       (Schematic "SCHEMATIC1")
       (Page "PAGE1")))
   (LastUsedLibraryBrowseDirectory "C:\Program Files\Orcad\Capture\Library"))
