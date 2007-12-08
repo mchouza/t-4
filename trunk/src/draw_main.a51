@@ -7,6 +7,7 @@
 $INCLUDE(macros.inc)		; Macros de propósito general
 $INCLUDE(constantes.inc)	; Constantes de utilidad general
 $INCLUDE(serial.inc)	; Procedimientos de manejo del puerto serie
+$INCLUDE(util.inc)	; Utilidades para dibujo en pantalla y lectura del teclado
 
 NAME DRAW_MAIN
 
@@ -190,6 +191,15 @@ draw_loop:
 			SHORT_SLEEP 1 ; + 0.5 px = (13, 18)
 			INT_SLEEP 73, R0 ; + 73 px = (86, 18) = (-2, 19)
 		
+ 	    ;;FIXME: Prueba de sincronismo para el lunes 10/12
+		linea_resincronizacion:
+			DJNZ resincronizar, no_resinc
+			mov resincronizar, #0
+			call pantalla_negro
+			call pantalla_negro
+			JMP draw_loop ;;Está bien??
+		no_resinc:
+
 		linea_invocacion_teclado: ; En esta linea del barrido se lee el teclado
 			call hsync ; + 9.5 px = (7.5, 19)
 			call keyboard_check

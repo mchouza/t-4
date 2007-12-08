@@ -2,4 +2,4 @@
 ;;;; Por Mariano Beiró y Mariano Chouza
 ;;;; Header para los procedimientos exportados desde UTIL
 
-EXTRN CODE(put_symbol_var, poner_ficha)
+EXTRN CODE(put_symbol_var, poner_ficha, pantalla_negro)
