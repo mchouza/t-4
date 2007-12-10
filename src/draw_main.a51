@@ -199,6 +199,12 @@ draw_loop:
 			call pantalla_negro
 			call pantalla_negro
 			call pantalla_negro
+			call pantalla_negro
+			call pantalla_negro
+			call pantalla_negro
+			call pantalla_negro
+			call pantalla_negro
+			call pantalla_negro
 
 			JMP draw_loop ;;Está bien??
 		no_resinc:
