@@ -31,49 +31,28 @@ sound_init:
 
 
 ;Melodía cuando el humano juega
-obtener_nota_melodia_humano:
-	INC A
-	MOVC A, @A + PC
-	RET
+altura_melodia_humano:
 	db nota_4, silencio, nota_4, silencio, nota_3, silencio, nota_3, silencio, nota_2, silencio, nota_2, silencio, nota_4, fin_melodia
 
-obtener_altura_melodia_humano:
-	INC A
-	MOVC A, @A + PC
-	RET
+duracion_melodia_humano:
 	db corchea, semicorchea, corchea, semicorchea, corchea, semicorchea, corchea, semicorchea, corchea, semicorchea, corchea, semicorchea, negra, fin_melodia
 
 ;Melodía cuando la máquina juega
-obtener_nota_melodia_maquina:
-	INC A
-	MOVC A, @A + PC
-	RET
+altura_melodia_maquina:
 	db nota_3, silencio, nota_3, silencio, nota_2, silencio, nota_2, silencio, nota_3, fin_melodia
 
-obtener_altura_melodia_maquina:
-	INC A
-	MOVC A, @A + PC
-	RET
+duracion_melodia_maquina:
 	db corchea, semicorchea, corchea, semicorchea, corchea, semicorchea, corchea, semicorchea, negra, fin_melodia
 
 ;Melodía cuando se empata
-obtener_nota_melodia_empate:
-	INC A
-	MOVC A, @A + PC
-	RET
+altura_melodia_empate:
 	db 	nota_4,	silencio, 	nota_3, 	silencio, 	nota_2,	fin_melodia
 
-obtener_altura_melodia_empate:
-	INC A
-	MOVC A, @A + PC
-	RET
+duracion_melodia_empate:
 	db 	corchea,	corchea,	corchea,		corchea,	blanca, fin_melodia
 
 ;Melodía cuando el juego termina
-obtener_nota_melodia_final:
-	INC A
-	MOVC A, @A + PC
-	RET
+altura_melodia_final:
 	db 	nota_2,	silencio, 	nota_2, 	silencio, 	nota_2
 	db	silencio,nota_2, 	silencio, 	nota_4, 	silencio
 	db	nota_3,	silencio, 	nota_3, 	silencio, 	nota_2
@@ -83,10 +62,7 @@ obtener_nota_melodia_final:
 	db	silencio,nota_2, 	silencio, 	nota_4, 	silencio
 	db	nota_3,	silencio, 	nota_2, 	fin_melodia
 
-obtener_altura_melodia_final:
-	INC A
-	MOVC A, @A + PC
-	RET
+duracion_melodia_final:
 	db 	negra,	corchea,	negra,		corchea,	semicorchea
 	db	corchea,negra,		corchea,	negra,		semicorchea
 	db	corchea,semicorchea, 	negra, 		corchea, 	corchea
@@ -95,6 +71,13 @@ obtener_altura_melodia_final:
 	db 	negra,	corchea,	negra,		corchea,	semicorchea
 	db	corchea,negra,		corchea,	negra,		semicorchea
 	db	corchea,semicorchea,	negra,		fin_melodia
+
+; Recibe en R0 (parte baja) y R1 la direccion de la tabla
+leer_tabla:
+	mov DPH, R1
+	mov DPL, R0
+	MOVC A, @A+DPTR
+	RET
 
 ;; Rutina que recibe en A la melodia a reproducir
 sound_start_melody:
@@ -125,7 +108,9 @@ sound_play:
 		MOV A, estado_melodia ;Paso el estado a R0 para comparar
 		JZ saltar_a_fin ;Si no hay que reproducir nada, salgo
 		JMP no_saltar_a_fin
+	
 	saltar_a_fin:
+		INT_SLEEP 74, R0
 		JMP fin_sound_play
 	no_saltar_a_fin:
 
@@ -133,6 +118,7 @@ sound_play:
 		CJNE R0, #0, saltar_a_descontar_tiempo ;Si la nota sigue, le descuento una unidad de tiempo (frame)
 		JMP no_saltar_a_descontar_tiempo
 	saltar_a_descontar_tiempo:
+		INT_SLEEP 69, R0
 		JMP descontar_tiempo
 	no_saltar_a_descontar_tiempo:
 
@@ -143,34 +129,44 @@ cambiar_nota:
 		MOV A, estado_melodia ;Para comparar el estado de la melodía
 		CJNE A, #melodia_humano, cambiar_nota_2 ;Si estoy reproduciendo melodia_humano
 		MOV A, nota_actual ;Guardo el iterador en A para llamar a la rutina que lee de la tabla (partitura)					  
-		call obtener_nota_melodia_humano ;Guarda en A la próxima nota
+		MOV R0, #low(altura_melodia_humano)
+		MOV R1, #high(altura_melodia_humano)
+		call leer_tabla
 		MOV puerto_sonido, A ;Y la reproduzco
 		MOV altura_nota_actual, A ;Me guardo el valor de esta nota
 		CJNE A, #fin_melodia, no_detener ;Si no es la última nota
 		JMP detener
 no_detener:
 		MOV A, nota_actual ;Guardo el iterador en A para llamar a la rutina que lee de la tabla (partitura)				
-		call obtener_altura_melodia_humano ;Guarda en A la duración de la próxima nota
+		MOV R0, #low(duracion_melodia_humano)
+		MOV R1, #high(duracion_melodia_humano)
+		call leer_tabla
 		MOV timer_nota_actual, A ;La guardo en memoria
 		JMP descontar_tiempo;
 cambiar_nota_2:
 		CJNE A, #melodia_maquina, cambiar_nota_3 ;Si estoy reproduciendo melodia_maquina
 		MOV A, nota_actual ;Guardo el iterador en A para llamar a la rutina que lee de la tabla (partitura)					  
-		call obtener_nota_melodia_maquina ;Guarda en A la próxima nota
+		MOV R0, #low(altura_melodia_maquina)
+		MOV R1, #high(altura_melodia_maquina)
+		call leer_tabla
 		MOV puerto_sonido, A ;Y la reproduzco
 		MOV altura_nota_actual, A ;Me guardo el valor de esta nota
 		CJNE A, #fin_melodia, no_detener_2 ;Si no es la última nota
 		JMP detener
 no_detener_2:
 		MOV A, nota_actual ;Guardo el iterador en A para llamar a la rutina que lee de la tabla (partitura)				
-		call obtener_altura_melodia_maquina ;Guarda en A la duración de la próxima nota
+		MOV R0, #low(duracion_melodia_maquina)
+		MOV R1, #high(duracion_melodia_maquina)
+		call leer_tabla
 		MOV timer_nota_actual, A ;La guardo en memoria
 		JMP descontar_tiempo
 cambiar_nota_3:
 		;Estoy reproduciendo melodia del final del juego
 		CJNE A, #melodia_final, cambiar_nota_4 ;Si estoy reproduciendo melodia_maquina
 		MOV A, nota_actual ;Guardo el iterador en A para llamar a la rutina que lee de la tabla (partitura)					  
-		call obtener_nota_melodia_final ;Guarda en A la próxima nota
+		MOV R0, #low(altura_melodia_final)
+		MOV R1, #high(altura_melodia_final)
+		call leer_tabla
 		MOV puerto_sonido, A ;Y la reproduzco
 		MOV altura_nota_actual, A ;Me guardo el valor de esta nota
 		CJNE A, #fin_melodia, no_detener_3 ;Si no es la última nota
@@ -196,14 +192,18 @@ arranque_configurado:
 		JMP detener
 no_detener_3:
 		MOV A, nota_actual ;Guardo el iterador en A para llamar a la rutina que lee de la tabla (partitura)				
-		call obtener_altura_melodia_final ;Guarda en A la duración de la próxima nota
+		MOV R0, #low(duracion_melodia_final)
+		MOV R1, #high(duracion_melodia_final)
+		call leer_tabla
 		MOV timer_nota_actual, A ;La guardo en memoria
 		JMP descontar_tiempo
 
 cambiar_nota_4:
 		;Estoy reproduciendo melodia de empate
 		MOV A, nota_actual ;Guardo el iterador en A para llamar a la rutina que lee de la tabla (partitura)					  
-		call obtener_nota_melodia_empate ;Guarda en A la próxima nota
+		MOV R0, #low(altura_melodia_empate)
+		MOV R1, #high(altura_melodia_empate)
+		call leer_tabla
 		MOV puerto_sonido, A ;Y la reproduzco
 		MOV altura_nota_actual, A ;Me guardo el valor de esta nota
 		CJNE A, #fin_melodia, no_detener_4 ;Si no es la última nota
@@ -229,7 +229,9 @@ arranque_configurado_2:
 		JMP detener
 no_detener_4:
 		MOV A, nota_actual ;Guardo el iterador en A para llamar a la rutina que lee de la tabla (partitura)				
-		call obtener_altura_melodia_empate ;Guarda en A la duración de la próxima nota
+		MOV R0, #low(duracion_melodia_empate)
+		MOV R1, #high(duracion_melodia_empate)
+		call leer_tabla
 		MOV timer_nota_actual, A ;La guardo en memoria
 		JMP descontar_tiempo
 

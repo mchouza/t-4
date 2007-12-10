@@ -182,23 +182,28 @@ draw_loop:
 	
 			;; Es igual que en el caso de las ocultas
 			call hsync ; + 9.5 px = (7.5, 17)
-			mov R7, #47 - 17 - 5 ; + 0.5 px = (8, 17)
+			mov R7, #47 - 17 - 6 ; + 0.5 px = (8, 17)
 			INT_SLEEP 78, R0 ; + 78 px = (86, 17) = (-2, 18)
 
 		linea_jugada_maquina: ; En esta linea del barrido se analiza si la máquina debe jugar
 			call hsync ; + 9.5 px = (7.5, 18)
-			call ai_play ; + 5 px = (12.5, 18)
-			SHORT_SLEEP 1 ; + 0.5 px = (13, 18)
-			INT_SLEEP 73, R0 ; + 73 px = (86, 18) = (-2, 19)
+			call ai_play ; + 78.5 px = (-2, 19)
 		
  	    ;;FIXME: Prueba de sincronismo para el lunes 10/12
 		linea_resincronizacion:
-			DJNZ resincronizar, no_resinc
+			call hsync ; + 9.5 px = (7.5, 19)
+			MOV R0, resincronizar
+			CJNE R0, #1, no_resinc ; + 1 px = (8.5, 19)
 			mov resincronizar, #0
 			call pantalla_negro
 			call pantalla_negro
+			call pantalla_negro
+			call pantalla_negro
+
 			JMP draw_loop ;;Está bien??
 		no_resinc:
+			SHORT_SLEEP 1 ; + 0.5 px = (9, 19)
+			INT_SLEEP 76, R0 ; + 77 px = (86, 19)
 
 		linea_invocacion_teclado: ; En esta linea del barrido se lee el teclado
 			call hsync ; + 9.5 px = (7.5, 19)
