@@ -1,4 +1,4 @@
-BL51 BANKED LINKER/LOCATER V4.23                                                        12/01/2007  15:27:26  PAGE 1
+BL51 BANKED LINKER/LOCATER V4.23                                                        12/10/2007  11:18:35  PAGE 1
 
 
 BL51 BANKED LINKER/LOCATER V4.23, INVOKED BY:
@@ -59,7 +59,7 @@ SYMBOL TABLE OF MODULE:  tecserie (TECSERIE)
   D:008DH         SYMBOL        TH1
   B:0098H.1       SYMBOL        TI
   D:008BH         SYMBOL        TL1
-BL51 BANKED LINKER/LOCATER V4.23                                                      12/01/2007  15:27:26  PAGE 2
+BL51 BANKED LINKER/LOCATER V4.23                                                      12/10/2007  11:18:35  PAGE 2
 
 
   D:0089H         SYMBOL        TMOD

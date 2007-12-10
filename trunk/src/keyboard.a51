@@ -53,7 +53,7 @@ keyboard_check:
 		CJNE A, #turno_humano, saltar_a_fin ;Si no es el turno del jugador, salgo
 		JMP no_saltar
 	saltar_a_fin: 
-		INT_SLEEP 73, R0
+		INT_SLEEP 54, R0
 		SHORT_SLEEP 1 ; FIXME: Eliminar y sumar uno al INT_SLEEP
 		JMP fin
 	no_saltar:
@@ -64,6 +64,7 @@ keyboard_check:
 		MOV R0, #0
 		MOV R1, #0
 		call poner_ficha
+		INT_SLEEP 11, R3
 		JMP fin
 			
 suelta_1:
@@ -71,6 +72,7 @@ suelta_1:
 		MOV R0, #1
 		MOV R1, #0
 		call poner_ficha
+		INT_SLEEP 10, R3
 		JMP fin
 
 suelta_2:		
@@ -78,6 +80,7 @@ suelta_2:
 		MOV R0, #2
 		MOV R1, #0
 		call poner_ficha
+		INT_SLEEP 9, R3
 		JMP fin
 		
 suelta_3:
@@ -88,6 +91,7 @@ suelta_3:
 		MOV R0, #0
 		MOV R1, #1
 		call poner_ficha
+		INT_SLEEP 7, R3
 		JMP fin
 		
 suelta_4:	
@@ -95,6 +99,7 @@ suelta_4:
 		MOV R0, #1
 		MOV R1, #1
 		call poner_ficha
+		INT_SLEEP 6, R3
 		JMP fin
 		
 suelta_5:
@@ -102,6 +107,7 @@ suelta_5:
 		MOV R0, #2
 		MOV R1, #1
 		call poner_ficha
+		INT_SLEEP 5, R3
 		JMP fin
 		
 suelta_6:
@@ -112,6 +118,7 @@ suelta_6:
 		MOV R0, #0
 		MOV R1, #2
 		call poner_ficha
+		SHORT_SLEEP 4
 		JMP fin
 
 suelta_7:	
@@ -119,6 +126,7 @@ suelta_7:
 		MOV R0, #1
 		MOV R1, #2
 		call poner_ficha
+		SHORT_SLEEP 2
 		JMP fin
 		
 suelta_8:
@@ -129,8 +137,17 @@ suelta_8:
 		JMP fin
 		
 suelta_9:
+		;Si no se tocó ninguna tecla, agrego mismo tiempo que si se hubiese tocado
+		;MOV + MOV + poner_ficha + JMP
+		SHORT_SLEEP 1
+		INT_SLEEP 61, R0
+		mov puerto_teclado, #0xff
+		ret
+
 		;SUMAR TIEMPO PARA QUE COMPLETE LA LINEA
 	fin:
+		SHORT_SLEEP 1
+		INT_SLEEP 18, R3
 		;; Restauro el estado del puerto
 		mov puerto_teclado, #0xff
 

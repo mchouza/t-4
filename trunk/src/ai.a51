@@ -1065,12 +1065,13 @@ ai_play: ; (8.5, 18)
 		ret
 
 fin_jugar_maquina_wait: ; (10.5, 18) cuando no calculo movidas.
-
 		;; Espero 1 px para sincronizar...
-		SHORT_SLEEP 2 ; + 1px = (11.5, 18)
-
+		SHORT_SLEEP 2 ; + 0.5 px = (13, 18)
+		
 fin_jugar_maquina: ; (11.5, 18)
-
+		SHORT_SLEEP 1 ; + 0.5 px = (13, 18)
+		INT_SLEEP 73, R0 ; + 73 px = (86, 18) = (-2, 19)
+		
 		;; Vuelvo
 		ret	; + 1 px = (12.5, 18)
 

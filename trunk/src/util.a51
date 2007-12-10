@@ -26,50 +26,53 @@ RSEG UTIL_SEG
 ;;; El símbolo sigue la codificación:
 ;;; 0 -> E, 1 -> X, 2 -> O
 ;;; Destruye B
-put_symbol_var:
-		mov B, #NOT(3)
-		xch A, R3
+put_symbol_var: ; (0)
+		mov B, #NOT(3) ; + 0.5 px  = (0.5)
+		xch A, R3 ; + 0.5 px = (1)
 		
-		cjne R1, #0, need_2_shift
-		jmp shifted
+		cjne R1, #0, need_2_shift ; + 1 px = (2)
+		SHORT_SLEEP 5 ; + 2.5 px = (4.5)
+		jmp shifted ; + 1 px = (5.5)
 
-	need_2_shift: ; Se que es por 2 o 4
-		cjne R1, #2, shift_two_bits
-		mov B, #(NOT(3) SHL 4)
-		swap A
-		jmp shifted
+	need_2_shift: ; Se que es por 2 o 4 Pos: (2)
+		cjne R1, #2, shift_two_bits ; + 1 px = (3)
+		mov B, #(NOT(3) SHL 4) ; + 1 px = (4)
+		swap A ; + 0.5 px = (4.5)
+		jmp shifted ; + 1 px = (5.5)
 
-	shift_two_bits:
-		rl A
-		rl A
-		mov B, #(NOT(3) SHL 2)
+	shift_two_bits: ; (3)
+		rl A ; + 0.5 px = (3.5)
+		rl A ; + 0.5 px = (4)
+		mov B, #(NOT(3) SHL 2) ; + 1px = (5)
+		SHORT_SLEEP 1 ; + 0.5 px = (5.5)
 
-	shifted:
+	shifted: ; (5.5)
 		;; Guardo el valor shifteado
-		mov R1, A
+		mov R1, A ; + 0.5 px = (6)
 
 		;; Calculo adonde guardarlo y lo pongo en R0
-		mov A, R0
-		add A, #linea_0
-		mov R0, A
+		mov A, R0 ; + 0.5 px = (6.5)
+		add A, #linea_0 ; + 0.5 px = (7)
+		mov R0, A ; + 0.5 px = (7.5)
 
 		;; Cargo el viejo valor de la fila en el acumulador y le aplico
 		;; la máscara
-		mov A, @R0
-		anl A, B
+		mov A, @R0 ; + 1 px = (8.5)
+		anl A, B  ; + 1 px = (9.5)
 		
 		;; Le incorporo el valor shifteado
-		orl A, R1
+		orl A, R1 ; + 0.5 px = (10)
 		;; Lo guardo
-		mov @R0, A
+		mov @R0, A ; + 1 px = (11)
 
 		;; Recupero el acumulador
-		xch A, R3
+		xch A, R3 ; + 0.5 px = (11.5)
 
 		;; Listo
-		ret
+		ret ; + 1 px = (12.5)
 
 ;;; R0 -> fila, R1 -> columna
+; Duración: 41 pixels
 poner_ficha:
 		MOV A, R0
 		MOV R2, A ;Mantengo la fila en R2, porque R0 lo voy a modificar
@@ -82,25 +85,21 @@ poner_ficha:
 		;Tengo que shiftear a la derecha una cantidad de bits igual a dos veces el número de columna
 		
 		CJNE R1, #0, no_cero
-		NOP
-		NOP
-		NOP
-		NOP
-		NOP
-		NOP
+		INT_SLEEP 4, R4
+		JMP shifteo_listo		
 no_cero:
 		CJNE R1, #1, no_uno
 		RR A
 		RR A
-		NOP
-		NOP
+		SHORT_SLEEP 4
 		JMP shifteo_listo
 no_uno:
 		RR A
 		RR A
 		RR A
 		RR A
-		NOP
+		SHORT_SLEEP 4
+
 shifteo_listo:
 		;Ahora tengo en los dos bits menos significativos de A el símbolo correspondiente a la fila y columna
 		anl A, #3 ;Tengo en A el símbolo correspondiente a la fila y columna
@@ -130,16 +129,28 @@ shifteo_listo:
 		MOV turno, #turno_maquina ;Turno=maquina
 		MOV timer_jugada_maquina, #100 ;Para que espere 2 segundos (100 frames) antes de jugar la máquina
 		MOV enviar_lineas_serial, #3 ;Indico que hay que enviar las 3 lineas del tablero a la PC
+		ret
 	no_vacia:	;Agrego el tiempo del put_symbol y del mov
 		SHORT_SLEEP 1
-		ret
-	suelta:	;Agrego todo el tiempo anterior
+		INT_SLEEP 28, R3
 		ret
 
 
 pantalla_negro:
-		;;FIXME: Corregir el 220
-		MOV R2, #220
+prev_linea_negro:
+		;; Comenzamos el pulso sync
+		mov graphics_port, #sync_level
+		;; Esperamos 5 pixels
+		INT_SLEEP 5, R0
+		;; Esperamos 1/2 pixel más
+		SHORT_SLEEP 1
+		;; Volvemos a nivel de supresión
+		mov graphics_port, #black_level
+		MOV R2, #151
+
+		mov R1, #77
+		DJNZ R1, $
+
 linea_negro:
 		;; Comenzamos el pulso sync
 		mov graphics_port, #sync_level
@@ -149,10 +160,38 @@ linea_negro:
 		SHORT_SLEEP 1
 		;; Volvemos a nivel de supresión
 		mov graphics_port, #black_level
-		mov R1, #78
+		mov R1, #77
 		DJNZ R1, $
+
 		DJNZ R2, linea_negro
 
+prev_linea_negro_2:
+		;; Comenzamos el pulso sync
+		mov graphics_port, #sync_level
+		;; Esperamos 5 pixels
+		INT_SLEEP 5, R0
+		;; Esperamos 1/2 pixel más
+		SHORT_SLEEP 1
+		;; Volvemos a nivel de supresión
+		mov graphics_port, #black_level
+		MOV R2, #151
+
+		mov R1, #77
+		DJNZ R1, $
+
+linea_negro_2:
+		;; Comenzamos el pulso sync
+		mov graphics_port, #sync_level
+		;; Esperamos 5 pixels
+		INT_SLEEP 5, R0
+		;; Esperamos 1/2 pixel más
+		SHORT_SLEEP 1
+		;; Volvemos a nivel de supresión
+		mov graphics_port, #black_level
+		mov R1, #77
+		DJNZ R1, $
+
+		DJNZ R2, linea_negro_2
 
 sinc_vertical:
 		;; Espero 1 pixel
