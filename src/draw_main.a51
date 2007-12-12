@@ -24,7 +24,6 @@ $INCLUDE(ai.inc)	; Procedimeintos que se encargan de dibujar las líneas físicas
 ;;; Exporta solo la función de inicialización y el loop
 PUBLIC draw_init, draw_loop
 
-;;; FIXME: Mejorar la explicación
 
 ;;; Como casi todas las instrucciones toman dos ciclos de máquina o sea 24
 ;;; ciclos de reloj y estamos operando a 33 MHz, tomamos cada pixel como
@@ -112,7 +111,6 @@ RSEG DRAW_MAIN_SEG
 ;;;
 
 draw_init:
-		;; FIXME: Para prueba
 		PUT_SYMBOL 0, 0, "E" 
 		PUT_SYMBOL 0, 1, "E"
 		PUT_SYMBOL 0, 2, "E"
@@ -189,7 +187,6 @@ draw_loop:
 			call hsync ; + 9.5 px = (7.5, 18)
 			call ai_play ; + 78.5 px = (-2, 19)
 		
- 	    ;;FIXME: Prueba de sincronismo para el lunes 10/12
 		linea_resincronizacion:
 			call hsync ; + 9.5 px = (7.5, 19)
 			MOV R0, resincronizar
@@ -335,10 +332,6 @@ hsync: ; (-1, n)
 ;;; Este procedimiento es el que hace el dibujo en si, llamando a los
 ;;; fragmentos de código que dibujan cada parte del tablero.
 ;;;
-;;; Parámetros: ??
-;;;
-;;; Registros modificados: ??
-;;;
 
 do_real_draw: ; (-4, 49)
 
@@ -376,8 +369,6 @@ do_real_draw: ; (-4, 49)
 ;;; Estos procedimientos, que comparten el cuerpo, dibujan las
 ;;; correspondientes líneas del tablero.
 ;;;
-;;; Parámetros: ??
-;;;
 ;;; Registros modificados: R2
 ;;;
 
@@ -395,10 +386,6 @@ bl_13:
 ;;; Estos procedimientos, que comparten el cuerpo, dibujan las
 ;;; correspondientes líneas del tablero.
 ;;;
-;;; Parámetros: ??
-;;;
-;;; Registros modificados: ??
-;;;
 
 bl_2: ; (-3, n)
 bl_11:
@@ -410,10 +397,6 @@ bl_11:
 ;;;
 ;;; Estos procedimientos, que comparten el cuerpo, dibujan las
 ;;; correspondientes líneas del tablero.
-;;;
-;;; Parámetros: ??
-;;;
-;;; Registros modificados: ??
 ;;;
 
 bl_3: ; (-3, n)
@@ -427,10 +410,6 @@ bl_10:
 ;;; Estos procedimientos, que comparten el cuerpo, dibujan las
 ;;; correspondientes líneas del tablero.
 ;;;
-;;; Parámetros: ??
-;;;
-;;; Registros modificados: ??
-;;;
 
 bl_4: ; (-3, n)
 bl_9:
@@ -442,10 +421,6 @@ bl_9:
 ;;;
 ;;; Estos procedimientos, que comparten el cuerpo, dibujan las
 ;;; correspondientes líneas del tablero.
-;;;
-;;; Parámetros: ??
-;;;
-;;; Registros modificados: ??
 ;;;
 
 bl_5: ; (-3, n)
@@ -459,10 +434,6 @@ bl_8:
 ;;; Estos procedimientos, que comparten el cuerpo, dibujan las
 ;;; correspondientes líneas del tablero.
 ;;;
-;;; Parámetros: ??
-;;;
-;;; Registros modificados: ??
-;;;
 
 bl_6: ; (-3, n)
 bl_7:
@@ -473,10 +444,6 @@ bl_7:
 ;;; Procedimientos bl_14
 ;;;
 ;;; Este procedimiento dibuja la correspondiente línea del tablero
-;;;
-;;; Parámetros: ??
-;;;
-;;; Registros modificados: ??
 ;;;
 
 bl_14: ; (-3, n)

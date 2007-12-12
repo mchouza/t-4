@@ -1037,7 +1037,6 @@ ai_play: ; (8.5, 18)
 		;; Si el timer llega a cero, pasa de largo y juega
 		
 
-		;;FIXME: Prueba de sincronismo para el lunes 10/12
 		call pantalla_negro
 		call pantalla_negro
 

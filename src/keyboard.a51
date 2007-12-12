@@ -38,8 +38,6 @@ keyboard_init:
 												   
 		ret ; Vuelve
 
-;;; FIXME: Poner parámetros etc...
-
 ;;;
 ;;; keyboard_check
 ;;;
@@ -144,7 +142,6 @@ suelta_9:
 		mov puerto_teclado, #0xff
 		ret
 
-		;SUMAR TIEMPO PARA QUE COMPLETE LA LINEA
 	fin:
 		SHORT_SLEEP 1
 		INT_SLEEP 18, R3

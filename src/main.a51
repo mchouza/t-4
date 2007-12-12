@@ -23,7 +23,6 @@ $INCLUDE(sound.inc)		; Procedimientos de manejo de teclado
 ;;; Exporta solo el punto de entrada
 PUBLIC main
 
-;;; FIXME: Poner en un módulo aparte
 CSEG AT 0x0000
 
 reset_vec:
@@ -45,21 +44,14 @@ main:
 
 		mov	SP, #(stack - 1) ; Inicializo el stack pointer.
 		
-		;; FIXME: HAcer que seleccione el banco 0
-		;SEL_BANK 0 ; Selecciono el banco de registros 0.
-
-		;; FIXME: Agregar inicializaciones
 		mov arranca, #arranca_humano ;El primer partido, arranca el humano
 		mov turno, #turno_humano ; Turno del humano
- 	    ;;FIXME: Prueba de sincronismo para el lunes 10/12
-		mov resincronizar, #0
+ 	    mov resincronizar, #0
 
 		call draw_init
 		call keyboard_init
 		call serial_init
 		call sound_init
-
-		;; FIXME: No activo las interrupciones, analizar consecuencias
 
 		call draw_loop ; Salto al loop de dibujo
 

@@ -111,9 +111,6 @@ PUBLIC LEV, LSH, LS_0, LS_1, LS_2, LS_3, LS_4
 ;;; Se omiten las coordenadas Y ya que dependen de donde se invoque el
 ;;; procedimiento.
 
-;;; FIXME: Poner descripciones más detalladas de cada procedimiento
-;;; _exportado_.
-
 ;;; Comienza el segmento DRAW_LINES_SEG
 RSEG DRAW_LINES_SEG
 
